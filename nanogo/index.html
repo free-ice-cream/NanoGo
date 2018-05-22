@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Nano Go</title>
+    <!-- changed to  p2 path -->
+    <script src="../build/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+//p2
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+
+
+
+    // p3  var game = new Phaser.Game(config);
+    var hexgrid;
+    //swap in and out the url string for the different enviroments
+    //
+    // var ficurl = "/nanogotest/nanogo/";
+   var ficurl = '';
+   //
+   var gameLive =false;// this is the core var to check if we are in play mode or  NOT
+   var homeTime = false;// so we know when to go home
+   var score = 0;
+   var scoreText ;
+   var startText = "NANO GO How far can you go?";
+   var displayText = "you have traveled : ";
+   var endText1 = "OK tryout over NANO Racer! you traveled ";
+   //var endText2 = "you traveled ";
+   var endText2 = " At that rate you will finish the 1mm race track on "
+   var endText3 = " Days! ";
+   //var endText4 = "At that rate you will finish on ";
+   var endText5 = " in ";
+   var endText6 = "s. ";
+  // var endText7 = "jjjjjjjjj"
+   var si = "nM ";
+   //
+   var introT;
+   var introText = "Hit Space bar to play";
+   var countDown;
+   var gameTime=10;
+   const gameDuration = 10;
+   //
+   var  clockX=  650;
+   var clockY = 16;
+   //
+   var endX =70;
+   var endY = 180;
+   //
+   //SOME POINT POSITIONS
+   //HUD
+   var hudTop =0;
+   var hudLeft =0;
+   var hudRight =800;
+   var hudBot =120;
+   //Game Over
+   var goTop = 150;
+   var goLeft = 60;
+   var goRight = 740;
+   var goBot = 450;
+   //game start
+   var gsTop = 180;
+   var gsLeft = 60;
+   var gsRight = 740;
+   var gsBot = 450;
+   //
+   var hudSet = false;//a toggle to knwo when the hud is drawn
+   var goSet = false;// a toggle to know when the g o bg is drawn
+   var gsSet = false;// a toggle to knwowhen the g start is drawn
+   //
+   var spaceKey; //a var for the spacebar
+   var carGrav = 300;// teh "amount" of gravity
+   var carBounce = 0.3;// the bounce factor when teh car lands at teh start
+   var tileRate = 4 ;//the rate at which the background moves
+   //
+   var rev;
+   var mainTheme;
+   //
+   var starTrack;
+   var trackLX = 200;
+   var trackRX = 550;
+   var trackYD = 100;
+   //
+   var timeText;
+   var dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+   var finishTime;
+   //
+   //FONTS
+   var timestyle = { font: 'bold 40pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };//countdown
+   var st32 = { font: 'bold 32pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+   var st64 = { font: 'bold 64pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+   var introStyle = { font: 'bold 60pt courier ', fill: 'GREEN', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+   var endStyle = { font: 'bold 28pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+
+//
+    function preload (){
+      game.load.image('hex', ficurl+'assets/hexgrid-cross2.png');
+      game.load.image('glob1', ficurl+'assets/glob1.png');
+      game.load.image('glob2', ficurl+'assets/glob2.png');
+      game.load.image('glob3', ficurl+'assets/glob3.png');
+      // game.load.image('start', ficurl+'assets/start.png');
+      // game.load.image('gameover', ficurl+'assets/gameover.png');
+      //
+      game.load.spritesheet('car', 'assets/car3.png', 160, 240);
+
+//and some AUDIO
+
+game.load.audio('rev', 'assets/car-2.mp3');
+game.load.audio('theme', 'assets/maintrack4.mp3');
+
+    }
+    var player;
+    var count=0;
+    var but;
+//
+//CREATE
+//
+    function create (){
+      //set the background hexgrid
+      hexgrid = game.add.tileSprite(0, 0, 800, 1200, 'hex');
+      starC1 = game.add.tileSprite(trackLX, 0, 50, 600, 'glob3');
+      starC2 = game.add.tileSprite(trackRX, 0, 50, 600, 'glob3');
+        //player = game.add.sprite(32, game.world.height - 150, 'dude');
+      car = game.add.sprite(330,250, 'car');
+
+      game.physics.startSystem(Phaser.Physics.ARCADE);
+
+      //car2 = game.add.sprite(200, 200, 'car');
+      game.physics.arcade.enable(car);
+      car.body.bounce.y = carBounce;
+      car.body.gravity.y = carGrav;
+      car.body.collideWorldBounds = true;
+      //
+      //lets add soem AUDIO
+      rev =  game.add.audio('rev');
+      mainTheme = game.add.audio('theme');
+      mainTheme.loopFull(0.8);
+      //
+      //Lets make some graphics
+// the main hud background
+      hud = new Phaser.Polygon();
+      hud.setTo([ new Phaser.Point(hudLeft, hudTop), new Phaser.Point(hudRight, hudTop), new Phaser.Point(hudRight, hudBot), new Phaser.Point(hudLeft, hudBot) ]);
+// game over background
+      gObg = new Phaser.Polygon();
+      gObg.setTo([ new Phaser.Point(goLeft, goTop), new Phaser.Point(goRight, goTop), new Phaser.Point(goRight, goBot), new Phaser.Point(goLeft, goBot) ]);
+      // gObg.setTo([ new Phaser.Point(100, 100), new Phaser.Point(700, 100), new Phaser.Point(700, 100), new Phaser.Point(100, 100) ]);
+// game start gb
+      gStart = new Phaser.Polygon();
+      gStart.setTo([ new Phaser.Point(gsLeft, gsTop), new Phaser.Point(gsRight, gsTop), new Phaser.Point(gsRight, gsBot), new Phaser.Point(gsLeft, gsBot) ]);
+
+
+
+//TODO set up the number of loops properly
+
+game.time.events.repeat(Phaser.Timer.SECOND * 1, 999, tick, this);
+
+      //
+      // Get keyboard input
+      //
+      //cursors = this.input.keyboard.createCursorKeys();
+      cursors = game.input.keyboard.createCursorKeys();
+      spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+      //ANIMATIONS
+      //
+      car.animations.add('rotate', [1, 2, 3, 4, 5, 6], 10, true);
+      car.animations.add('stop', [0], 20, true);
+
+      //TEXT
+      drawHud();
+      //drawGameOverBG(0.1);
+      // var st32 = { font: 'bold 32pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+      // var st64 = { font: 'bold 64pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+      scoreText = this.add.text(16, 16, startText, st32);
+      clockText = this.add.text(clockX, clockY, gameTime, st64);
+
+//
+      // var introStyle = { font: 'bold 60pt courier ', fill: 'GREEN', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+      introT = this.add.text(endX,endY,introText, introStyle);
+      // endText = this.add.text(endX, endY, "", { fontSize: '20px', fill: '#fff' });
+      playsoundTrack();
+      drawGStart(true);
+      //
+      //starLayout();
+
+    function starLayout(){
+
+      starTrack = game.add.group();
+
+      for (var i = 0; i < 10; i++)
+      {
+
+          // starTrack.create(game.world.randomX, game.world.randomY, 'sonic');
+          for (var j = 0; j < 10; j++)
+        {
+
+            starTrack.create(trackLX, trackYD*j, 'glob1');
+            starTrack.create(trackRX, trackYD*j, 'glob1');
+        }
+
+      }
+    }
+    //
+    // Time stuff
+    // var timestyle = { font: 'bold 40pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+    // timeText = game.add.text(10, 150, "00:00:00",timestyle);
+
+    }
+
+    //UPDATE Vars
+    //
+    var toggle= false;
+    function update ()
+    {
+      if(!homeTime){
+      //  console.log('homeTime= '+homeTime);
+
+      spaceKey.onDown.add(playFx);
+    };
+
+      if(gameTime!=0){
+
+
+        if(spaceKey.isDown ){
+          introT.setText("");
+          drawGStart(false);
+          gameLive=true;
+          //game.graphics.gStart.setTo([ new Phaser.Point(0, 0),new Phaser.Point(0, 0),new Phaser.Point(0, 0),new Phaser.Point(0, 0),]);
+          car.animations.play('rotate', true);
+          if(car.y >280){
+            //console.log(car.y);
+            car.body.velocity.y = -60;
+
+            // rev.play();
+            //car.setVelocityY(-60);
+          }
+          if(!toggle){
+            toggle= true;
+            //count +=1;
+            //console.log(count);
+            score += 1;
+            scoreText.setText(displayText+ score + si);
+            //hexgrid.tilePositionY+= -2;
+            hexgrid.tilePosition.y += tileRate;
+            starC1.tilePosition.y += tileRate*1.3;
+            starC2.tilePosition.y += tileRate*1.3;
+            //player.anims.play('rotate', true);
+          }
+        }else {
+          toggle= false;
+          //console.log("player.y = "+player.y);
+          if(car.body.y >350){
+            car.animations.play('stop', true);
+          }
+        }
+      }else{
+        //gameOver();
+      }
+
+//
+//game.debug.geom(hud,'#0fffff');
+  //timeText.setText(getCurrentTime());
+
+    }
+    //
+    //TIMER FUNCTION
+    //
+    function tick(){
+      console.log("tick");
+      if(gameLive){
+        if(gameTime>=1  ){
+        gameTime -= 1;
+        clockText.setText(gameTime);
+        }else {
+          gameLive=false;
+          gameOver();
+          //console.log("GAME OVER ");
+        }
+      }
+    };
+    //
+    //Do the Calculations
+    //
+    function gameOver(){
+      homeTime = true;
+      //playsoundTrack();
+      mainTheme.stop();
+      if(!goSet){
+        goBack = game.add.graphics(0, 0);
+        goBack.beginFill(0x00ff00);
+        goBack.drawPolygon(gObg.points);
+        goBack.alpha = 0.3;
+        goBack.endFill();
+        goSet = true;
+
+      }
+
+
+      var clicksPerSecond =score/gameDuration;
+      var fullTimeS= 1000000/clicksPerSecond;
+      var fullTimeM= fullTimeS/60;
+      var fullTimeH = fullTimeM/60;
+      var fullTimeD = fullTimeH/24;
+      var roundTime = Number(fullTimeD).toFixed(1);
+      console.log("clicksPerSecond="+clicksPerSecond);
+      console.log("full time s = "+fullTimeS);
+      console.log("full time m = "+fullTimeM);
+      console.log("final time H= "+fullTimeH);
+      console.log("final time D = "+fullTimeD);
+      console.log("rounded Time  = "+roundTime);
+      console.log("score = "+score);
+      console.log("gameDuration = "+gameDuration);
+      //
+      getFinishTime(fullTimeS);
+
+      //goSet = false;
+      //drawGameOverBG(0.9);
+
+      //endText = this.add.text(endX, endY, "", { fontSize: '20px', fill: '#fff' });
+      // var endStyle = { font: 'bold 20pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+      endText = game.add.text(endX,endY, "", endStyle);
+      // endText.setText(endText1+score+si+" in "+gameDuration+"s "+endText2+roundTime+endText3);
+      endText.setText(endText1+score+si+endText5+gameDuration+endText6+ finishTime);
+
+    };
+    function drawHud(){
+      if(!hudSet){
+        hudBack = game.add.graphics(0, 0);
+        hudBack.beginFill(0x000000);
+        hudBack.drawPolygon(hud.points);
+        hudBack.alpha= 0.6;
+        hudBack.endFill();
+        hudSet=true;
+      }
+    };
+    function drawGStart(go){
+
+    //   var style = { font: 'bold 60pt Arial', fill: 'GREEN', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+    //   introT = game.add.text(endX,endY, "", style);
+    //   if(go){
+    //   introT.setText(introText);
+    // }else{
+    //   console.log("poop")
+    //     introT.setText("");
+
+    }
+      // if(!gsSet){
+      //   gsBack = game.add.graphics(0, 0);
+      //   gsBack.beginFill(0x00ff00);
+      //   gsBack.drawPolygon(gStart.points);
+      //   gsBack.alpha= 0.6;
+      //   gsBack.endFill();
+      //   gsSet=true;
+      // }
+
+  //  };
+
+    // function drawGameOverBG(a){
+    //   if(!goSet){
+    //     goBack = game.add.graphics(0, 0);
+    //     goBack.beginFill(0x000000);
+    //     goBack.drawPolygon(gObg.points);
+    //     goBack.alpha = a;
+    //     goBack.endFill();
+    //     goSet = true;
+    //
+    //   }
+    //
+    // }
+    function playFx(){
+      if(!homeTime){
+        rev.play();
+      }
+    };
+    function playsoundTrack(){
+      console.log("maintrack play?");
+      if(!gameLive==true){
+        mainTheme.play();
+      }else{
+        //console.log("hush");
+        mainTheme.stop();
+      }
+    }
+    //
+    //Time stuff
+    // var timeText = game.add.text(10, 10, "00:00:00");
+// function update(){
+//     //timeText.setText(getCurrentTime());
+//     //getFinishTime(1);
+// }
+
+function getCurrentTime(){
+    var cd = new Date();//currentDate
+    var today = cd.getDay();
+    var hour = cd.getHours();
+    var mins = cd.getMinutes();
+    var time = "its now "+dayNames[today]+" at "+hour+":"+mins;
+    // var time = currentdate.getHours() + ":"  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+    //console.log("getDate() =  "+currentdate.getDate());
+    return time;
+}
+//
+function getFinishTime(s){
+    var cd = new Date();//currentDate
+    console.log("start cd= "+cd);
+
+    var fDays;
+    var fHours;
+    var fMins;
+    var fSecs;
+    //
+    fDays = Math.floor(s / 60/60/24);
+    console.log("fDays = "+fDays);
+    s = s-(fDays *24*60*60);
+    fHours = Math.floor(s/60/60);
+    console.log("fHours = "+fHours);
+    s = s- (fHours *60*60);
+    fMins = Math.floor(s/60);
+    console.log("fMins = "+fMins);
+    s = s- (fMins *60);
+    fSecs = s;
+    console.log("fSecs= "+fSecs);
+    //
+    cd.setSeconds(cd.getSeconds() + s);
+    cd.setMinutes(cd.getMinutes() + fMins);
+    cd.setHours(cd.getHours() + fHours);
+    cd.setDate(cd.getDate() + fDays);
+
+
+    console.log("end cd= "+cd);
+    console.log("cd.getDay() = " +cd.getDay());
+    console.log("dayNames[cd.getDate()] = "+dayNames[cd.getDay()]);
+    var zMins = cd.getMinutes();
+    if(parseInt(zMins)<=9){
+      zMins= "0"+zMins;
+    }
+    var zSecs= cd.getSeconds();
+    if(parseInt(zSecs)<=9){
+      zSecs= "0"+zSecs;
+    }
+
+
+
+    // var today = cd.getDay();
+    // var hour = cd.getHours();
+    // var mins = cd.getMinutes();
+    // //
+    // var finishDay
+    finishTime = endText2+dayNames[cd.getDay()]+" at "+cd.getHours()+":"+zMins+":"+zSecs;
+    // var time = currentdate.getHours() + ":"  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+    //console.log("getDate() =  "+currentdate.getDate());
+
+    return finishTime;
+}
+
+
+
+
+</script>
+
+</body>
+</html>
