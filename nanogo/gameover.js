@@ -1,12 +1,24 @@
 var gameover = {
   create: function(){
     console.log("State =gameover ");
+    console.log("gameDuration = "+gameDuration);
+    console.log("gameTime = "+gameTime);
     this.gameOver();
+    // gameOverChime = game.add.audio('win');
+  },
+  update: function(){
+
+    // if( gameDuration - gameTime <=gameDuration){
+    //   gameOverChime.play();
+    // }
   },
   gameOver: function(){
     homeTime = true;
     //playsoundTrack();
     mainTheme.stop();
+    if( gameDuration - gameTime <=gameDuration){
+      gameOverChime.play();
+    }
     if(!goSet){
       goBack = game.add.graphics(0, 0);
       goBack.beginFill(0x00ff00);
@@ -18,7 +30,9 @@ var gameover = {
     }
 
 
-    var clicksPerSecond =score/gameDuration;
+    // var clicksPerSecond =score/gameDuration;
+    var spentTime = gameDuration - gameTime;
+    var clicksPerSecond =score/spentTime;
     var fullTimeS= 1000000/clicksPerSecond;
     var fullTimeM= fullTimeS/60;
     var fullTimeH = fullTimeM/60;
@@ -42,7 +56,8 @@ var gameover = {
     // var endStyle = { font: 'bold 20pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
     endText = game.add.text(endX,endY, "", endStyle);
     // endText.setText(endText1+score+si+" in "+gameDuration+"s "+endText2+roundTime+endText3);
-    endText.setText(endText1+score+si+endText5+gameDuration+endText6+ finishTime);
+    // endText.setText(endText1+score+si+endText5+gameDuration+endText6+ finishTime);
+    endText.setText(endText1+score+si+endText5+spentTime+endText6+ finishTime);
 
   },
    getFinishTime: function(s){

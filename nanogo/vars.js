@@ -1,16 +1,17 @@
 
 
     var hexgrid;
+    var hole;//this will be the baddie
     //swap in and out the url string for the different enviroments
     //
-    // var ficurl = "/nanogotest/nanogo/";
-   var ficurl = '';
+    var ficurl = '/nanogotest/nanogo';
+   // var ficurl = '';
    //
    //State Control
    //
    //gameState should be teh definitive var to check to see where we are in the game cycle
    //var gameState =
-   var gameLive =false;// this is the core var to check if we are in play mode or  NOT
+   var gameLive = false;// this is the core var to check if we are in play mode or  NOT
    var homeTime = false;// so we know when to go home
    var score = 0;
    var scoreText ;
@@ -29,8 +30,8 @@
    var introT;
    var introText = "Hit Space bar to play";
    var countDown;
-   var gameTime=10;
-   const gameDuration = 10;
+   var gameTime=30;
+   const gameDuration = 30;
    //
    var  clockX=  650;
    var clockY = 16;
@@ -44,6 +45,11 @@
    var hudLeft =0;
    var hudRight =800;
    var hudBot =120;
+   // var hudTop =game.world.height-120;
+   // var hudLeft =0;
+   // var hudRight =game.world.width;
+   // var hudBot =game.world.height;
+
    //Game Over
    var goTop = 150;
    var goLeft = 60;
@@ -62,7 +68,7 @@
    var spaceKey; //a var for the spacebar
    var carGrav = 300;// teh "amount" of gravity
    var carBounce = 0.3;// the bounce factor when teh car lands at teh start
-   var tileRate = 4 ;//the rate at which the background moves
+   var tileRate = 16 ;//the rate at which the background moves
    //
    var rev;
    var mainTheme;
@@ -95,3 +101,27 @@ var toggle= false;
 // Lets try creating vars for our functions here
 var  starLayout;//play.js
 //var tick;//play.js
+//var cursors;//setting up the arrow ksys
+var drift= 25;// how har we shunt left and right
+//
+// some values to feed in to our random position function to set up holes
+var holeMaxX =500;
+var holeMinX =30;
+var holeYoff=100;
+//
+var holeHolder;
+// var hole;
+var holeFreq = 5;
+//
+// var time_til_spawn = this.getRandomInt(holeFreq);
+var time_til_spawn;
+var last_spawn_time;
+//
+var holeX = [100, 200, 300, 400, 500 ];
+var currHole=0;
+var stuck = false;// have we hit a hole or not
+var holeYstart = -20;
+var lives = 3;
+var timeOfDeath;
+var safeSpawnTime = 3000;
+var platforms;

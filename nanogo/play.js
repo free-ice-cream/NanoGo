@@ -1,30 +1,63 @@
 var playState = {
 //  console.log("playState");
-  create: function(){
+
+create: function(){
+  time_til_spawn = this.getRandomInt(holeFreq);
+  last_spawn_time = game.time.time;
 //here goes nothing
 //
   //set the background hexgrid
-  hexgrid = game.add.tileSprite(0, 0, 800, 1200, 'hex');
-  starC1 = game.add.tileSprite(trackLX, 0, 50, 600, 'glob3');
-  starC2 = game.add.tileSprite(trackRX, 0, 50, 600, 'glob3');
+  hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'hex');
+  starC1 = game.add.tileSprite(trackLX, 0, 50, game.world.height, 'glob3');
+  starC2 = game.add.tileSprite(trackRX, 0, 50, game.world.height, 'glob3');
+  hexgrid.alpha =0.5;
+  //hole = game.add.tileSprite(this.getRandomInt(holeMaxX), this.getRandomInt(holeYoff), 100, game.world.height, 'hole');
+
     //player = game.add.sprite(32, game.world.height - 150, 'dude');
-  car = game.add.sprite(330,250, 'car');
+  platforms = game.add.group();//for the hud
+  platforms.enableBody = true;
+  var barr = platforms.create(0,game.world.height - 110, 'bar');
+  barr.body.immovable = true;
 
-///////// --->>>  game.physics.startSystem(Phaser.Physics.ARCADE);
+  holesGroup = game.add.group();
+  holesGroup.enableBody = true;
+  // holesGroup.scale.setTo(2, 2);
 
+  hole = holesGroup.create(50, 50, 'hole');
+  hole.body.x =holeX[currHole];
+  car = game.add.sprite(game.world.width /2 - 125,250, 'car');
+  car.alpha=0;
+  // car = game.add.sprite(10000,10000, 'car');
+  // car.scale.setTo(0.5, 0.5);
+  // hole = game.spawnHole();
   //car2 = game.add.sprite(200, 200, 'car');
   game.physics.arcade.enable(car);
+  //game.physics.p2.enable(car, false);
   car.body.bounce.y = carBounce;
   car.body.gravity.y = carGrav;
   car.body.collideWorldBounds = true;
   //
-  //lets add soem AUDIO
+  game.physics.arcade.enable(hole);
+
+  //
+  //game.physics.arcade.enable(hole);
+  // car.body.collides(holeCollision, hitTarget, this);
+  //
+  //lets add some AUDIO
   rev =  game.add.audio('rev');
   mainTheme = game.add.audio('theme');
+  holeDeath = game.add.audio('death');
+  gameOverChime = game.add.audio('win');
   mainTheme.loopFull(0.8);
   //
   //Lets make some graphics
 // the main hud background
+//
+ hudTop =game.world.height-120;
+ hudLeft =0;
+ hudRight =game.world.width;
+ hudBot =game.world.height;
+//
   hud = new Phaser.Polygon();
   hud.setTo([ new Phaser.Point(hudLeft, hudTop), new Phaser.Point(hudRight, hudTop), new Phaser.Point(hudRight, hudBot), new Phaser.Point(hudLeft, hudBot) ]);
 // game over background
@@ -50,46 +83,30 @@ game.time.events.repeat(Phaser.Timer.SECOND * 1, 999, this.gameTick, this);
 
   //ANIMATIONS
   //
-  car.animations.add('rotate', [1, 2, 3, 4, 5, 6], 10, true);
+  car.animations.add('rotate', [1, 2, 3, 4, 5, 6,7,8,9], 60, true);
   car.animations.add('stop', [0], 20, true);
+  car.animations.add('crash', [9,10,11], 60, true);
+  car.animations.add('spawn', [0,12], 12, true);
+  hole.animations.add('fizz', [0,1,2,3,4], 20, true);
+
+  // hole.animations.add('fizz', [0,1,2,3,4], 20, true);
 
   //TEXT
   this.drawHud();
+  this.setLives();
   //drawGameOverBG(0.1);
   // var st32 = { font: 'bold 32pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
   // var st64 = { font: 'bold 64pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
-  scoreText = this.add.text(16, 16, startText, st32);
+  clockX = game.world.width -120;
+  clockY = game.world.height - 100;
+  scoreText = this.add.text(16, game.world.height -80, startText, st32);
   clockText = this.add.text(clockX, clockY, gameTime, st64);
 
 //
   // var introStyle = { font: 'bold 60pt courier ', fill: 'GREEN', align: 'left', wordWrap: true, wordWrapWidth: 650 };
   introT = this.add.text(endX,endY,introText, introStyle);
   // endText = this.add.text(endX, endY, "", { fontSize: '20px', fill: '#fff' });
-  //TODO PUT THIS BACK
-  //playsoundTrack();
 
-  this.drawGStart(true);
-  //
-  this.starLayout();
-
-//  starLayout = function(){
-//
-//   starTrack = game.add.group();
-//
-//   for (var i = 0; i < 10; i++)
-//   {
-//
-//       // starTrack.create(game.world.randomX, game.world.randomY, 'sonic');
-//       for (var j = 0; j < 10; j++)
-//     {
-//
-//         starTrack.create(trackLX, trackYD*j, 'glob1');
-//         starTrack.create(trackRX, trackYD*j, 'glob1');
-//     }
-//
-//   }
-// }
-//
 // Time stuff
 // var timestyle = { font: 'bold 40pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
 // timeText = game.add.text(10, 150, "00:00:00",timestyle);
@@ -97,31 +114,35 @@ game.time.events.repeat(Phaser.Timer.SECOND * 1, 999, this.gameTick, this);
 
   },
   update: function(){
+    var hitPlatform = game.physics.arcade.collide(car, platforms);
+    platforms.alpha=0;
 //
-
-  //if(!homeTime){
-  //  console.log('homeTime= '+homeTime);
-
+  hole.animations.play('fizz', true);
   spaceKey.onDown.add(this.playFx);
-  //};
 
   if(gameTime!=0){
-
+    if(!stuck){
 
     if(spaceKey.isDown ){
       introT.setText("");
-      this.drawGStart(false);//TODO delete this
+      //this.drawGStart(false);//TODO delete this
+      if(gameLive==false){
+        car.scale.setTo(3,3);
+        car.alpha=1;
+        game.add.tween(car.scale).to({x:1, y:1}, 2400, Phaser.Easing.Bounce.Out, true);
+      }
       gameLive=true;
       //game.graphics.gStart.setTo([ new Phaser.Point(0, 0),new Phaser.Point(0, 0),new Phaser.Point(0, 0),new Phaser.Point(0, 0),]);
       car.animations.play('rotate', true);
-      if(car.y >280){
+      // console.log("car.y = "+car.y);
+      if(car.y >200){
 
-        car.body.velocity.y = -60;
+        car.body.velocity.y = -100;
 
 
       }
       if(!toggle){
-        toggle= true;
+        toggle = true;
         //count +=1;
         //console.log(count);
         score += 1;
@@ -130,39 +151,60 @@ game.time.events.repeat(Phaser.Timer.SECOND * 1, 999, this.gameTick, this);
         hexgrid.tilePosition.y += tileRate;
         starC1.tilePosition.y += tileRate*1.3;
         starC2.tilePosition.y += tileRate*1.3;
+        // hole.y += tileRate*.5;// halfspeed because the sprite is doubel sized
+        holesGroup.y += tileRate;
         //player.anims.play('rotate', true);
       }
-    }else {
-      toggle= false;
-      //console.log("player.y = "+player.y);
-      if(car.body.y >350){
-        car.animations.play('stop', true);
-      }
+    }else if(toggle){
+          toggle= false;
+          //console.log("player.y = "+player.y);
+          if(car.body.y >350){
+            car.animations.play('stop', true);
+          }
+    } else if (stuck){
+      //car.body.rotation++;
     }
-  }else{
-    //gameOver();
-  }
 
+    //}
   //
-  //game.debug.geom(hud,'#0fffff');
-  //timeText.setText(getCurrentTime());
 
+  if(cursors.left.isDown){
+    if(car.body.x >50){
+      car.body.x-=drift;
+    }
+
+  }else if (cursors.left.isDown ){
+    car.body.rotation +=1;
+  }
+  if(cursors.right.isDown ){
+    if(car.body.x <=500){
+      car.body.x+=drift;
+    }
+
+  }else if (cursors.right.isDown ){
+    car.body.rotation -=1;
+  }
+   }// end stuck
+}//end game time 0 check
+
+
+  if(hole.body.y >= game.world.height){
+    console.log("HOLE RESET");
+    hole.body.y = holeYstart;
+    // hole.body.x = this.getRandomInt(game.world.width-100);
+    hole.body.x =holeX[currHole];
+    currHole++;
+    if(currHole==5){
+      currHole=0;
+    }
+    console.log("hole.body.x = "+hole.body.x );
+  }
+//detect hole collision
+game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this)
 
 
 },
-//##################################
 
-// var tick = {};
-//   if(gameLive){
-//     if(gameTime>=1){
-//     gameTime -= 1;
-//     clockText.setText(gameTime);
-//     }else {
-//       gameLive=false;
-//       gameOver();
-//     }
-//   }
-// };
 gameTick: function(){
   if(gameTime>=1){
   gameTime -= 1;
@@ -183,41 +225,122 @@ drawHud: function(){
     hudBack.alpha= 0.6;
     hudBack.endFill();
     hudSet=true;
+    // platforms.add(hudBack);
+    // hudBack.enableBody = true;
+    // hudBack.immovabe = true;
   }
 
 },
-drawGStart: function(){
-  //// TODO: delete this
+setLives:function(){
+
+  heart1= game.add.sprite(game.world.width-50,20, 'heart');
+  heart2= game.add.sprite(game.world.width-85,20, 'heart');
+  heart3= game.add.sprite(game.world.width-120,20, 'heart');
 },
-starLayout: function(){
-//TODO WTF??
-console.log("startLayout called");
- // starTrack = game.add.group();
- //
- // for (var i = 0; i < 10; i++)
- // {
- //
- //     // starTrack.create(game.world.randomX, game.world.randomY, 'sonic');
- //     for (var j = 0; j < 10; j++)
- //   {
- //
- //       starTrack.create(trackLX, trackYD*j, 'glob1');
- //       starTrack.create(trackRX, trackYD*j, 'glob1');
- //   }
- //
- // }
+
+
+holeLayout: function(){
+//TODO  maybe refactore so teh hole spawn is inteh hole spawn functiona :)
+
+
+
 },
 playFx: function(){
       if(!homeTime){
         rev.play();
       }
-    }
+  },
+getRandomInt: function(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+},
+spawnHole: function(){
+
+ hole = game.add.sprite(50, 50, 'hole');
+
+},
+
+
 //##################################
 
 
 
 
-};
+};//end of playstate
+function crash(coH, coC){
+  if(!stuck){
+
+}
+  //stuck= true;
+  //create a car in the space of crash
+  var  crash = holesGroup.create(coH.x, coH.y, 'car');
+  // v=  game.add.sprite(game.world.width /2 - 125,250, 'car');
+  crash.animations.add('crash', [10,11], 6, true);
+    crash.animations.play('crash', true);
+
+    //reset the car in spawn mode
+    spawnCar();
+    loseLife();
+    // car.body.velocity.y=0;
+    // car.body.velocity.x=0;
+    // car.body.gravity.y =0;
+    // car.body.bounce.y =0;
+//  car.body.y =car.body.y ;
+  //// TODO: change the game state, make it sio that the c ar can no longer move forwards bu tinstead will just rotate from th point of contact with the hole
+}
+function spawnCar(){
+  // care.body.scale
+  car.body.x= game.world.width /2 - 125;
+  car.body.y= 250;
+  // car.body.velocity.y=0;
+  // car.body.velocity.x=0;
+  // car.body.gravity.y =0;
+  // car.body.bounce.y =0;
+  car.animations.play('spawn', true);
+  car.scale.setTo(3,3);
+  game.add.tween(this.car.scale).to({x:1, y:1}, 2400, Phaser.Easing.Bounce.Out, true);
+  // for(var i=100 ; i>=1 ; i--){
+  //   console.log("i= "+i);
+  //   car.scale.setTo(i,i);
+  //   if(i==1){
+  //     //car.animations.play('stop', true);
+  //   }
+  //
+  // }
+
+
+}
+function loseLife(){
+if(lives==3){
+  heart3.alpha=0;
+  lives=2;
+}else if(lives==2){
+  heart2.alpha=0;
+  lives=1;
+}else if(lives==1){
+  heart1.alpha=0;
+  lives=0;
+  console.log("GAME OVER! you LOSE");
+  game.state.start('gameover');
+}
+timeOfDeath=game.time.time;
+console.log("timeOfDeath= "+timeOfDeath);
+holeDeath.play();
+}
+function checkRespawnTime(){
+  console.log("respawncheck");
+  var currTOD= game.time.time;
+  if (lives!=3){
+    if(currTOD -timeOfDeath >= safeSpawnTime){
+      return true;
+    } else {
+      return false;
+    }
+  }else{
+    return true;
+  }
+
+
+}
 // function tick(){
 //
 // }
