@@ -3,7 +3,9 @@ var gameover = {
     console.log("State =gameover ");
     console.log("gameDuration = "+gameDuration);
     console.log("gameTime = "+gameTime);
+    var resultsScreen = game.add.sprite(0,0,'resultsScreen');
     this.gameOver();
+
     // gameOverChime = game.add.audio('win');
   },
   update: function(){
@@ -16,18 +18,18 @@ var gameover = {
     homeTime = true;
     //playsoundTrack();
     mainTheme.stop();
-    if( gameDuration - gameTime <=gameDuration){
+    // if( gameDuration - gameTime ==gameDuration){
       gameOverChime.play();
-    }
-    if(!goSet){
-      goBack = game.add.graphics(0, 0);
-      goBack.beginFill(0x00ff00);
-      goBack.drawPolygon(gObg.points);
-      goBack.alpha = 0.3;
-      goBack.endFill();
-      goSet = true;
-
-    }
+    // }
+    // if(!goSet){
+    //   goBack = game.add.graphics(0, 0);
+    //   goBack.beginFill(0x00ff00);
+    //   goBack.drawPolygon(gObg.points);
+    //   goBack.alpha = 0.3;
+    //   goBack.endFill();
+    //   goSet = true;
+    //
+    // }
 
 
     // var clicksPerSecond =score/gameDuration;
@@ -38,26 +40,28 @@ var gameover = {
     var fullTimeH = fullTimeM/60;
     var fullTimeD = fullTimeH/24;
     var roundTime = Number(fullTimeD).toFixed(1);
-    // console.log("clicksPerSecond="+clicksPerSecond);
-    // console.log("full time s = "+fullTimeS);
-    // console.log("full time m = "+fullTimeM);
-    // console.log("final time H= "+fullTimeH);
-    // console.log("final time D = "+fullTimeD);
-    // console.log("rounded Time  = "+roundTime);
-    // console.log("score = "+score);
-    // console.log("gameDuration = "+gameDuration);
+    var nTimes =Number(1000000/ score).toFixed(0);
+    var fini = this.getFinishTime(fullTimeS);
     //
-    this.getFinishTime(fullTimeS);
+
+    //
+    //this.getFinishTime(fullTimeS);
+
+    distanceTraveled = game.add.text( 236,240,score+si, endStyle);
+    timeTaken = game.add.text(439,240, gameDuration - gameTime+"s", endStyle);
+    nTimesThisTime = game.add.text(544,288, nTimes, endStyle);
+    finishDayTime = game.add.text(399,420,fini, endStyle);
 
     //goSet = false;
     //drawGameOverBG(0.9);
 
     //endText = this.add.text(endX, endY, "", { fontSize: '20px', fill: '#fff' });
     // var endStyle = { font: 'bold 20pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
-    endText = game.add.text(endX,endY, "", endStyle);
+    // endText = game.add.text(endX,endY, "", endStyle);
+
     // endText.setText(endText1+score+si+" in "+gameDuration+"s "+endText2+roundTime+endText3);
     // endText.setText(endText1+score+si+endText5+gameDuration+endText6+ finishTime);
-    endText.setText(endText1+score+si+endText5+spentTime+endText6+ finishTime);
+    // endText.setText(endText1+score+si+endText5+spentTime+endText6+ finishTime);
 
   },
    getFinishTime: function(s){
@@ -106,7 +110,7 @@ var gameover = {
       // var mins = cd.getMinutes();
       // //
       // var finishDay
-      finishTime = endText2+dayNames[cd.getDay()]+" at "+cd.getHours()+":"+zMins+":"+zSecs;
+      finishTime = dayNames[cd.getDay()]+" at "+cd.getHours()+":"+zMins+":"+zSecs;
       // var time = currentdate.getHours() + ":"  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
       //console.log("getDate() =  "+currentdate.getDate());
 

@@ -4,8 +4,8 @@
     var hole;//this will be the baddie
     //swap in and out the url string for the different enviroments
     //
-    var ficurl = '/nanogotest/nanogo';
-   // var ficurl = '';
+    // var ficurl = '/nanogotest/nanogo';
+   var ficurl = '';
    //
    //State Control
    //
@@ -24,14 +24,22 @@
    //var endText4 = "At that rate you will finish on ";
    var endText5 = " in ";
    var endText6 = "s. ";
+   //
+
   // var endText7 = "jjjjjjjjj"
    var si = "nM ";
+   //
+   // new end text vars
+   var distanceTraveled;
+   var timeTaken;
+   var nTimesThisTime;
+   var finishDayTime;
    //
    var introT;
    var introText = "Hit Space bar to play";
    var countDown;
-   var gameTime=30;
-   const gameDuration = 30;
+   var gameTime=10;
+   const gameDuration = 10;
    //
    var  clockX=  650;
    var clockY = 16;
@@ -56,6 +64,8 @@
    var goRight = 740;
    var goBot = 450;
    //game start
+   var hudOffset =80;
+   //the rest of these values are edited drectly in play.js because we andt to be able to use game.world.height / width
    var gsTop = 180;
    var gsLeft = 60;
    var gsRight = 740;
@@ -85,7 +95,9 @@
    //FONTS
    var timestyle = { font: 'bold 40pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };//countdown
    var st32 = { font: 'bold 32pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+   var st24 = { font: 'bold 24pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
    var st64 = { font: 'bold 64pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
+   var st56 = { font: 'bold 56pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
    var introStyle = { font: 'bold 60pt courier ', fill: 'GREEN', align: 'left', wordWrap: true, wordWrapWidth: 650 };
    var endStyle = { font: 'bold 28pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
 
@@ -125,3 +137,5 @@ var lives = 3;
 var timeOfDeath;
 var safeSpawnTime = 3000;
 var platforms;
+var howToScreen;
+var howToStartBut;
