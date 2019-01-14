@@ -12,8 +12,8 @@ var tutorialState = {
   },
   tshowButDown: function(){
       // console.log('pop- start ');
-      game.state.start('play');
-
+      // game.state.start('play');
+game.state.start('options1');
   },
   tshowButOver: function(){
       howToStartBut.animations.play('tut-hover',true)

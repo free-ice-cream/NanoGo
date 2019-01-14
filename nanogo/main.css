@@ -1,3 +1,252 @@
+:root{
+  --uberbrightgreen:#B2FFB4;
+  --overbrightgreen:#68FF6E;
+  --cpugreen:#00AA07;
+  --dullgrey:#7B7D7B;
+  --reallydullgrey:#191919;
+  --crt: #1E271E;
+  --greyout:#000100;
+}
+
 body{
-  background-color: #000;
+  background-color: var(--greyout);
+  background-image: url('assets/hexgrid_v3_ghost_v3.png');
+  background-repeat: repeat;
+}
+canvas {
+   display: inline;
+}
+
+@font-face {
+  font-family: 'ChintzyCPUBRK';
+  src: url('fonts/ChintzyCPUBRK.eot?#iefix') format('embedded-opentype'),  url('fonts/ChintzyCPUBRK.woff') format('woff'), url('ChintzyCPUBRK.ttf')  format('truetype'), url('ChintzyCPUBRK.svg#ChintzyCPUBRK') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  /* https://www.1001freefonts.com/chintzy-cpu.font */
+}
+/* NAV and Header */
+.header{
+  display: flex;
+  font-family: 'ChintzyCPUBRK';
+  font-size: 1em;
+  color: var(--overbrightgreen);
+
+
+}
+.navbar{
+  display: flex;
+  background-color: var(--reallydullgrey);
+
+  min-width: 100%;
+  /* min-height: 4vh; */
+  height:  50px;
+
+}
+.title{
+  font:'ChintzyCPUBRK';
+  color: var(--cpugreen);
+  font-size: 2em;
+flex: 1;
+padding-top: 1vw;
+padding-left: 1vw;
+padding-bottom: : 0vw;
+}
+.title a:link{
+  color: var(--cpugreen);
+  text-decoration:none;
+  /* font-size: 1.5em; */
+}
+.title a:visited{
+  color: var(--cpugreen);
+  text-decoration:none;
+  /* font-size: 1.5em; */
+}
+.title a:hover{
+  color: var(--overbrightgreen);
+  text-decoration:none;
+  /* font-size: 1.5em; */
+}
+
+.nav-items{
+  flex:2;
+  text-align: right;
+
+}
+.nav-items a:link{
+  color: var(--cpugreen);
+  text-decoration:none;
+  font-size: 1.5em;
+}
+
+.nav-items a:visited{
+  color: var(--cpugreen);
+  text-decoration:none;
+  font-size: 1.5em;
+}
+.nav-items a:hover{
+  color: var(--overbrightgreen);
+  text-decoration:none;
+  font-size: 1.5em;
+}
+li{
+  padding-left: 0px;
+  padding-right: 1vw;
+}
+ul > li {
+    display: inline-block;
+    /* ie7 fix */
+    zoom:1;
+    *display:inline;
+    margin: 0px;
+    /* padding-left: 0px */
+}
+.social{
+  /* position: relative; */
+  flex:1;
+}
+.twitter{
+  /* position: absolute; */
+
+}
+/* Main Body */
+.mainText{
+  font-family: 'ChintzyCPUBRK';
+  font-size: 0.5em;
+  color: var(--dullgrey);
+}
+.cont{
+  width: 100%;
+  display: flex;
+  /* text-align:center;
+  max-width: 80vw
+   margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  */
+
+
+}
+.sidebar{
+  font-family: 'ChintzyCPUBRK';
+  font-size: 1em;
+  margin:0;
+  width: 100%;
+  flex: 3;
+  background-color: 'red';
+  /* min-width: 300vw; */
+  /* background-image: url('assets/glob1.png'); */
+  color:#fff;
+  border: 2px 'blue';
+
+}
+.gamewrapper{
+  border: 2px 'blue';
+  flex: 1;
+  width: 100%;
+  text-align:center;
+}
+
+/* Footer */
+.footer{
+  background-color: var(--reallydullgrey);
+  min-width: 100%;
+  min-height: 3vh;
+}
+.footwrap{
+  font-family: 'ChintzyCPUBRK';
+  color:var(--cpugreen);
+  font-size: 1em;
+  text-align: right;
+}
+.footwrap a:link{
+  color: var(--cpugreen);
+  text-decoration:none;
+  font-size: 1em;
+}
+
+.footwrap a:visited{
+  color: var(--cpugreen);
+  text-decoration:none;
+  font-size: 1em;
+}
+.footwrap a:hover{
+  color: var(--overbrightgreen);
+  text-decoration:none;
+  font-size: 1em;
+}
+/* pop */
+.pop-page a:link{
+  color: var(--cpugreen);
+  /* text-decoration:none; */
+  /* font-size: 1em; */
+}
+.pop-page a:visited{
+  color: var(--cpugreen);
+  text-decoration:none;
+  /* font-size: 1em; */
+}
+.pop-page a:hover{
+  color: var(--overbrightgreen);
+  text-decoration:none;
+  /* font-size: 1em; */
+}
+.text-stubs{
+  padding-top: 3vh;
+}
+
+#aboutOverlay {
+    position: fixed;
+    display: none;
+    width: 70vw;
+    height: 600px;
+    /* top: 7vh; */
+    top: 50px;
+    left: 15vw;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30,39,30,0.98);
+    z-index: 2;
+    cursor: pointer;
+}
+#projectOverlay {
+    position: fixed;
+    display: none;
+    /* width: 100%;
+    height: 100%; */
+    width: 70vw;
+    height: 600px;
+    /* top: 7vh; */
+    /* top: 50px;
+    left: 0; */
+    top: 50px;
+    left: 15vw;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30,39,30,0.98);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#text{
+    position: absolute;
+    /* top: 10vh;
+    left: 15vw; */
+    padding: 5vw;
+    font-size: 1.3em;
+    /* font-family: 'ChintzyCPUBRK'; */
+    	font-family: Consolas, monaco, monospace;
+    color: var(--cpugreen);
+    /* transform: translate(-50%,-50%); */
+    /* -ms-transform: translate(-50%,-50%); */
+}
+
+#exitText{
+    position: absolute;
+    bottom: 10%;
+    right: 1%;
+    font-size: 1em;
+    font-family: 'ChintzyCPUBRK';
+    color: var(--overbrightgreen);
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
 }

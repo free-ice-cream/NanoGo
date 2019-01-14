@@ -3,36 +3,37 @@ var gameover = {
     console.log("State =gameover ");
     console.log("gameDuration = "+gameDuration);
     console.log("gameTime = "+gameTime);
-    var resultsScreen = game.add.sprite(0,0,'resultsScreen');
+    var topbanner = game.add.sprite(0,0, 'greenheadbg');
+      restartButt = game.add.sprite(586,410, 'restart');
+      //
+      restartButt.inputEnabled=true;
+      restartButt.events.onInputDown.add(this.ressel, this);
+      restartButt.events.onInputOver.add(this.reshover,this);
+      restartButt.events.onInputOut.add(this.resout,this);
+      //
+      alarmButt = game.add.sprite(25,410, 'alarm');
+      //
+      alarmButt.inputEnabled=true;
+      alarmButt.events.onInputDown.add(this.alarmsel, this);
+      alarmButt.events.onInputOver.add(this.alarmhover,this);
+      alarmButt.events.onInputOut.add(this.alarmout,this);
+
+
+    //var resultsScreen = game.add.sprite(0,0,'resultsScreen');
     this.gameOver();
 
-    // gameOverChime = game.add.audio('win');
+
+
   },
   update: function(){
 
-    // if( gameDuration - gameTime <=gameDuration){
-    //   gameOverChime.play();
-    // }
   },
   gameOver: function(){
     homeTime = true;
     //playsoundTrack();
     mainTheme.stop();
     // if( gameDuration - gameTime ==gameDuration){
-      gameOverChime.play();
-    // }
-    // if(!goSet){
-    //   goBack = game.add.graphics(0, 0);
-    //   goBack.beginFill(0x00ff00);
-    //   goBack.drawPolygon(gObg.points);
-    //   goBack.alpha = 0.3;
-    //   goBack.endFill();
-    //   goSet = true;
-    //
-    // }
-
-
-    // var clicksPerSecond =score/gameDuration;
+    gameOverChime.play();
     var spentTime = gameDuration - gameTime;
     var clicksPerSecond =score/spentTime;
     var fullTimeS= 1000000/clicksPerSecond;
@@ -42,32 +43,26 @@ var gameover = {
     var roundTime = Number(fullTimeD).toFixed(1);
     var nTimes =Number(1000000/ score).toFixed(0);
     var fini = this.getFinishTime(fullTimeS);
+    var roundedCicks= Number(clicksPerSecond).toFixed(1);
     //
 
     //
     //this.getFinishTime(fullTimeS);
 
-    distanceTraveled = game.add.text( 236,240,score+si, endStyle);
-    timeTaken = game.add.text(439,240, gameDuration - gameTime+"s", endStyle);
-    nTimesThisTime = game.add.text(544,288, nTimes, endStyle);
-    finishDayTime = game.add.text(399,420,fini, endStyle);
+    goT = this.add.text(5, 8, goTitle, main28white);
 
-    //goSet = false;
-    //drawGameOverBG(0.9);
+    goTo1=this.add.text(30,83,goto1a+score+goto1b+spentTime+goto1c+roundedCicks+goto1d,first18greenc);
+    goTo2=this.add.text(30,155,goto2a+fini+goto2c,first18greenc);
+    goTo3 = this.add.text(30,255,goto3,main18bluec );
 
-    //endText = this.add.text(endX, endY, "", { fontSize: '20px', fill: '#fff' });
-    // var endStyle = { font: 'bold 20pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
-    // endText = game.add.text(endX,endY, "", endStyle);
-
-    // endText.setText(endText1+score+si+" in "+gameDuration+"s "+endText2+roundTime+endText3);
-    // endText.setText(endText1+score+si+endText5+gameDuration+endText6+ finishTime);
-    // endText.setText(endText1+score+si+endText5+spentTime+endText6+ finishTime);
+    // distanceTraveled = game.add.text( 236,240,score+si, endStyle);
+    // timeTaken = game.add.text(439,240, gameDuration - gameTime+"s", endStyle);
+    // nTimesThisTime = game.add.text(544,288, nTimes, endStyle);
+    // finishDayTime = game.add.text(399,420,fini, endStyle);
 
   },
    getFinishTime: function(s){
       var cd = new Date();//currentDate
-      // console.log("start cd= "+cd);
-
       var fDays;
       var fHours;
       var fMins;
@@ -89,11 +84,7 @@ var gameover = {
       cd.setMinutes(cd.getMinutes() + fMins);
       cd.setHours(cd.getHours() + fHours);
       cd.setDate(cd.getDate() + fDays);
-
-
-      // console.log("end cd= "+cd);
-      // console.log("cd.getDay() = " +cd.getDay());
-      // console.log("dayNames[cd.getDate()] = "+dayNames[cd.getDay()]);
+      //
       var zMins = cd.getMinutes();
       if(parseInt(zMins)<=9){
         zMins= "0"+zMins;
@@ -103,18 +94,41 @@ var gameover = {
         zSecs= "0"+zSecs;
       }
 
-
-
-      // var today = cd.getDay();
-      // var hour = cd.getHours();
-      // var mins = cd.getMinutes();
-      // //
-      // var finishDay
-      finishTime = dayNames[cd.getDay()]+" at "+cd.getHours()+":"+zMins+":"+zSecs;
-      // var time = currentdate.getHours() + ":"  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
-      //console.log("getDate() =  "+currentdate.getDate());
+    finishTime = dayNames[cd.getDay()]+" at "+cd.getHours()+":"+zMins+":"+zSecs;
 
       return finishTime;
+  },
+  ressel: function(){
+    gameReset();
+    game.state.start('menu');
+  },
+  reshover : function(){
+    restartButt.frame=1;
+
+  },
+  resout:function(){
+    restartButt.frame=0;
+  },
+  //
+  alarmsel: function(){
+    console.log("CALENDAR EVENT");
+  },
+  alarmhover : function(){
+    alarmButt.frame=1;
+
+  },
+  alarmout:function(){
+    alarmButt.frame=0;
   }
 
 };
+//end of gameover state
+function gameReset(){
+  score = 0;
+  gameTime=gameDuration;
+  homeTime=false;
+  lives=3;
+  holeFull=false;
+  // carType=1;
+  // trackselection=1;
+}
