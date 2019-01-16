@@ -34,7 +34,8 @@ var gameover = {
     mainTheme.stop();
     // if( gameDuration - gameTime ==gameDuration){
     gameOverChime.play();
-    var spentTime = gameDuration - gameTime;
+    // var spentTime = gameDuration - gameTime;
+    var spentTime = gameTime;
     var clicksPerSecond =score/spentTime;
     var fullTimeS= 1000000/clicksPerSecond;
     var fullTimeM= fullTimeS/60;
@@ -50,7 +51,8 @@ var gameover = {
     //this.getFinishTime(fullTimeS);
 
     goT = this.add.text(5, 8, goTitle, main28white);
-
+    console.log("spentTime= "+spentTime);
+    console.log("gameTime= "+gameTime);
     goTo1=this.add.text(30,83,goto1a+score+goto1b+spentTime+goto1c+roundedCicks+goto1d,first18greenc);
     goTo2=this.add.text(30,155,goto2a+fini+goto2c,first18greenc);
     goTo3 = this.add.text(30,255,goto3,main18bluec );

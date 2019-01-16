@@ -1,10 +1,5 @@
 var playState = {
-
-
   create: function() {
-    // time_til_spawn = this.getRandomInt(holeFreq); //// TEMP: is this defunct?
-    // last_spawn_time = game.time.time; //// TEMP: is this defunct?
-    //
     //set up the graffic assets
     //
     //set the background hexgrid
@@ -13,11 +8,13 @@ var playState = {
       hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'hex');
       friction = warm;
       drift *= friction;
+      // trackMeltingPoint= meltingPointOfGraphene;
     }else if(trackselection==2){
       hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'icehex');
       friction= cold;
       drift *= friction;
-      console.log("drift = "+drift);
+      // trackMeltingPoint= meltingPointOfSilver;
+      // console.log("drift = "+drift);
     }else{
       console.log("CRASH - no track");
     }
@@ -27,10 +24,7 @@ var playState = {
       drift /=3;
       console.log("drift = "+drift);
     }
-    // starC1 = game.add.tileSprite(trackLX, 0, 50, game.world.height, 'glob3');
-    // starC2 = game.add.tileSprite(trackRX, 0, 50, game.world.height, 'glob3');
     hexgrid.alpha = 1;
-
     //
     platforms = game.add.group(); //for the hud
     platforms.enableBody = true;
@@ -41,10 +35,13 @@ var playState = {
     holesGroup.enableBody = true;
     hole = holesGroup.create(50, 50, 'hole');
     hole.body.x = holeX[currHole];
+
     if(carType==2){
       car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'buckycar');//CAR START POS
+      // console.log("how many?");
     }else if(carType==1){
       car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar');//CAR START POS
+      // console.log("how many?");
     }
 
     // car.alpha = 0;
@@ -69,8 +66,6 @@ var playState = {
     // game start gb
     gStart = new Phaser.Polygon();
     gStart.setTo([new Phaser.Point(gsLeft, gsTop), new Phaser.Point(gsRight, gsTop), new Phaser.Point(gsRight, gsBot), new Phaser.Point(gsLeft, gsBot)]);
-
-
     //
     //Set some properties
     //
@@ -89,13 +84,6 @@ var playState = {
     gameOverChime = game.add.audio('win');
     mainTheme.loopFull(0.8);
     //
-
-
-    //TODO set up the number of loops properly
-
-    game.time.events.repeat(Phaser.Timer.SECOND * 1, 999, this.gameTick, this);
-
-    //
     // Get keyboard input
     //
     //cursors = this.input.keyboard.createCursorKeys();
@@ -105,8 +93,6 @@ var playState = {
     //ANIMATIONS
     //
     car.animations.add('rotate', [1, 2, 3, 4, 5, 6, 7, 8, 9], 60, true);
-    // car.animations.add('rotate', [1, 2, 3, 4, 5, 6, 7, 8, 9], 60, true);
-    // car.animations.add('rotate', [1, 2, 3, 4, 5, 6, 7, 8, 9], 60, true);
     car.animations.add('stop', [0], 20, true);
     car.animations.add('crash', [9, 10, 11], 60, true);
     car.animations.add('spawn', [0, 12], 12, true);
@@ -119,66 +105,46 @@ var playState = {
     clockY = game.world.height - 100;
     scoreText = this.add.text(16, game.world.height - hudOffset + 30, scoreText, main18green);
     clockText = this.add.text(clockX, game.world.height - hudOffset + 10, gameTime, timestyle);
-  },
-  update: function() {
+    //game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
+
     var hitPlatform = game.physics.arcade.collide(car, platforms);
     platforms.alpha = 0;
-    //
     hole.animations.play('fizz', true);
-
     cursors.up.onDown.add(this.playFx);
     cursors.down.onDown.add(this.playFx);
-    if (gameTime != 0) {
-      if (!stuck) {
-        if (gameLive == false) {
+    this.mainTick();
+    this.secondTick();
+    // carXpos = car.body.x;
+    // carYpos = car.body.y;
+
+  },
+  update: function() {
+      if (!stuck) {// a bool to check if we have hit something
+        if (gameLive == false) {// a bool to check if the game is running or not
           car.scale.setTo(2, 2);
           car.alpha = 1;
           game.add.tween(car.scale).to({
             x: 1,
             y: 1
           }, 2000, Phaser.Easing.Bounce.Out, true);
+          gameLive = true;
+        //  this.mainTick();
         }
-        gameLive = true;
-
-
-        // if (spaceKey.isDown) {
-        //   // car.animations.play('rotate', true);
-        //   if (car.y > 200) {
-        //     car.body.velocity.y = -100;
-        //   }
-        //   if (!toggle) {
-        //     toggle = true;
-        //     score += 1;
-        //     scoreText.setText(displayText + score + si);
-        //     hexgrid.tilePosition.y += tileRate;
-        //     holesGroup.y += tileRate;
-        //   } else {
-        //     // if (toggle) {
-        //      toggle = false;
-        //      if (car.body.y > 350) {
-        //        car.animations.play('stop', true);
-        //      }
-        //    //}
-        //   }
-        // }
-
-
-
-
-        //SIDEWAYS
+    //SIDEWAYS
         if (cursors.left.isDown) {
           console.log("left");
          if (!leftTog) {
-            car.body.x -= drift;
+             car.body.x -= drift;
+             // carXpos -= drift;
             leftTog=true;
          }
         } else {
           leftTog=false;
-        //  car.body.rotation += 1;
         }
         if (cursors.right.isDown) {
          if (!rightTog) {
             car.body.x += drift;
+            // carXpos+= drift;
             rightTog=true;
          }
         } else  {
@@ -189,86 +155,61 @@ var playState = {
         if (cursors.up.isDown) {
           console.log("frame= "+car.frame);
          if (!upTog) {
-          //  car.body.y -= drift;
             this.moveIt(1);
-          //   car.animations.play('rotate', true);
+            //this.secondHeat(10);
             if(frameNo<=carLoopLength-1){
               frameNo+=1;
               car.frame = frameNo;
-
             }else{
               frameNo=1;
               car.frame = frameNo;
             }
             upTog=true;
-            // car.body.velocity.y = -100;
          }
 
       }else{
         upTog=false;
-        //car.animations.stop('rotate', true);
       }
         //
         if (cursors.down.isDown) {
-          //console.log("down");
+
          if (!downTog) {
-            //car.body.y += drift;
             this.moveIt(-1);
             downTog=true;
-            // car.body.velocity.y = 100;
             if(frameNo>=2){
               frameNo-=1;
               car.frame = frameNo;
-
             }else{
               frameNo=carLoopLength;
               car.frame = frameNo;
             }
          }
-
-
        }  else {
          downTog = false;
        }
-
-//
-
-
       } // end stuck
-    } //end game time 0 check
-
-
     if (hole.body.y >= game.world.height) {
-      console.log("HOLE RESET");
       holeFull=false;
       hole.body.y = holeYstart;
-      // hole.body.x = this.getRandomInt(game.world.width-100);
-      // hole.body.x =holeX[currHole];
       hole.body.x = holeRandomiser();
       currHole++;
       if (currHole == 5) {
 
         currHole = 0;
       }
-      console.log("hole.body.x = " + hole.body.x);
+
     }
     //detect hole collision
     game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
+    //
+     // game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
-
-  },
-
-  gameTick: function() {
-    if (gameTime >= 1) {
-      gameTime -= 1;
-      clockText.setText(gameTime);
-    } else {
-      gameLive = false;
-      //gameOver();
-      game.state.start('gameover');
-    }
+// this.heat();
+  // car.body.x = carXpos;
+  // car.body.y = carYpos;
 
   },
+
   drawHud: function() {
     console.log("drawHud()  called");
     if (!hudSet) {
@@ -278,9 +219,6 @@ var playState = {
       hudBack.alpha = 0.6;
       hudBack.endFill();
       hudSet = true;
-      // platforms.add(hudBack);
-      // hudBack.enableBody = true;
-      // hudBack.immovabe = true;
     }
 
   },
@@ -294,8 +232,6 @@ var playState = {
   holeLayout: function() {
     //TODO  maybe refactore so teh hole spawn is inteh hole spawn functiona :)
 
-
-
   },
   playFx: function() {
     if (!homeTime) {
@@ -306,19 +242,58 @@ var playState = {
     return Math.floor(Math.random() * Math.floor(max)); // TODO: checkto see if thisis still used
   },
   spawnHole: function() {
-    console.log("spawnHole");
     hole = game.add.sprite(50, 50, 'hole');
-
   },
   moveIt: function(d){
-    // console.log("blurp");
-    score +=d * friction;
+    score += d * friction;
     var adjustedRate = tileRate * d * friction;
     scoreText.setText(displayText + score + si);
 
     hexgrid.tilePosition.y += adjustedRate ;
     holesGroup.y += adjustedRate  ;
 
+  },
+  mainTick: function(){
+    console.log("mainTick");
+    game.time.events.add(1000, this.mainTick, this);
+    // game.time.events.add(true, this.mainTick, this);
+    this.gameTick();
+    //this.heat();
+    // this.moveIt(1);
+  },
+  heat: function(){
+
+  if( currentTemp < trackMeltingPoint){
+    var ent2 = (currentTemp * Math.random().toFixed())/ tempRat;
+    var ent3 = (currentTemp * Math.random().toFixed())/ tempRat;
+
+    car.x += tempBoox ?  ent2 * -1 :  ent2;
+    tempBoox = !tempBoox;
+    //
+    car.y += tempBooy ?  ent3 * -1 :  ent3;
+    tempBooy = !tempBooy;
+  } else{
+    gameOver();
+  }
+
+
+  },
+  gameTick: function() {
+     clockText.setText(currentTemp);
+     currentTemp += tempIncrement;
+     gameTime += 1;
+     // console.log("gameTick before heat added car.body.x= "+car.body.x);
+     //this.heat(currentTemp);
+     // console.log("gameTick after heat added car.body.x= "+car.body.x);
+  },
+  secondTick: function(){
+    game.time.events.add(Phaser.Timer.SECOND * 0.1, this.secondTick, this);
+    console.log("secondTick");
+    this.heat();
+  },
+  secondHeat:function(){
+    console.log("secondHeat");
+     car.body.y +=currentTemp;
   },
 
 }; //end of playstate
@@ -344,6 +319,7 @@ function crash(coH, coC) {
 }
 
 function spawnCar() {
+  console.log("spawnCar !!");
   car.body.x = game.world.width / 2 - 125;
   car.body.y = carStartY;
   //car.animations.play('spawn', true);
@@ -365,12 +341,16 @@ function loseLife() {
   } else if (lives == 1) {
     heart1.alpha = 0;
     lives = 0;
-    console.log("GAME OVER! you LOSE");
-    game.state.start('gameover');
+    // console.log("GAME OVER! you LOSE");
+    // game.state.start('gameover');
+    gameOver();
   }
   timeOfDeath = game.time.time;
   console.log("timeOfDeath= " + timeOfDeath);
   holeDeath.play();
+}
+function gameOver(){
+  game.state.start('gameover');
 }
 
 function checkRespawnTime() {
@@ -385,8 +365,6 @@ function checkRespawnTime() {
   } else {
     return true;
   }
-
-
 }
 
 function holeRandomiser() {
