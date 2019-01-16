@@ -131,6 +131,8 @@ function gameReset(){
   homeTime=false;
   lives=3;
   holeFull=false;
+  currentTemp = startTemp;
+  console.log("currentTemp at reset is "+currentTemp);
   // carType=1;
   // trackselection=1;
 }

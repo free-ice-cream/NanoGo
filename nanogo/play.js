@@ -5,15 +5,15 @@ var playState = {
     //set the background hexgrid
     // set the track and mode
     if(trackselection==1){
-      hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'hex');
+      // hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'hex');
       friction = warm;
       drift *= friction;
-      // trackMeltingPoint= meltingPointOfGraphene;
+       trackMeltingPoint= meltingPointOfGraphene;
     }else if(trackselection==2){
-      hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'icehex');
+      // hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'icehex');
       friction= cold;
       drift *= friction;
-      // trackMeltingPoint= meltingPointOfSilver;
+       trackMeltingPoint= meltingPointOfSilver;
       // console.log("drift = "+drift);
     }else{
       console.log("CRASH - no track");
@@ -24,7 +24,7 @@ var playState = {
       drift /=3;
       console.log("drift = "+drift);
     }
-    hexgrid.alpha = 1;
+    // hexgrid.alpha = 1;
     //
     platforms = game.add.group(); //for the hud
     platforms.enableBody = true;
@@ -67,6 +67,9 @@ var playState = {
     gStart = new Phaser.Polygon();
     gStart.setTo([new Phaser.Point(gsLeft, gsTop), new Phaser.Point(gsRight, gsTop), new Phaser.Point(gsRight, gsBot), new Phaser.Point(gsLeft, gsBot)]);
     //
+    //and the new hud
+    var newHud = game.add.sprite(0, 530, 'instrument');
+
     //Set some properties
     //
     game.physics.arcade.enable(car);
@@ -98,13 +101,13 @@ var playState = {
     car.animations.add('spawn', [0, 12], 12, true);
     hole.animations.add('fizz', [0, 1, 2, 3, 4], 20, true);
     //TEXT
-    this.drawHud();
+    // this.drawHud();
     this.setLives();
 
     clockX = game.world.width - 120;
     clockY = game.world.height - 100;
-    scoreText = this.add.text(16, game.world.height - hudOffset + 30, scoreText, main18green);
-    clockText = this.add.text(clockX, game.world.height - hudOffset + 10, gameTime, timestyle);
+    scoreText = this.add.text(16, game.world.height - hudOffset + 35, scoreText, screen18green);
+    clockText = this.add.text(450, game.world.height - hudOffset + 35, gameTime, screen18green);
     //game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
     var hitPlatform = game.physics.arcade.collide(car, platforms);
@@ -112,6 +115,15 @@ var playState = {
     hole.animations.play('fizz', true);
     cursors.up.onDown.add(this.playFx);
     cursors.down.onDown.add(this.playFx);
+    //
+
+    scaleToggle = game.add.sprite(685,530, 'tiny-toggle');
+    //
+    scaleToggle.inputEnabled=true;
+    scaleToggle.events.onInputDown.add(this.toggle, this);
+    // scaleToggle.events.onInputOver.add(this.reshover,this);
+    // rscaleToggle.events.onInputOut.add(this.resout,this);
+    //
     this.mainTick();
     this.secondTick();
     // carXpos = car.body.x;
@@ -134,7 +146,7 @@ var playState = {
         if (cursors.left.isDown) {
           console.log("left");
          if (!leftTog) {
-             car.body.x -= drift;
+             car.body.velocity.x -= drift;
              // carXpos -= drift;
             leftTog=true;
          }
@@ -143,7 +155,8 @@ var playState = {
         }
         if (cursors.right.isDown) {
          if (!rightTog) {
-            car.body.x += drift;
+            // car.body.x += drift;
+            car.body.velocity.x += drift;
             // carXpos+= drift;
             rightTog=true;
          }
@@ -247,9 +260,9 @@ var playState = {
   moveIt: function(d){
     score += d * friction;
     var adjustedRate = tileRate * d * friction;
-    scoreText.setText(displayText + score + si);
-
-    hexgrid.tilePosition.y += adjustedRate ;
+    // scoreText.setText(displayText + score + si);
+    scoreText.setText( score );
+    // hexgrid.tilePosition.y += adjustedRate ;
     holesGroup.y += adjustedRate  ;
 
   },
@@ -267,10 +280,10 @@ var playState = {
     var ent2 = (currentTemp * Math.random().toFixed())/ tempRat;
     var ent3 = (currentTemp * Math.random().toFixed())/ tempRat;
 
-    car.x += tempBoox ?  ent2 * -1 :  ent2;
+    car.body.velocity.x += tempBoox ?  ent2 * -1 :  ent2;
     tempBoox = !tempBoox;
     //
-    car.y += tempBooy ?  ent3 * -1 :  ent3;
+    car.body.velocity.y += tempBooy ?  ent3 * -1 :  ent3;
     tempBooy = !tempBooy;
   } else{
     gameOver();
@@ -294,6 +307,10 @@ var playState = {
   secondHeat:function(){
     console.log("secondHeat");
      car.body.y +=currentTemp;
+  },
+  toggle:function(){
+    scaleToggle.frame = tempScaleName=== "k" ? 0: 1 ;
+    console.log("toggle");
   },
 
 }; //end of playstate
@@ -346,7 +363,7 @@ function loseLife() {
     gameOver();
   }
   timeOfDeath = game.time.time;
-  console.log("timeOfDeath= " + timeOfDeath);
+  // console.log("timeOfDeath= " + timeOfDeath);
   holeDeath.play();
 }
 function gameOver(){

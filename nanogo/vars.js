@@ -1,5 +1,5 @@
 
-var gameBuild = "build 1.1"; //this is kind of arbitrary  ie the naming conventionstarted at v 0.7 as we were about 6-7 builds in
+var gameBuild = "build 1.2"; //this is kind of arbitrary  ie the naming conventionstarted at v 0.7 as we were about 6-7 builds in
     ///var hexgrid;
     var hole;//this will be the baddie
     //swap in and out the url string for the different enviroments
@@ -104,7 +104,7 @@ var gameBuild = "build 1.1"; //this is kind of arbitrary  ie the naming conventi
    // var gameStartTime=0;
    const gameDuration = 30;
    //
-   var clockX=  650;
+   var clockX=  150;
    var clockY = 16;
    //
    var endX =70;
@@ -177,6 +177,7 @@ var gameBuild = "build 1.1"; //this is kind of arbitrary  ie the naming conventi
    var main18grey ={font: ' 18pt ChintzyCPUBRK', fill: 'grey', align:'left', wordWrap: true, wordWrapWidth: 600 };
    var main18greyc ={font: ' 17pt Consolas', fill: 'grey', align:'left', wordWrap: true, wordWrapWidth: 600 };
    var main18bluec ={font: ' 17pt Consolas', fill: '#1E3CDC', align:'left', wordWrap: true, wordWrapWidth: 750 };
+   var screen18green ={font: ' 18pt ChintzyCPUBRK', fill: '#3BFC34', align:'right', wordWrap: true, wordWrapWidth: 600 };
    //
    //
    // var main32 ={font: ' 32pt ChintzyCPUBRK', fill: var(--overbrightgreen), align:'left', wordWrap: true, wordWrapWidth: 650 };
@@ -235,12 +236,12 @@ var carType=1;
 var carLoopLength = 8;
 var holeFull=false;//is there a a car in teh hole
 //
-var absoluteTemp = 4;//starting temp in kelvin
+var startTemp = 4;//starting temp in kelvin
 var absolute0 = -273;// absolute zero, to be used to convert between k and c
 var tempScaleName = "k";// a vr to store the name of tehtemp scale we are using
 var siK = "k";// the si unit for kelvin
 var siC = "c";// the si unit for celcius
-var currentTemp = absoluteTemp;
+var currentTemp = startTemp;
 var blooBleeb = 0;// a test var to see if this heat () problem is general
 var entropy = 0;//set this here maybe ?
 var tempRat =  10; // how small an effect temp is on the car
@@ -253,6 +254,7 @@ var carYpos;// vars to hold teh position so we dont manupulate it directly with 
 var meltingPointOfGrapheneURL = "http://www.aerogelgraphene.com/graphene-melting-point/";
 var meltingPointOfGraphene = 4800; //k
 var meltingPointOfSliverURL = "https://en.wikipedia.org/wiki/Silver";
-var metlingPointOfSilver = 1234.93;//k
+var meltingPointOfSilver = 1234.93;//k
 // var meltingPointOfSilver
-var trackMeltingPoint = 500;// a place to store the current track melting point.
+var trackMeltingPoint;// a place to store the current track melting point.
+var scaleToggle ;// this will be our toggle switch for the tem scale

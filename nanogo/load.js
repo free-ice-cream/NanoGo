@@ -64,6 +64,10 @@ var loadState = {
     //
     game.load.spritesheet('tubecar','assets/nanotube-racer-spritesheet-150-150-9f_v6.png', 150,150);
     game.load.spritesheet('buckycar','assets/buckyball-racer-spritesheet_v3.png', 150,150);
+    //
+    // play screen
+    game.load.image('instrument', ficurl+'assets/instrument.png');
+    game.load.spritesheet('tiny-toggle','assets/tiny-toggle-sprite.png', 69,61);
 
 
 
