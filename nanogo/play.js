@@ -1,34 +1,34 @@
 var playState = {
   create: function() {
     //set up the graffic assets
-    //
     //set the background hexgrid
     // set the track and mode
-    if(trackselection==1){
+    if(trackselection === 1){
+      // the next line creates  the tilesprite bg
       // hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'hex');
       friction = warm;
       drift *= friction;
-       trackMeltingPoint= meltingPointOfGraphene;
-    }else if(trackselection==2){
+      trackMeltingPoint= meltingPointOfGraphene;
+    }else if(trackselection === 2){
       // hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'icehex');
       friction= cold;
       drift *= friction;
-       trackMeltingPoint= meltingPointOfSilver;
+      trackMeltingPoint = meltingPointOfSilver;
       // console.log("drift = "+drift);
     }else{
       console.log("CRASH - no track");
     }
     //
     //Set teh drift (lateral speed ) based on car selection
-    if(carType==1){
-      drift /=3;
-      console.log("drift = "+drift);
+    if(carType === 1){
+      drift /= 2;
+      tempEffectX = tempEffect2;//set the lateral random movement fro heat.
     }
     // hexgrid.alpha = 1;
     //
-    platforms = game.add.group(); //for the hud
+    platforms = game.add.physicsGroup(); //for the hud
     platforms.enableBody = true;
-    var barr = platforms.create(0, game.world.height - hudOffset, 'bar');
+    var barr = platforms.create(0, game.world.height - 69, 'bar');
     barr.body.immovable = true;
 
     holesGroup = game.add.group();
@@ -36,10 +36,10 @@ var playState = {
     hole = holesGroup.create(50, 50, 'hole');
     hole.body.x = holeX[currHole];
 
-    if(carType==2){
+    if(carType===2){
       car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'buckycar');//CAR START POS
       // console.log("how many?");
-    }else if(carType==1){
+    }else if(carType===1){
       car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar');//CAR START POS
       // console.log("how many?");
     }
@@ -104,14 +104,15 @@ var playState = {
     // this.drawHud();
     this.setLives();
 
-    clockX = game.world.width - 120;
-    clockY = game.world.height - 100;
+    // clockX = game.world.width - 120;
+    // clockY = game.world.height - 100;
     scoreText = this.add.text(16, game.world.height - hudOffset + 35, scoreText, screen18green);
-    clockText = this.add.text(450, game.world.height - hudOffset + 35, gameTime, screen18green);
+    clockText = this.add.text(450, game.world.height - hudOffset + 35, currentTemp, screen18green);
+    siText = this.add.text(500, game.world.height - hudOffset + 35, tempScaleName, screen18green);
     //game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
-    var hitPlatform = game.physics.arcade.collide(car, platforms);
-    platforms.alpha = 0;
+    // var hitPlatform = game.physics.arcade.collide(car, platforms);
+    platforms.alpha = 1;
     hole.animations.play('fizz', true);
     cursors.up.onDown.add(this.playFx);
     cursors.down.onDown.add(this.playFx);
@@ -128,9 +129,12 @@ var playState = {
     this.secondTick();
     // carXpos = car.body.x;
     // carYpos = car.body.y;
+    // car.body.drag.x=400;
+    // car.body.drag.y=400;
 
   },
   update: function() {
+    game.physics.arcade.collide(car, platforms);
       if (!stuck) {// a bool to check if we have hit something
         if (gameLive == false) {// a bool to check if the game is running or not
           car.scale.setTo(2, 2);
@@ -146,7 +150,10 @@ var playState = {
         if (cursors.left.isDown) {
           console.log("left");
          if (!leftTog) {
+
+           // car.body.x -= drift;
              car.body.velocity.x -= drift;
+             // car.body.drag.x=800;
              // carXpos -= drift;
             leftTog=true;
          }
@@ -157,6 +164,7 @@ var playState = {
          if (!rightTog) {
             // car.body.x += drift;
             car.body.velocity.x += drift;
+            // car.body.drag.x=800;
             // carXpos+= drift;
             rightTog=true;
          }
@@ -169,7 +177,7 @@ var playState = {
           console.log("frame= "+car.frame);
          if (!upTog) {
             this.moveIt(1);
-            //this.secondHeat(10);
+            // car.body.velocity.y -= drift;//TODO Remove me
             if(frameNo<=carLoopLength-1){
               frameNo+=1;
               car.frame = frameNo;
@@ -188,6 +196,7 @@ var playState = {
 
          if (!downTog) {
             this.moveIt(-1);
+            // car.body.velocity.y += drift;//TODO Remove me
             downTog=true;
             if(frameNo>=2){
               frameNo-=1;
@@ -277,8 +286,9 @@ var playState = {
   heat: function(){
 
   if( currentTemp < trackMeltingPoint){
-    var ent2 = (currentTemp * Math.random().toFixed())/ tempRat;
-    var ent3 = (currentTemp * Math.random().toFixed())/ tempRat;
+    var ent2 = (currentTemp * Math.random().toFixed())/ tempEffectX;
+
+    var ent3 = (currentTemp * Math.random().toFixed())/ tempEffectY;
 
     car.body.velocity.x += tempBoox ?  ent2 * -1 :  ent2;
     tempBoox = !tempBoox;
@@ -292,7 +302,7 @@ var playState = {
 
   },
   gameTick: function() {
-     clockText.setText(currentTemp);
+     clockText.setText(currentTemp +scaleDiff);
      currentTemp += tempIncrement;
      gameTime += 1;
      // console.log("gameTick before heat added car.body.x= "+car.body.x);
@@ -309,7 +319,11 @@ var playState = {
      car.body.y +=currentTemp;
   },
   toggle:function(){
-    scaleToggle.frame = tempScaleName=== "k" ? 0: 1 ;
+    scaleToggle.frame = tempScaleName === siK ? 1 : 0 ;
+    tempScaleName = tempScaleName === siK ? siC : siK;
+    siText.setText(tempScaleName);
+    scaleDiff = tempScaleName === siK ? 0 : -273;
+    console.log("tempScaleName = "+tempScaleName);
     console.log("toggle");
   },
 

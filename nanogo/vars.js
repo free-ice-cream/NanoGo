@@ -1,5 +1,5 @@
 
-var gameBuild = "build 1.2"; //this is kind of arbitrary  ie the naming conventionstarted at v 0.7 as we were about 6-7 builds in
+var gameBuild = "build 1.3"; //this is kind of arbitrary  ie the naming conventionstarted at v 0.7 as we were about 6-7 builds in
     ///var hexgrid;
     var hole;//this will be the baddie
     //swap in and out the url string for the different enviroments
@@ -139,7 +139,7 @@ var gameBuild = "build 1.2"; //this is kind of arbitrary  ie the naming conventi
    var gsSet = false;// a toggle to knwowhen the g start is drawn
    //
    var spaceKey; //a var for the spacebar
-   var carGrav = 0;//300;// teh "amount" of gravity // SWITCHED OFF!!
+   var carGrav = 100;//300;// teh "amount" of gravity // SWITCHED OFF!!
    var carBounce = 0.3;// the bounce factor when teh car lands at teh start
    var tileRate = 16 ;//the rate at which the background moves
    //
@@ -244,7 +244,10 @@ var siC = "c";// the si unit for celcius
 var currentTemp = startTemp;
 var blooBleeb = 0;// a test var to see if this heat () problem is general
 var entropy = 0;//set this here maybe ?
-var tempRat =  10; // how small an effect temp is on the car
+var tempEffect1 =  10; // how small an effect temp is on the car
+var tempEffect2 =  20; // how small an effect temp is on the car
+var tempEffectY = tempEffect1 ;//a var to store the effec on y as it changes form car to car
+var tempEffectX = tempEffect1 ;
 var tempBoox = true; //a toggle to get pos and ned vals in the temp changes for x
 var tempBooy = true; //a toggle to get pos and ned vals in the temp changes for y
 var tempIncrement = 10;// how much he temp goes up per secon
@@ -258,3 +261,6 @@ var meltingPointOfSilver = 1234.93;//k
 // var meltingPointOfSilver
 var trackMeltingPoint;// a place to store the current track melting point.
 var scaleToggle ;// this will be our toggle switch for the tem scale
+//
+var siText;// somwwhere to store teh text object
+var scaleDiff =0; // a place to reference teh diffeence between k and c updated in toggle()
