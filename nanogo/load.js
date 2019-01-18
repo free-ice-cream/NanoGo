@@ -67,7 +67,7 @@ var loadState = {
     //
     // play screen
     game.load.image('instrument', ficurl+'assets/instrument.png');
-    game.load.spritesheet('tiny-toggle','assets/tiny-toggle-sprite.png', 69,61);
+    game.load.spritesheet('tiny-toggle','assets/tiny-toggle-2.png', 69,61);
 
 
 
@@ -84,6 +84,7 @@ var loadState = {
   game.load.audio('theme', 'assets/maintrack4.mp3');
   game.load.audio('death','assets/hero-death-00.mp3');
   game.load.audio('win','assets/win.mp3');
+  game.load.audio('bass-loop','assets/bass-loop2.mp3')
 
   // ok lets add some custom fonts
 

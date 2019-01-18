@@ -1,5 +1,5 @@
 
-var gameBuild = "build 1.3"; //this is kind of arbitrary  ie the naming conventionstarted at v 0.7 as we were about 6-7 builds in
+var gameBuild = "build 1.4"; //this is kind of arbitrary  ie the naming conventionstarted at v 0.7 as we were about 6-7 builds in
     ///var hexgrid;
     var hole;//this will be the baddie
     //swap in and out the url string for the different enviroments

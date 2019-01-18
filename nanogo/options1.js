@@ -17,6 +17,9 @@ var topbanner = game.add.sprite(0,0, 'greenheadbg');
   oTo12 = this.add.text(30, 82, oto12, first18greenc);
   oTo13 = this.add.text(30, 260, oto13, first18greenc);
   oTo14 = this.add.text(30, 450, oto14, first18greenc);
+  //
+  bassLoop = game.add.audio('bass-loop');
+  bassLoop.loopFull(0.8);
 },
 update:function(){
 

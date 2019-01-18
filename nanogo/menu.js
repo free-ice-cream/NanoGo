@@ -26,6 +26,7 @@ var menuState = {
     flip.onComplete.add(this.start, this);
 
    console.log('menuState');
+   
   },
   start: function(){
     console.log('pop- start ');

@@ -85,7 +85,10 @@ var playState = {
     mainTheme = game.add.audio('theme');
     holeDeath = game.add.audio('death');
     gameOverChime = game.add.audio('win');
+
     mainTheme.loopFull(0.8);
+
+
     //
     // Get keyboard input
     //
@@ -131,7 +134,11 @@ var playState = {
     // carYpos = car.body.y;
     // car.body.drag.x=400;
     // car.body.drag.y=400;
-
+    try{
+      bassLoop.stop();
+    }catch(e){
+      console.log("e ="+e);
+    }
   },
   update: function() {
     game.physics.arcade.collide(car, platforms);
@@ -151,10 +158,11 @@ var playState = {
           console.log("left");
          if (!leftTog) {
 
-           // car.body.x -= drift;
-             car.body.velocity.x -= drift;
+           car.body.x -= drift; //clicky
+             // car.body.velocity.x -= drift;// smooth
              // car.body.drag.x=800;
              // carXpos -= drift;
+             this.playFx();
             leftTog=true;
          }
         } else {
@@ -162,10 +170,11 @@ var playState = {
         }
         if (cursors.right.isDown) {
          if (!rightTog) {
-            // car.body.x += drift;
-            car.body.velocity.x += drift;
+            car.body.x += drift;//clicky
+            // car.body.velocity.x += drift;//smooth
             // car.body.drag.x=800;
             // carXpos+= drift;
+            this.playFx();
             rightTog=true;
          }
         } else  {
@@ -258,6 +267,8 @@ var playState = {
   playFx: function() {
     if (!homeTime) {
       rev.play();
+      //rev.allowMultiple = true;
+      // playFx(rev);
     }
   },
   getRandomInt: function(max) {
