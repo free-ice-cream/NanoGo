@@ -86,8 +86,11 @@ var loadState = {
   game.load.audio('win','assets/win.mp3');
   game.load.audio('bass-loop','assets/bass-loop2.mp3')
 
-  // ok lets add some custom fonts
-
+  //
+  //paritcle timeout
+  game.load.spritesheet('matrix', 'assets/sliver_v1.png', 110, 100);
+  game.load.spritesheet('atoms', 'assets/blackatoms_v1.png', 9, 9);
+  game.load.spritesheet('graphene', 'assets/graphene_v1.png', 120, 136);
 
   },
   create: function(){

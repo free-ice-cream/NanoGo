@@ -5,12 +5,17 @@ var playState = {
     // set the track and mode
     if(trackselection === 1){
       // the next line creates  the tilesprite bg
-      // hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'hex');
+      var hexSprite =
+      hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'graphene');
+      hexgrid.animations.add("cool",[0,1],2,true);
+      hexgrid.animations.add("warm",[0,1,3,4],4,true);
+      hexgrid.animations.add("hot",[0,1,3,4,5,6,7,9,10],12,true);
+      hexgrid.animations.play("cool");
       friction = warm;
       drift *= friction;
       trackMeltingPoint= meltingPointOfGraphene;
     }else if(trackselection === 2){
-      // hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'icehex');
+      hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'icehex');
       friction= cold;
       drift *= friction;
       trackMeltingPoint = meltingPointOfSilver;
@@ -24,7 +29,7 @@ var playState = {
       drift /= 2;
       tempEffectX = tempEffect2;//set the lateral random movement fro heat.
     }
-    // hexgrid.alpha = 1;
+    hexgrid.alpha = 1;
     //
     platforms = game.add.physicsGroup(); //for the hud
     platforms.enableBody = true;
@@ -139,8 +144,38 @@ var playState = {
     }catch(e){
       console.log("e ="+e);
     }
+    //
+    //
+    //
+    // Paticles
+    //
+    //
+    //
+//     var emitter = game.add.emitter(game.world.centerX, 0, 400);
+//
+// 	emitter.width = game.world.width;
+// 	// emitter.angle = 30; // uncomment to set an angle for the rain.
+// // console.log("atoms are go");
+// 	emitter.makeParticles('matrix');
+//
+// 	// emitter.minParticleScale = 0.1;
+// 	emitter.maxParticleScale = 0.5;
+//
+// 	emitter.setYSpeed(0, 0);
+// 	emitter.setXSpeed(0, 0);
+//
+// 	emitter.minRotation = 0;
+// 	emitter.maxRotation = 0;
+//
+// 	emitter.start(false, 1600, 5000, 0);
+
+
+
+
+
   },
   update: function() {
+    // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
       if (!stuck) {// a bool to check if we have hit something
         if (gameLive == false) {// a bool to check if the game is running or not
@@ -282,7 +317,7 @@ var playState = {
     var adjustedRate = tileRate * d * friction;
     // scoreText.setText(displayText + score + si);
     scoreText.setText( score );
-    // hexgrid.tilePosition.y += adjustedRate ;
+    hexgrid.tilePosition.y += adjustedRate ;
     holesGroup.y += adjustedRate  ;
 
   },
@@ -306,6 +341,13 @@ var playState = {
     //
     car.body.velocity.y += tempBooy ?  ent3 * -1 :  ent3;
     tempBooy = !tempBooy;
+
+    //
+    if(currentTemp >= 200 && currentTemp <= 400 ){
+      hexgrid.animations.play("warm");
+    } else if (currentTemp >= 401 && currentTemp <= 600 ) {
+      hexgrid.animations.play("hot");
+    }
   } else{
     gameOver();
   }
