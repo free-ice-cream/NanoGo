@@ -80,8 +80,17 @@ var playState = {
     gStart = new Phaser.Polygon();
     gStart.setTo([new Phaser.Point(gsLeft, gsTop), new Phaser.Point(gsRight, gsTop), new Phaser.Point(gsRight, gsBot), new Phaser.Point(gsLeft, gsBot)]);
     //
+
+    emitter = game.add.emitter(game.world.centerX, 0, 400);
     //and the new hud
     var newHud = game.add.sprite(0, 491, 'instrument');
+
+    //and the heatsheild
+    heatSheild= game.add.sprite(0,0,'heatsheild');
+    heatSheildMeter= game.add.sprite(690,50,'heatsheildmeter');
+    heatSheild.alpha = 0;
+    heatSheildMeter.alpha = 0.1;
+
 
     //Set some properties
     //
@@ -154,11 +163,24 @@ var playState = {
     }catch(e){
       console.log("e ="+e);
     }
+    //TEmp Breaks
+    noOfBreaks = 10;
+    console.log("trackMeltingPoint = "+trackMeltingPoint);
+    for(i=0; i<= noOfBreaks-1 ; i++){
+      tempBreaks[i] = (trackMeltingPoint/ noOfBreaks) * (i+1) ;
+    }
+
 
   },
   update: function() {
+    if(audioLive){
+      //mainTheme.play();
+    }else{
+      mainTheme.stop();
+    }
     // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
+    // game.physics.arcade.collide(car, emitter);
       if (!stuck) {// a bool to check if we have hit something
         if (gameLive == false) {// a bool to check if the game is running or not
           car.scale.setTo(2, 2);
@@ -200,7 +222,7 @@ var playState = {
         //UP DOWN
 
         if (cursors.up.isDown) {
-          console.log("frame= "+car.frame);
+          // console.log("frame= "+car.frame);
          if (!upTog) {
             this.moveIt(1);
             // car.body.velocity.y -= drift;//TODO Remove me
@@ -252,14 +274,15 @@ var playState = {
     //
      // game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
-// this.heat();
-  // car.body.x = carXpos;
-  // car.body.y = carYpos;
-
-  },
+// if(mp){
+//
+//
+// }
+//
+},// end update()
 
   drawHud: function() {
-    console.log("drawHud()  called");
+    // console.log("drawHud()  called");
     if (!hudSet) {
       hudBack = game.add.graphics(0, 0);
       hudBack.beginFill(0x000000);
@@ -308,7 +331,7 @@ var playState = {
 
   },
   mainTick: function(){
-    console.log("mainTick");
+    // console.log("mainTick");
     game.time.events.add(1000, this.mainTick, this);
     // game.time.events.add(true, this.mainTick, this);
     this.gameTick();
@@ -322,20 +345,39 @@ var playState = {
 
     var ent3 = (currentTemp * Math.random().toFixed())/ tempEffectY;
 
+    // car.x += tempBoox ?  ent2 * -1 :  ent2;
     car.body.velocity.x += tempBoox ?  ent2 * -1 :  ent2;
     tempBoox = !tempBoox;
     //
+    // car.y += tempBooy ?  ent3 * -1 :  ent3;
     car.body.velocity.y += tempBooy ?  ent3 * -1 :  ent3;
     tempBooy = !tempBooy;
 
-    //
-    if(currentTemp >= 200 && currentTemp <= 400 ){
-      hexgrid.animations.play("warm");
-    } else if (currentTemp >= 401 && currentTemp <= 600 ) {
-      hexgrid.animations.play("hot");
+    // setting the random movement animations
+    // if(currentTemp >= 200 && currentTemp <= 400 ){
+    //   hexgrid.animations.play("warm");
+    // } else if (currentTemp >= 401 && currentTemp <= 600 ) {
+    //   hexgrid.animations.play("hot");
+    // }
+    // New Temp conditions
+    var lastTemp =0;
+    var lasti=0;
+    for(i=0 ; i<= noOfBreaks;  i++){
+      // console.log("tempBreaks[i]= "+tempBreaks[i]);
+      if(currentTemp >= tempBreaks[i]){
+        lasti=i;
+      }
     }
+    hexgrid.frame= this.getRandomInt(lasti);
+    // console.log("cur frame = "+hexgrid.frame);
+    // console.log("random int 3 = "+ this.getRandomInt(3));
   } else{
-    gameOver();
+    // gameOver();
+    if(!phaseShift){
+      this.meltingPoint();
+       phaseShift = true;
+    }
+
   }
 
 
@@ -350,11 +392,11 @@ var playState = {
   },
   secondTick: function(){
     game.time.events.add(Phaser.Timer.SECOND * 0.1, this.secondTick, this);
-    console.log("secondTick");
+    // console.log("secondTick");
     this.heat();
   },
   secondHeat:function(){
-    console.log("secondHeat");
+    // console.log("secondHeat");
      car.body.y +=currentTemp;
   },
   toggle:function(){
@@ -362,8 +404,25 @@ var playState = {
     tempScaleName = tempScaleName === siK ? siC : siK;
     siText.setText(tempScaleName);
     scaleDiff = tempScaleName === siK ? 0 : -273;
-    console.log("tempScaleName = "+tempScaleName);
-    console.log("toggle");
+    // console.log("tempScaleName = "+tempScaleName);
+    // console.log("toggle");
+  },
+   meltingPoint: function(){
+    // Paticles
+    // mp = true;
+      console.log("meltingPoint");
+      // emitter = game.add.emitter(game.world.centerX, 0, 400);
+      emitter.width = game.world.width;
+      // emitter.angle = 30; // uncomment to set an angle for the rain.
+      emitter.makeParticles('matrix');
+      // emitter.minParticleScale = 0.1;
+      emitter.maxParticleScale = 2;
+      emitter.setYSpeed(100, 300);
+      emitter.setXSpeed(-10, 10);
+      emitter.minRotation = -50;
+      emitter.maxRotation = 50;
+      emitter.start(false, 1600, 5, 0);
+      game.time.events.add(Phaser.Timer.SECOND * 5, gameOver, this);
   },
 
 }; //end of playstate
@@ -413,7 +472,11 @@ function loseLife() {
     lives = 0;
     // console.log("GAME OVER! you LOSE");
     // game.state.start('gameover');
-    gameOver();
+    // gameOver();
+    if(!phaseShift){
+      this.meltingPoint();
+      phaseShift = true;
+    }
   }
   timeOfDeath = game.time.time;
   // console.log("timeOfDeath= " + timeOfDeath);
@@ -445,28 +508,4 @@ function holeRandomiser() {
     n = pad;
   }
   return n;
-}
-function meltingPoint(){
-  // Paticles
-  //
-  //
-  //
-//     var emitter = game.add.emitter(game.world.centerX, 0, 400);
-//
-// 	emitter.width = game.world.width;
-// 	// emitter.angle = 30; // uncomment to set an angle for the rain.
-// // console.log("atoms are go");
-// 	emitter.makeParticles('matrix');
-//
-// 	// emitter.minParticleScale = 0.1;
-// 	emitter.maxParticleScale = 0.5;
-//
-// 	emitter.setYSpeed(0, 0);
-// 	emitter.setXSpeed(0, 0);
-//
-// 	emitter.minRotation = 0;
-// 	emitter.maxRotation = 0;
-//
-// 	emitter.start(false, 1600, 5000, 0);
-
 }

@@ -1,5 +1,5 @@
 
-var gameBuild = "build 1.6"; //
+var gameBuild = "build 1.7"; //
     ///var hexgrid;
     var hole;//this will be the baddie
     //swap in and out the url string for the different enviroments
@@ -259,6 +259,7 @@ var carXpos;
 var carYpos;// vars to hold teh position so we dont manupulate it directly with the functions
 var meltingPointOfGrapheneURL = "http://www.aerogelgraphene.com/graphene-melting-point/";
 var meltingPointOfGraphene = 4800; //k
+// var meltingPointOfGraphene = 200; //k
 var meltingPointOfSliverURL = "https://en.wikipedia.org/wiki/Silver";
 var meltingPointOfSilver = 1234.93;//k
 // var meltingPointOfSilver
@@ -267,3 +268,18 @@ var scaleToggle ;// this will be our toggle switch for the tem scale
 //
 var siText;// somwwhere to store teh text object
 var scaleDiff =0; // a place to reference teh diffeence between k and c updated in toggle()
+//
+// Temperature break points
+var tempBreaks= [];
+var noOfBreaks;// how many differetn animations  do we want for the temp
+//
+var heatSheild;
+var heatSheildMeter;
+var emitter;
+var phaseShift =false;// have we got to melting point yet?
+//
+var audioLive = true;// a toggle to switch the music on / OFF
+//
+var meltLoops= 5;
+var currMeltLoops = 0 ;
+var mp = false; //

@@ -68,7 +68,8 @@ var loadState = {
     // play screen
     game.load.image('instrument', ficurl+'assets/instrument_v2.png');
     game.load.spritesheet('tiny-toggle','assets/tiny-toggle-2.png', 69,61);
-
+    game.load.image('heatsheildmeter', ficurl+'assets/heatsheildmeter_v1.png');
+    game.load.image('heatsheild', ficurl+'assets/heatsheild_v1.png');
 
 
     //
