@@ -66,7 +66,7 @@ var loadState = {
     game.load.spritesheet('buckycar','assets/buckyball-racer-spritesheet_v3.png', 150,150);
     //
     // play screen
-    game.load.image('instrument', ficurl+'assets/instrument.png');
+    game.load.image('instrument', ficurl+'assets/instrument_v2.png');
     game.load.spritesheet('tiny-toggle','assets/tiny-toggle-2.png', 69,61);
 
 
@@ -90,7 +90,8 @@ var loadState = {
   //paritcle timeout
   game.load.spritesheet('matrix', 'assets/sliver_v1.png', 110, 100);
   game.load.spritesheet('atoms', 'assets/blackatoms_v1.png', 9, 9);
-  game.load.spritesheet('graphene', 'assets/graphene_v1.png', 120, 136);
+  game.load.spritesheet('graphene', 'assets/graphene_v4.png', 120, 136);
+  game.load.spritesheet('silver', 'assets/silver_v2.png', 100, 150);
 
   },
   create: function(){

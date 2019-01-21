@@ -5,17 +5,25 @@ var playState = {
     // set the track and mode
     if(trackselection === 1){
       // the next line creates  the tilesprite bg
-      var hexSprite =
+      // var hexSprite =
       hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'graphene');
-      hexgrid.animations.add("cool",[0,1],2,true);
-      hexgrid.animations.add("warm",[0,1,3,4],4,true);
-      hexgrid.animations.add("hot",[0,1,3,4,5,6,7,9,10],12,true);
+      hexgrid.animations.add("cool",[0,1,3],2,true);
+      hexgrid.animations.add("warm",[0,1,2,3,4],4,true);
+      hexgrid.animations.add("hot",[4,5,6,7,8,9,10],12,true);
       hexgrid.animations.play("cool");
-      friction = warm;
+      // friction = warm;
+      friction = cold;
       drift *= friction;
+      //TODO check the use if friction
       trackMeltingPoint= meltingPointOfGraphene;
     }else if(trackselection === 2){
-      hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'icehex');
+      // hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'icehex');
+      hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'silver');
+      hexgrid.animations.add("cool",[0,1,3],2,true);
+      hexgrid.animations.add("warm",[0,1,2,3,4],4,true);
+      hexgrid.animations.add("hot",[4,5,6,7,8,9,10],12,true);
+      hexgrid.animations.play("cool");
+      //
       friction= cold;
       drift *= friction;
       trackMeltingPoint = meltingPointOfSilver;
@@ -33,7 +41,7 @@ var playState = {
     //
     platforms = game.add.physicsGroup(); //for the hud
     platforms.enableBody = true;
-    var barr = platforms.create(0, game.world.height - 69, 'bar');
+    var barr = platforms.create(0, game.world.height - 109, 'bar');
     barr.body.immovable = true;
 
     holesGroup = game.add.group();
@@ -73,7 +81,7 @@ var playState = {
     gStart.setTo([new Phaser.Point(gsLeft, gsTop), new Phaser.Point(gsRight, gsTop), new Phaser.Point(gsRight, gsBot), new Phaser.Point(gsLeft, gsBot)]);
     //
     //and the new hud
-    var newHud = game.add.sprite(0, 530, 'instrument');
+    var newHud = game.add.sprite(0, 491, 'instrument');
 
     //Set some properties
     //
@@ -114,9 +122,11 @@ var playState = {
 
     // clockX = game.world.width - 120;
     // clockY = game.world.height - 100;
-    scoreText = this.add.text(16, game.world.height - hudOffset + 35, scoreText, screen18green);
-    clockText = this.add.text(450, game.world.height - hudOffset + 35, currentTemp, screen18green);
-    siText = this.add.text(500, game.world.height - hudOffset + 35, tempScaleName, screen18green);
+    scoreText = this.add.text(410, game.world.height - hudOffset + 40, scoreText, screen18green);
+    clockText = this.add.text(521, game.world.height - hudOffset + 40, currentTemp, screen18green);// now the temperature
+    siText = this.add.text(580, game.world.height - hudOffset + 40, tempScaleName, screen18green);
+    siNm = this.add.text(460, game.world.height - hudOffset + 40, si, screen18green);
+    scrollingText = this.add.text(30, game.world.height - hudOffset + 20, scollingTextCopy1, scrollingGreen );
     //game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
     // var hitPlatform = game.physics.arcade.collide(car, platforms);
@@ -126,7 +136,7 @@ var playState = {
     cursors.down.onDown.add(this.playFx);
     //
 
-    scaleToggle = game.add.sprite(685,530, 'tiny-toggle');
+    scaleToggle = game.add.sprite(699,512, 'tiny-toggle');
     //
     scaleToggle.inputEnabled=true;
     scaleToggle.events.onInputDown.add(this.toggle, this);
@@ -144,34 +154,6 @@ var playState = {
     }catch(e){
       console.log("e ="+e);
     }
-    //
-    //
-    //
-    // Paticles
-    //
-    //
-    //
-//     var emitter = game.add.emitter(game.world.centerX, 0, 400);
-//
-// 	emitter.width = game.world.width;
-// 	// emitter.angle = 30; // uncomment to set an angle for the rain.
-// // console.log("atoms are go");
-// 	emitter.makeParticles('matrix');
-//
-// 	// emitter.minParticleScale = 0.1;
-// 	emitter.maxParticleScale = 0.5;
-//
-// 	emitter.setYSpeed(0, 0);
-// 	emitter.setXSpeed(0, 0);
-//
-// 	emitter.minRotation = 0;
-// 	emitter.maxRotation = 0;
-//
-// 	emitter.start(false, 1600, 5000, 0);
-
-
-
-
 
   },
   update: function() {
@@ -313,8 +295,13 @@ var playState = {
     hole = game.add.sprite(50, 50, 'hole');
   },
   moveIt: function(d){
-    score += d * friction;
+    console.log("d = "+d);
+    console.log("friction= "+ friction);
+    console.log("score = "+score);
+    // score += d * friction;
+    score += d ;
     var adjustedRate = tileRate * d * friction;
+                            // carXpos
     // scoreText.setText(displayText + score + si);
     scoreText.setText( score );
     hexgrid.tilePosition.y += adjustedRate ;
@@ -459,4 +446,28 @@ function holeRandomiser() {
     n = pad;
   }
   return n;
+}
+function meltingPoint(){
+  // Paticles
+  //
+  //
+  //
+//     var emitter = game.add.emitter(game.world.centerX, 0, 400);
+//
+// 	emitter.width = game.world.width;
+// 	// emitter.angle = 30; // uncomment to set an angle for the rain.
+// // console.log("atoms are go");
+// 	emitter.makeParticles('matrix');
+//
+// 	// emitter.minParticleScale = 0.1;
+// 	emitter.maxParticleScale = 0.5;
+//
+// 	emitter.setYSpeed(0, 0);
+// 	emitter.setXSpeed(0, 0);
+//
+// 	emitter.minRotation = 0;
+// 	emitter.maxRotation = 0;
+//
+// 	emitter.start(false, 1600, 5000, 0);
+
 }

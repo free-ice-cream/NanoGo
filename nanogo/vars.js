@@ -1,5 +1,5 @@
 
-var gameBuild = "build 1.5"; //this is kind of arbitrary  ie the naming conventionstarted at v 0.7 as we were about 6-7 builds in
+var gameBuild = "build 1.6"; //this is kind of arbitrary  ie the naming conventionstarted at v 0.7 as we were about 6-7 builds in
     ///var hexgrid;
     var hole;//this will be the baddie
     //swap in and out the url string for the different enviroments
@@ -89,6 +89,8 @@ var gameBuild = "build 1.5"; //this is kind of arbitrary  ie the naming conventi
 
    //
    //var endText7 = "jjjjjjjjj"
+   //gplay page TEXT
+   var scollingTextCopy1 = "This will be the scolling text window we update";
    var si = "nM ";
    //
    // new end text vars
@@ -178,6 +180,7 @@ var gameBuild = "build 1.5"; //this is kind of arbitrary  ie the naming conventi
    var main18greyc ={font: ' 17pt Consolas', fill: 'grey', align:'left', wordWrap: true, wordWrapWidth: 600 };
    var main18bluec ={font: ' 17pt Consolas', fill: '#1E3CDC', align:'left', wordWrap: true, wordWrapWidth: 750 };
    var screen18green ={font: ' 18pt ChintzyCPUBRK', fill: '#3BFC34', align:'right', wordWrap: true, wordWrapWidth: 600 };
+   var scrollingGreen ={font: ' 17pt ChintzyCPUBRK', fill: '#3BFC34', align:'left', wordWrap: true, wordWrapWidth: 345 };
    //
    //
    // var main32 ={font: ' 32pt ChintzyCPUBRK', fill: var(--overbrightgreen), align:'left', wordWrap: true, wordWrapWidth: 650 };
