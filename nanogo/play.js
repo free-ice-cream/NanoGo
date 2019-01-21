@@ -295,12 +295,11 @@ var playState = {
     hole = game.add.sprite(50, 50, 'hole');
   },
   moveIt: function(d){
-    console.log("d = "+d);
-    console.log("friction= "+ friction);
-    console.log("score = "+score);
+
     // score += d * friction;
     score += d ;
     var adjustedRate = tileRate * d * friction;
+    var adjustedRate = tileRate * d;
                             // carXpos
     // scoreText.setText(displayText + score + si);
     scoreText.setText( score );
