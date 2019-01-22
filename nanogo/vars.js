@@ -1,5 +1,5 @@
 
-var gameBuild = "build 1.7"; //
+var gameBuild = "build 1.8"; //
     ///var hexgrid;
     var hole;//this will be the baddie
     //swap in and out the url string for the different enviroments
@@ -66,8 +66,8 @@ var gameBuild = "build 1.7"; //
    var oto31 = "Step 3: Click to select a race track.";
    var oto32 = "Track 1";
    var oto33 = "Track 2";
-   var oto34 = "This is the standard Graphene race track. Graphene is just one super thin crystal of carbon.";
-   var oto35 = "This track is made from Graphene too. However, this one is kept at 10 ºK. that's  -263 ºC to most of us. At these temperatures you can move with almost no friction but if you collide with a hole you will not have enough energy to escape it!";
+   var oto34 = "This track is made from Graphene. Graphene is just one super thin crystal of carbon. With a melting point of 4800 ºk you will have a tough time getting to the end of this track";
+   var oto35 = "This track is made from Silver. There will not me much time, silver melts at just  1234.93 ºK";
    // Game Over Text objects
    var goT;
    var goTo1;
@@ -283,3 +283,6 @@ var audioLive = true;// a toggle to switch the music on / OFF
 var meltLoops= 5;
 var currMeltLoops = 0 ;
 var mp = false; //
+var testing = true;//  a bool used to switch between testing and production mode
+//
+var fullTimeS;// this  is here we will store teh total number of seconds needed to count to a million at our clickrate

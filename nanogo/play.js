@@ -1,5 +1,6 @@
 var playState = {
   create: function() {
+
     //set up the graffic assets
     //set the background hexgrid
     // set the track and mode
@@ -169,6 +170,17 @@ var playState = {
     for(i=0; i<= noOfBreaks-1 ; i++){
       tempBreaks[i] = (trackMeltingPoint/ noOfBreaks) * (i+1) ;
     }
+    
+    //
+    // test mode
+    if(testing){
+      trackMeltingPoint = 500;
+      tempIncrement = 100;
+      audioLive = false;
+    }
+    //
+
+
 
 
   },
@@ -397,7 +409,7 @@ var playState = {
   },
   secondHeat:function(){
     // console.log("secondHeat");
-     car.body.y +=currentTemp;
+     car.body.y += currentTemp;
   },
   toggle:function(){
     scaleToggle.frame = tempScaleName === siK ? 1 : 0 ;
@@ -461,26 +473,29 @@ function spawnCar() {
 }
 
 function loseLife() {
-  if (lives == 3) {
+  if (lives === 3) {
     heart3.alpha = 0;
     lives = 2;
-  } else if (lives == 2) {
+  } else if (lives === 2) {
     heart2.alpha = 0;
     lives = 1;
-  } else if (lives == 1) {
+  } else if (lives === 1) {
     heart1.alpha = 0;
     lives = 0;
     // console.log("GAME OVER! you LOSE");
     // game.state.start('gameover');
-    // gameOver();
-    if(!phaseShift){
-      this.meltingPoint();
-      phaseShift = true;
-    }
+
+    // if(!phaseShift){
+    //   console.log("was ist los?");
+      // meltingPoint();
+      gameOver();
+    //   phaseShift = true;
+    // }
   }
   timeOfDeath = game.time.time;
   // console.log("timeOfDeath= " + timeOfDeath);
   holeDeath.play();
+  return lives;
 }
 function gameOver(){
   game.state.start('gameover');

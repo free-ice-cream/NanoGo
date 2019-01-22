@@ -226,7 +226,24 @@ ul > li {
     z-index: 2;
     cursor: pointer;
 }
-
+#calendarOverlay {
+    position: fixed;
+    display: none;
+    /* width: 100%;
+    height: 100%; */
+    width: 70vw;
+    height: 600px;
+    /* top: 7vh; */
+    /* top: 50px;
+    left: 0; */
+    top: 50px;
+    left: 15vw;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30,39,30,0.98);
+    z-index: 2;
+    cursor: pointer;
+}
 #text{
     position: absolute;
     /* top: 10vh;
@@ -249,4 +266,11 @@ ul > li {
     color: var(--overbrightgreen);
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
+}
+.pop-page{
+
+  font-size: 2em;
+  font-family: 'ChintzyCPUBRK';
+  color: var(--overbrightgreen);
+
 }

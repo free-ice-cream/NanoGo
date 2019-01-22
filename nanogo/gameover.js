@@ -37,7 +37,7 @@ var gameover = {
     // var spentTime = gameDuration - gameTime;
     var spentTime = gameTime;
     var clicksPerSecond =score/spentTime;
-    var fullTimeS= 1000000/clicksPerSecond;
+     fullTimeS= 1000000/clicksPerSecond;
     var fullTimeM= fullTimeS/60;
     var fullTimeH = fullTimeM/60;
     var fullTimeD = fullTimeH/24;
@@ -48,7 +48,7 @@ var gameover = {
     //
 
     //
-    //this.getFinishTime(fullTimeS);
+    //this.(fullTimeS);
 
     goT = this.add.text(5, 8, goTitle, main28white);
     console.log("spentTime= "+spentTime);
@@ -100,6 +100,43 @@ var gameover = {
 
       return finishTime;
   },
+  getEndDate: function(s){
+     var cd = new Date();//currentDate
+     var fDays;
+     var fHours;
+     var fMins;
+     var fSecs;
+     //
+     fDays = Math.floor(s / 60/60/24);
+     // console.log("fDays = "+fDays);
+     s = s-(fDays *24*60*60);
+     fHours = Math.floor(s/60/60);
+     // console.log("fHours = "+fHours);
+     s = s- (fHours *60*60);
+     fMins = Math.floor(s/60);
+     // console.log("fMins = "+fMins);
+     s = s- (fMins *60);
+     fSecs = s;
+     // console.log("fSecs= "+fSecs);
+     //
+     cd.setSeconds(cd.getSeconds() + s);
+     cd.setMinutes(cd.getMinutes() + fMins);
+     cd.setHours(cd.getHours() + fHours);
+     cd.setDate(cd.getDate() + fDays);
+     //
+     var zMins = cd.getMinutes();
+     if(parseInt(zMins)<=9){
+       zMins= "0"+zMins;
+     }
+     var zSecs= cd.getSeconds();
+     if(parseInt(zSecs)<=9){
+       zSecs= "0"+zSecs;
+     }
+
+  // finishTime = dayNames[cd.getDay()]+" at "+cd.getHours()+":"+zMins+":"+zSecs;
+
+     return cd;
+ },
   ressel: function(){
     gameReset();
     game.state.start('menu');
@@ -113,7 +150,13 @@ var gameover = {
   },
   //
   alarmsel: function(){
-    console.log("CALENDAR EVENT");
+     console.log("CALENDAR EVENT");
+     // projectPop();
+     calPop(this.getEndDate(fullTimeS));
+     // console.log(hats);
+
+
+      // document.querySelector('.new-cal2').appendhild(myCalendar2);
   },
   alarmhover : function(){
     alarmButt.frame=1;
