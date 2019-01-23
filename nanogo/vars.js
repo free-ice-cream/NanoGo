@@ -1,5 +1,5 @@
 
-var gameBuild = "build 1.9.1"; //
+var gameBuild = "build 1.9.2"; //
 var testing = true;//  a bool used to switch between testing and production mode
     ///var hexgrid;
     var hole;//this will be the baddie
@@ -179,7 +179,7 @@ var testing = true;//  a bool used to switch between testing and production mode
    var endStyle = { font: 'bold 28pt courier ', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 650 };
    var main56 ={font: ' 56pt ChintzyCPUBRK', fill: 'green', align:'left', wordWrap: true, wordWrapWidth: 650 };
    var main28white ={font: ' 28pt ChintzyCPUBRK', fill: 'white', align:'left', wordWrap: true, wordWrapWidth: 750 };
-   var thin28white ={font: ' 28pt ChintzyCPUBRK', fill: 'white', align:'left', wordWrap: true, wordWrapWidth: 600 };
+   var thin28white ={font: ' 28pt ChintzyCPUBRK', fill: 'white', align:'left', wordWrap: true, wordWrapWidth: 650 };
    var main28green ={font: ' 28pt ChintzyCPUBRK', fill: 'green', align:'left', wordWrap: true, wordWrapWidth: 650 };
    var main28greenc ={font: ' 18pt Consolas', fill: 'green', align:'left', wordWrap: true, wordWrapWidth: 650 };
    var first18greenc ={font: ' 16pt Consolas', fill: 'green', align:'left', wordWrap: true, wordWrapWidth: 750 };

@@ -138,7 +138,7 @@ var playState = {
     siNm = this.add.text(460, game.world.height - hudOffset + 40, si, screen18green);
     scrollingText = this.add.text(30, game.world.height - hudOffset + 20, scollingTextCopy1, scrollingGreen );
     endmessage1 = this.add.text(200, 150 , "", main56);
-    endmessage2 = this.add.text(130, 250 , "", main28white);
+    endmessage2 = this.add.text(130, 250 , "", thin28white);
     //game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
     // var hitPlatform = game.physics.arcade.collide(car, platforms);
