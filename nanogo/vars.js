@@ -1,5 +1,5 @@
 
-var gameBuild = "build 1.9.3"; //
+var gameBuild = "build 2.0"; //
 var testing = false;//  a bool used to switch between testing and production mode
     ///var hexgrid;
     var hole;//this will be the baddie
@@ -100,17 +100,41 @@ var testing = false;//  a bool used to switch between testing and production mod
    //
    //var endText7 = "jjjjjjjjj"
    //gplay page TEXT
-   var scollingTextCopy1 = "This will be the scolling text window we update";
-   var si = "nM ";
+   var scollingTextCopy1 = "Welcome Nano racer! messages about the enviroment will display here...                 ";
+   var si = "nM ";//
    //
+   // SCROLLING TEXT BOX VARS AND STRINGS
+   //
+   // 20 deg
+   var mess1Thesh = 20;
+   var scrollingMessage0 = "";
+   var scrollingMessage1 = " This is the message window, ....                               ";
+   // 200
+    var mess2Thesh = 200;
+   var scrollingMessage2 = " Things are really getting hot in here. Your racer is starting to move eratically due to the heat....                               ";
+   // 327
+   var scrollingMessage3 = " its over 327ºC hot enough for lead to melt...                         ";
+   var scrollingMessages = [ scrollingMessage1, scrollingMessage2, scrollingMessage3];
+   var messageIndex = 0; // a key to see where we are in teh messages list.
+   var currMessage = "";
+   var maxChars = 22;// the maximum number of chars to show inany one message.
+   var mesFlag1= false;
+   var mesFlag2= false;
+   var mesFlag3= false;
+   var mesFlag4= false;
+   var mesFlag5= false;
+   //
+   var newHud;//
+   var hudBack;//
+
    // new end text vars
    var distanceTraveled;
    var timeTaken;
    var nTimesThisTime;
    var finishDayTime;
    //
-   var introT;
-   var introText = "Hit Space bar to play";
+
+
    var countDown;
    var gameTime=0;
    // var gameStartTime=0;
@@ -191,7 +215,7 @@ var testing = false;//  a bool used to switch between testing and production mod
    var main18greyc ={font: ' 17pt Consolas', fill: 'grey', align:'left', wordWrap: true, wordWrapWidth: 600 };
    var main18bluec ={font: ' 17pt Consolas', fill: '#1E3CDC', align:'left', wordWrap: true, wordWrapWidth: 750 };
    var screen18green ={font: ' 18pt ChintzyCPUBRK', fill: '#3BFC34', align:'right', wordWrap: true, wordWrapWidth: 600 };
-   var scrollingGreen ={font: ' 17pt ChintzyCPUBRK', fill: '#3BFC34', align:'left', wordWrap: true, wordWrapWidth: 345 };
+   var scrollingGreen ={font: ' 28pt ChintzyCPUBRK', fill: '#3BFC34', boundsAlignH: "right", wordWrap: false, wordWrapWidth: 368 };
    //
    //
    // var main32 ={font: ' 32pt ChintzyCPUBRK', fill: var(--overbrightgreen), align:'left', wordWrap: true, wordWrapWidth: 650 };
@@ -216,7 +240,7 @@ var trackselection = 1;// we will use this to set the track
 var  starLayout;//play.js
 //var tick;//play.js
 //var cursors;//setting up the arrow ksys
-var driftBase= 25;// how har we shunt left and right
+var driftBase = 25;// how har we shunt left and right
 var drift = driftBase;
 
 // var thrust
@@ -225,9 +249,9 @@ var warm = 1;//these are the multiplers used for the different tracks
 var cold = 2;
 //
 // some values to feed in to our random position function to set up holes
-var holeMaxX =500;
-var holeMinX =30;
-var holeYoff=100;
+var holeMaxX = 500;
+var holeMinX = 30;
+var holeYoff = 100;
 //
 var holeHolder;
 // var hole;
@@ -238,7 +262,7 @@ var time_til_spawn;
 var last_spawn_time;
 //
 var holeX = [100, 200, 300, 400, 500 ];
-var currHole=0;
+var currHole = 0;
 var stuck = false;// have we hit a hole or not
 var holeYstart = -20;
 var livesBase = 3;
@@ -249,9 +273,9 @@ var platforms;
 var howToScreen;
 var howToStartBut;
 //
-var carType=1;
+var carType = 1;
 var carLoopLength = 8;
-var holeFull=false;//is there a a car in teh hole
+var holeFull = false;//is there a a car in teh hole
 //
 var startTemp = 4;//starting temp in kelvin
 var absolute0 = -273;// absolute zero, to be used to convert between k and c
@@ -276,6 +300,9 @@ var meltingPointOfGraphene = 4800; //k
 // var meltingPointOfGraphene = 200; //k
 var meltingPointOfSliverURL = "https://en.wikipedia.org/wiki/Silver";
 var meltingPointOfSilver = 1234.93;//k
+//
+// var meltingPointOfLeadURL;//
+var meltingPointOfLead = 600;//k
 // var meltingPointOfSilver
 var trackMeltingPoint;// a place to store the current track melting point.
 var scaleToggle ;// this will be our toggle switch for the tem scale
@@ -300,3 +327,4 @@ var mp = false; //
 
 //
 var fullTimeS;// this  is here we will store teh total number of seconds needed to count to a million at our clickrate
+//

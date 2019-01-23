@@ -66,7 +66,8 @@ var loadState = {
     game.load.spritesheet('buckycar','assets/buckyball-racer-spritesheet_v3.png', 150,150);
     //
     // play screen
-    game.load.image('instrument', ficurl+'assets/instrument_v2.png');
+    game.load.image('instrument', ficurl+'assets/instrument_v3.png');
+    game.load.image('instrument_back', ficurl+'assets/instrument_back.png');
     game.load.spritesheet('tiny-toggle','assets/tiny-toggle-2.png', 69,61);
     game.load.image('heatsheildmeter', ficurl+'assets/heatsheildmeter_v1.png');
     game.load.image('heatsheild', ficurl+'assets/heatsheild_v1.png');

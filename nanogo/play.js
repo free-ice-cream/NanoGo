@@ -83,8 +83,16 @@ var playState = {
     //
 
     emitter = game.add.emitter(game.world.centerX, 0, 400);
+    //
     //and the new hud
-    var newHud = game.add.sprite(0, 491, 'instrument');
+    //
+    hudback = game.add.sprite(0, 491, 'instrument_back');
+    // scrollingText = this.add.text(12, game.world.height - hudOffset + 20, scollingTextCopy1, scrollingGreen );
+    scrollingText = this.add.text(0,0, scollingTextCopy1, scrollingGreen );
+    // scrollingText.setTextBounds(12, 534, 380, 591);
+    scrollingText.setTextBounds(12, 540, 368, 57);
+    newHud = game.add.sprite(0, 491, 'instrument');
+
 
     //and the heatsheild
     heatSheild= game.add.sprite(0,0,'heatsheild');
@@ -134,7 +142,7 @@ var playState = {
     clockText = this.add.text(521, game.world.height - hudOffset + 40, currentTemp, screen18green);// now the temperature
     siText = this.add.text(580, game.world.height - hudOffset + 40, tempScaleName, screen18green);
     siNm = this.add.text(460, game.world.height - hudOffset + 40, si, screen18green);
-    scrollingText = this.add.text(30, game.world.height - hudOffset + 20, scollingTextCopy1, scrollingGreen );
+    // scrollingText = this.add.text(30, game.world.height - hudOffset + 20, scollingTextCopy1, scrollingGreen );
     endmessage1 = this.add.text(200, 150 , "", main56);
     endmessage2 = this.add.text(130, 250 , "", thin28white);
     //game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
@@ -176,7 +184,7 @@ var playState = {
     if(testing){
       trackMeltingPoint = 500;
       tempIncrement = 100;
-      audioLive = true;
+      audioLive = false;
     }
     //
     spawnCar();
@@ -363,46 +371,64 @@ var playState = {
   },
   heat: function(){
 
-  if( currentTemp < trackMeltingPoint){
-    var ent2 = (currentTemp * Math.random().toFixed())/ tempEffectX;
+    if( currentTemp < trackMeltingPoint){
+      var ent2 = (currentTemp * Math.random().toFixed())/ tempEffectX;
+      var ent3 = (currentTemp * Math.random().toFixed())/ tempEffectY;
 
-    var ent3 = (currentTemp * Math.random().toFixed())/ tempEffectY;
-
-    // car.x += tempBoox ?  ent2 * -1 :  ent2;
-    car.body.velocity.x += tempBoox ?  ent2 * -1 :  ent2;
-    tempBoox = !tempBoox;
-    //
-    // car.y += tempBooy ?  ent3 * -1 :  ent3;
-    car.body.velocity.y += tempBooy ?  ent3 * -1 :  ent3;
-    tempBooy = !tempBooy;
-
-    // setting the random movement animations
-    // if(currentTemp >= 200 && currentTemp <= 400 ){
-    //   hexgrid.animations.play("warm");
-    // } else if (currentTemp >= 401 && currentTemp <= 600 ) {
-    //   hexgrid.animations.play("hot");
-    // }
-    // New Temp conditions
-    var lastTemp =0;
-    var lasti=0;
-    for(i=0 ; i<= noOfBreaks;  i++){
-      // console.log("tempBreaks[i]= "+tempBreaks[i]);
-      if(currentTemp >= tempBreaks[i]){
-        lasti=i;
+      // car.x += tempBoox ?  ent2 * -1 :  ent2;
+      car.body.velocity.x += tempBoox ?  ent2 * -1 :  ent2;
+      tempBoox = !tempBoox;
+      //
+      // car.y += tempBooy ?  ent3 * -1 :  ent3;
+      car.body.velocity.y += tempBooy ?  ent3 * -1 :  ent3;
+      tempBooy = !tempBooy;
+      // New Temp conditions
+      var lastTemp =0;
+      var lasti=0;
+      for(i=0 ; i<= noOfBreaks;  i++){
+        // console.log("tempBreaks[i]= "+tempBreaks[i]);
+        if(currentTemp >= tempBreaks[i]){
+          lasti=i;
+        }
       }
+      hexgrid.frame= this.getRandomInt(lasti);
+      // console.log("cur frame = "+hexgrid.frame);
+      // console.log("random int 3 = "+ this.getRandomInt(3));
+    } else{
+      // gameOver();
+      if(!phaseShift){
+        this.meltingPoint();
+         phaseShift = true;
+         gameLive = false;
+      }
+
     }
-    hexgrid.frame= this.getRandomInt(lasti);
-    // console.log("cur frame = "+hexgrid.frame);
-    // console.log("random int 3 = "+ this.getRandomInt(3));
-  } else{
-    // gameOver();
-    if(!phaseShift){
-      this.meltingPoint();
-       phaseShift = true;
-       gameLive = false;
+    if (currentTemp>= mess1Thesh && !mesFlag1){
+      mesFlag1= true;
+      textScroller(0);
+    }
+    if (currentTemp>= mess2Thesh && !mesFlag2){
+      mesFlag2= true;
+      textScroller(1);
+    }
+    if (currentTemp+scaleDiff>= meltingPointOfLead && !mesFlag3){
+      mesFlag3= true;
+      textScroller(2);
     }
 
-  }
+    // switch (currentTemp) {
+    //   case 50 :
+    //     textScroller(0);
+    //     break;
+    //   case meltingPointOfLead:
+    //     textScroller(1);
+    //     break;
+    //   case meltingPointOfSilver:
+    //     textScroller(0);
+    //     break;
+    //   default:textScroller(0);
+    //
+    // }
 
 
   },
@@ -516,9 +542,11 @@ function loseLife() {
   if (lives === 3) {
     heart3.alpha = 0;
     lives = 2;
+    // textScroller(0);
   } else if (lives === 2) {
     heart2.alpha = 0;
     lives = 1;
+    // textScroller(1);
   } else if (lives === 1) {
     heart1.alpha = 0;
     lives = 0;
@@ -567,4 +595,48 @@ function holeRandomiser() {
     n = pad;
   }
   return n;
+}
+function textScroller(messNo){
+   // scrollingText.setText(text);
+   // messageIndex++;
+   messageIndex = messNo;
+
+   if (messageIndex < scrollingMessages.length)
+   {
+       currMessage = '';
+       game.time.events.repeat(180, scrollingMessages[messageIndex].length + 1, updateLine, this);
+   }
+
+}
+function updateLine() {
+    var chunk;
+
+    if(currMessage.length >= maxChars){
+      chunk = currMessage.length - maxChars;
+    }else{
+      chunk = 0;
+    }
+    // console.log("currMessage.lenght ="+currMessage.length );
+    // console.log("chunk ="+chunk);
+
+    if (currMessage.length < scrollingMessages[messageIndex].length)
+    {
+        currMessage = scrollingMessages[messageIndex].substr(chunk, currMessage.length + 1);
+        // text.text = line;
+        // text.setText(line);
+        scrollingText.setText(currMessage);
+    }
+    // else
+    // {
+    //     //  Wait 2 seconds then start a new line
+    //     game.time.events.add(Phaser.Timer.SECOND * 2, textScroller, this);
+    // }
+
+}
+
+
+function render() {
+
+     game.debug.geom(scrollingText.textBounds);
+
 }
