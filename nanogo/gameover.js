@@ -21,8 +21,9 @@ var gameover = {
 
     //var resultsScreen = game.add.sprite(0,0,'resultsScreen');
     this.gameOver();
-
-
+    mainTheme.stop();
+endlich = game.add.audio('endlich');
+endlich.loopFull();
 
   },
   update: function(){
@@ -31,9 +32,10 @@ var gameover = {
   gameOver: function(){
     homeTime = true;
     //playsoundTrack();
-    mainTheme.stop();
+    // mainTheme.stop();gameOverChime.play();
+
     // if( gameDuration - gameTime ==gameDuration){
-    gameOverChime.play();
+    // gameOverChime.play();
     // var spentTime = gameDuration - gameTime;
     var spentTime = gameTime;
     var clicksPerSecond =score/spentTime;

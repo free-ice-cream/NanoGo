@@ -86,6 +86,8 @@ var loadState = {
   game.load.audio('death','assets/hero-death-00.mp3');
   game.load.audio('win','assets/win.mp3');
   game.load.audio('bass-loop','assets/bass-loop2.mp3')
+  game.load.audio('endlich', 'assets/endlich_v3.mp3');
+  game.load.audio('swipe', 'assets/car-3.mp3');
 
   //
   //paritcle timeout

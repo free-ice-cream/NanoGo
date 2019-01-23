@@ -108,7 +108,7 @@ var playState = {
     mainTheme = game.add.audio('theme');
     holeDeath = game.add.audio('death');
     gameOverChime = game.add.audio('win');
-
+    swipe = game.add.audio('swipe');
     mainTheme.loopFull(0.8);
 
 
@@ -137,13 +137,15 @@ var playState = {
     siText = this.add.text(580, game.world.height - hudOffset + 40, tempScaleName, screen18green);
     siNm = this.add.text(460, game.world.height - hudOffset + 40, si, screen18green);
     scrollingText = this.add.text(30, game.world.height - hudOffset + 20, scollingTextCopy1, scrollingGreen );
+    endmessage1 = this.add.text(200, 150 , "", main56);
+    endmessage2 = this.add.text(130, 250 , "", main28white);
     //game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
     // var hitPlatform = game.physics.arcade.collide(car, platforms);
     platforms.alpha = 1;
     hole.animations.play('fizz', true);
-    cursors.up.onDown.add(this.playFx);
-    cursors.down.onDown.add(this.playFx);
+    // cursors.up.onDown.add(this.playFx("rev")); // is this double damage here?
+    // cursors.down.onDown.add(this.playFx("rev"));
     //
 
     scaleToggle = game.add.sprite(699,512, 'tiny-toggle');
@@ -170,13 +172,13 @@ var playState = {
     for(i=0; i<= noOfBreaks-1 ; i++){
       tempBreaks[i] = (trackMeltingPoint/ noOfBreaks) * (i+1) ;
     }
-    
+
     //
     // test mode
     if(testing){
       trackMeltingPoint = 500;
       tempIncrement = 100;
-      audioLive = false;
+      audioLive = true;
     }
     //
 
@@ -213,7 +215,7 @@ var playState = {
              // car.body.velocity.x -= drift;// smooth
              // car.body.drag.x=800;
              // carXpos -= drift;
-             this.playFx();
+             this.playFx("swipe");
             leftTog=true;
          }
         } else {
@@ -225,7 +227,7 @@ var playState = {
             // car.body.velocity.x += drift;//smooth
             // car.body.drag.x=800;
             // carXpos+= drift;
-            this.playFx();
+            this.playFx("swipe");
             rightTog=true;
          }
         } else  {
@@ -237,6 +239,7 @@ var playState = {
           // console.log("frame= "+car.frame);
          if (!upTog) {
             this.moveIt(1);
+            this.playFx("rev");
             // car.body.velocity.y -= drift;//TODO Remove me
             if(frameNo<=carLoopLength-1){
               frameNo+=1;
@@ -256,6 +259,7 @@ var playState = {
 
          if (!downTog) {
             this.moveIt(-1);
+            this.playFx("rev");
             // car.body.velocity.y += drift;//TODO Remove me
             downTog=true;
             if(frameNo>=2){
@@ -316,9 +320,20 @@ var playState = {
     //TODO  maybe refactore so teh hole spawn is inteh hole spawn functiona :)
 
   },
-  playFx: function() {
+  playFx: function(clip) {
     if (!homeTime) {
-      rev.play();
+
+      switch (clip) {
+        case "rev":
+          rev.play();
+          break;
+        case "swipe":
+          swipe.play();
+        break;
+        // default:
+
+      }
+      // rev.play();
       //rev.allowMultiple = true;
       // playFx(rev);
     }
@@ -435,6 +450,12 @@ var playState = {
       emitter.maxRotation = 50;
       emitter.start(false, 1600, 5, 0);
       game.time.events.add(Phaser.Timer.SECOND * 5, gameOver, this);
+      //
+      mainTheme.stop();
+      gameOverChime.play();
+      //
+      endmessage1.setText(endMessage1);
+      endmessage2.setText(endMessage2a+trackMeltingPoint+endMessage2b+tempScaleName+endMessage2c);
   },
 
 }; //end of playstate
@@ -498,6 +519,7 @@ function loseLife() {
   return lives;
 }
 function gameOver(){
+
   game.state.start('gameover');
 }
 
