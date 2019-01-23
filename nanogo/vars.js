@@ -216,7 +216,9 @@ var trackselection = 1;// we will use this to set the track
 var  starLayout;//play.js
 //var tick;//play.js
 //var cursors;//setting up the arrow ksys
-var drift= 25;// how har we shunt left and right
+var driftBase= 25;// how har we shunt left and right
+var drift = driftBase;
+
 // var thrust
 var friction = 0;
 var warm = 1;//these are the multiplers used for the different tracks
@@ -239,7 +241,8 @@ var holeX = [100, 200, 300, 400, 500 ];
 var currHole=0;
 var stuck = false;// have we hit a hole or not
 var holeYstart = -20;
-var lives = 3;
+var livesBase = 3;
+var lives = livesBase;
 var timeOfDeath;
 var safeSpawnTime = 3000;
 var platforms;

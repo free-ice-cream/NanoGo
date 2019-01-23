@@ -172,12 +172,16 @@ endlich.loopFull();
 //end of gameover state
 function gameReset(){
   score = 0;
-  gameTime=gameDuration;
+  // gameTime=gameDuration;
   homeTime=false;
-  lives=3;
+  lives = livesBase;
   holeFull=false;
   currentTemp = startTemp;
-  console.log("currentTemp at reset is "+currentTemp);
+  // console.log("currentTemp at reset is "+currentTemp);
+  endlich.stop();
+  gameLive= true;
+  phaseShift= false;
+  drift = driftBase;
   // carType=1;
   // trackselection=1;
 }
