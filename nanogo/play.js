@@ -110,8 +110,6 @@ var playState = {
     gameOverChime = game.add.audio('win');
     swipe = game.add.audio('swipe');
     mainTheme.loopFull(0.8);
-
-
     //
     // Get keyboard input
     //
@@ -181,6 +179,7 @@ var playState = {
       audioLive = true;
     }
     //
+    spawnCar();
 
 
 
@@ -195,20 +194,20 @@ var playState = {
     // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
     // game.physics.arcade.collide(car, emitter);
-      if (!stuck) {// a bool to check if we have hit something
-        if (gameLive === false) {// a bool to check if the game is running or not
-          car.scale.setTo(2, 2);
-          car.alpha = 1;
-          game.add.tween(car.scale).to({
-            x: 1,
-            y: 1
-          }, 2000, Phaser.Easing.Bounce.Out, true);
-          gameLive = true;
-        //  this.mainTick();
-        }
+      // if (!stuck) {// a bool to check if we have hit something
+        // if (gameLive === false) {// a bool to check if the game is running or not
+        //   car.scale.setTo(2, 2);
+        //   car.alpha = 1;
+        //   game.add.tween(car.scale).to({
+        //     x: 1,
+        //     y: 1
+        //   }, 2000, Phaser.Easing.Bounce.Out, true);
+        //   gameLive = true;
+        // //  this.mainTick();
+        // }
     //SIDEWAYS
     // phase transition from here
-    if(!phaseShift){// this should prevent us from moving further once the track melts
+    if(gameLive){// this should prevent us from moving further once the track melts
         if (cursors.left.isDown) {
         //  console.log("left");
          if (!leftTog) {
@@ -275,7 +274,7 @@ var playState = {
          downTog = false;
        }
      }// end phaseShift
-      } // end stuck
+      //} // end stuck
     if (hole.body.y >= game.world.height) {
       holeFull=false;
       hole.body.y = holeYstart;
@@ -292,11 +291,6 @@ var playState = {
     //
      // game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
-// if(mp){
-//
-//
-// }
-//
 },// end update()
 
   drawHud: function() {
@@ -405,6 +399,7 @@ var playState = {
     if(!phaseShift){
       this.meltingPoint();
        phaseShift = true;
+       gameLive = false;
     }
 
   }
@@ -443,6 +438,7 @@ var playState = {
     // Paticles
     // mp = true;
       console.log("meltingPoint");
+
       // emitter = game.add.emitter(game.world.centerX, 0, 400);
       emitter.width = game.world.width;
       // emitter.angle = 30; // uncomment to set an angle for the rain.
@@ -462,17 +458,26 @@ var playState = {
       var t =currentTemp +scaleDiff;
       endmessage1.setText(endMessage1);
       endmessage2.setText(endMessage2a+t+endMessage2b+tempScaleName+endMessage2c);
-      console.log("gameLive = "+gameLive);
+
 
   },
+  outOfLivesDelay: function(){
+    // console.log("outOfLivesDelay");
+    mainTheme.stop();
+    gameOverChime.play();
+    // gameLive =  false;
+    endmessage1.setText(endMessage1);
+    endmessage2.setText(endMessage3);
+    game.time.events.add(Phaser.Timer.SECOND * 5, gameOver, this);
+  }
 
 }; //end of playstate
 function crash(coH, coC) {
   if(holeFull==false){
     holeFull=true;
-    if (!stuck) {
-
-    }
+    // if (!stuck) {
+    //
+    // }
     //create a car in the space of crash TODO adjust this so that it is in the right place.
     if(carType==1){
       var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
@@ -483,13 +488,19 @@ function crash(coH, coC) {
     crash.animations.add('crash', [8, 9], 6, true);
     crash.animations.play('crash', true);
     //reset the car in spawn mode
-    spawnCar();
+
+
     loseLife();
+    if(gameLive){
+      spawnCar();
+    }else{
+      car.alpha = 0;
+    }
   }
 }
 
 function spawnCar() {
-  console.log("spawnCar !!");
+  // console.log("spawnCar !!");
   car.body.x = game.world.width / 2 - 125;
   car.body.y = carStartY;
   //car.animations.play('spawn', true);
@@ -511,13 +522,16 @@ function loseLife() {
   } else if (lives === 1) {
     heart1.alpha = 0;
     lives = 0;
+    playState.outOfLivesDelay();
+    gameLive = false;
     // console.log("GAME OVER! you LOSE");
     // game.state.start('gameover');
 
     // if(!phaseShift){
     //   console.log("was ist los?");
       // meltingPoint();
-      gameOver();
+      // gameOver();
+
     //   phaseShift = true;
     // }
   }

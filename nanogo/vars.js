@@ -1,6 +1,6 @@
 
-var gameBuild = "build 1.9.2"; //
-var testing = true;//  a bool used to switch between testing and production mode
+var gameBuild = "build 1.9.3"; //
+var testing = false;//  a bool used to switch between testing and production mode
     ///var hexgrid;
     var hole;//this will be the baddie
     //swap in and out the url string for the different enviroments
@@ -13,7 +13,7 @@ var testing = true;//  a bool used to switch between testing and production mode
    //
    //gameState should be teh definitive var to check to see where we are in the game cycle
    //var gameState =
-   var gameLive = false;// this is the core var to check if we are in play mode or  NOT
+   var gameLive = true;// this is the core var to check if we are in play mode or  NOT
    var homeTime = false;// so we know when to go home
    var score = 0;
    var scoreText ;
@@ -76,6 +76,7 @@ var testing = true;//  a bool used to switch between testing and production mode
    var endMessage2a = "at ";
    var endMessage2b = " degrees "
    var endMessage2c = " the track has melted! ";
+   var endMessage3 = " You're out of lives!"
 
    // Game Over Text objects
    var goT;
