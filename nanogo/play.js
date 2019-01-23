@@ -196,7 +196,7 @@ var playState = {
     game.physics.arcade.collide(car, platforms);
     // game.physics.arcade.collide(car, emitter);
       if (!stuck) {// a bool to check if we have hit something
-        if (gameLive == false) {// a bool to check if the game is running or not
+        if (gameLive === false) {// a bool to check if the game is running or not
           car.scale.setTo(2, 2);
           car.alpha = 1;
           game.add.tween(car.scale).to({
@@ -207,10 +207,11 @@ var playState = {
         //  this.mainTick();
         }
     //SIDEWAYS
+    // phase transition from here
+    if(!phaseShift){// this should prevent us from moving further once the track melts
         if (cursors.left.isDown) {
-          console.log("left");
+        //  console.log("left");
          if (!leftTog) {
-
            car.body.x -= drift; //clicky
              // car.body.velocity.x -= drift;// smooth
              // car.body.drag.x=800;
@@ -273,6 +274,7 @@ var playState = {
        }  else {
          downTog = false;
        }
+     }// end phaseShift
       } // end stuck
     if (hole.body.y >= game.world.height) {
       holeFull=false;
@@ -410,12 +412,15 @@ var playState = {
 
   },
   gameTick: function() {
-     clockText.setText(currentTemp +scaleDiff);
-     currentTemp += tempIncrement;
-     gameTime += 1;
+    if(!phaseShift){
+       clockText.setText(currentTemp +scaleDiff);
+       currentTemp += tempIncrement;
+       gameTime += 1;
+
      // console.log("gameTick before heat added car.body.x= "+car.body.x);
      //this.heat(currentTemp);
      // console.log("gameTick after heat added car.body.x= "+car.body.x);
+   }
   },
   secondTick: function(){
     game.time.events.add(Phaser.Timer.SECOND * 0.1, this.secondTick, this);
@@ -454,8 +459,11 @@ var playState = {
       mainTheme.stop();
       gameOverChime.play();
       //
+      var t =currentTemp +scaleDiff;
       endmessage1.setText(endMessage1);
-      endmessage2.setText(endMessage2a+trackMeltingPoint+endMessage2b+tempScaleName+endMessage2c);
+      endmessage2.setText(endMessage2a+t+endMessage2b+tempScaleName+endMessage2c);
+      console.log("gameLive = "+gameLive);
+
   },
 
 }; //end of playstate
