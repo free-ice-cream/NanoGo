@@ -24,6 +24,7 @@ var loadState = {
     game.load.image('glob3', ficurl+'assets/glob3.png');
     game.load.image('heart', ficurl+'assets/heart2.png');
     game.load.image('bar', ficurl+'assets/bar.png');
+    game.load.image('block', ficurl+'assets/block1.png');
     //more graphic assets
     //start screen
     game.load.image('logo', ficurl+'assets/Nano Go Logo v1.png');
@@ -70,7 +71,7 @@ var loadState = {
     game.load.image('instrument_back', ficurl+'assets/instrument_back.png');
     game.load.spritesheet('tiny-toggle','assets/tiny-toggle-2.png', 69,61);
     game.load.image('heatsheildmeter', ficurl+'assets/heatsheildmeter_v1.png');
-    game.load.image('heatsheild', ficurl+'assets/heatsheild_v1.png');
+    game.load.image('heatsheild', ficurl+'assets/heatsheild_v2.png');
 
 
     //

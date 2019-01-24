@@ -25,7 +25,7 @@ var playState = {
       hexgrid.animations.add("hot",[4,5,6,7,8,9,10],12,true);
       hexgrid.animations.play("cool");
       //
-      friction= cold;
+      friction = cold;
       drift *= friction;
       trackMeltingPoint = meltingPointOfSilver;
       // console.log("drift = "+drift);
@@ -42,14 +42,30 @@ var playState = {
     //
     platforms = game.add.physicsGroup(); //for the hud
     platforms.enableBody = true;
-    var barr = platforms.create(0, game.world.height - 109, 'bar');
+    var barr = platforms.create(0, game.world.height - 159, 'bar');
     barr.body.immovable = true;
-
+    barr.alpha =0;
+    //
+    //Holes
     holesGroup = game.add.group();
     holesGroup.enableBody = true;
     hole = holesGroup.create(50, 50, 'hole');
     hole.body.x = holeX[currHole];
+    //
+    //
+    blockGroup = game.add.group();
+    blockGroup.enableBody = true;
+    block = blockGroup.create(0, 0, 'block');
+    block.body.x = 0;
+    block.body.immovable = true;
 
+    //and the heatsheild
+    heatSheild= game.add.sprite(0,0,'heatsheild');
+    heatSheildMeter= game.add.sprite(690,50,'heatsheildmeter');
+    heatSheild.alpha = 0.5;
+    heatSheildMeter.alpha = 0.5;
+
+    //Create teh car
     if(carType===2){
       car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'buckycar');//CAR START POS
       // console.log("how many?");
@@ -94,22 +110,19 @@ var playState = {
     newHud = game.add.sprite(0, 491, 'instrument');
 
 
-    //and the heatsheild
-    heatSheild= game.add.sprite(0,0,'heatsheild');
-    heatSheildMeter= game.add.sprite(690,50,'heatsheildmeter');
-    heatSheild.alpha = 0;
-    heatSheildMeter.alpha = 0.1;
 
 
+    //
     //Set some properties
     //
+    //
     game.physics.arcade.enable(car);
-    //game.physics.p2.enable(car, false);
     car.body.bounce.y = carBounce;
     car.body.gravity.y = carGrav; // CURR SWITCHED OFF
     car.body.collideWorldBounds = true;
     //
     game.physics.arcade.enable(hole);
+    game.physics.arcade.enable(block);
 
     //lets add some AUDIO
     rev = game.add.audio('rev');
@@ -190,9 +203,16 @@ var playState = {
     spawnCar();
 
 
-
+    carCentreX = car.width/2;
+    carCentreY = car.height/2;
+    console.log("carCentreX= "+carCentreX);
 
   },
+  // ---------------------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------------------------------------
+  /// END CREATE
+  // ---------------------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------------------------------------
   update: function() {
     if(audioLive){
       //mainTheme.play();
@@ -201,6 +221,7 @@ var playState = {
     }
     // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
+    game.physics.arcade.collide(car, block);
     // game.physics.arcade.collide(car, emitter);
       // if (!stuck) {// a bool to check if we have hit something
         // if (gameLive === false) {// a bool to check if the game is running or not
@@ -296,10 +317,31 @@ var playState = {
     }
     //detect hole collision
     game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
+    game.physics.arcade.overlap(block, car, this.wall, this.checkWallRespawnTime, this);
     //
      // game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
-},// end update()
+    // sheildCenterX = (heatSheild.width/2);
+    // sheildCenterY = (heatSheild.width/2);
+    // carCentreX
+    // sheildOfsetX = sheildCenterX - (carCentreX+car.x);
+    // sheildOfsetY = sheildCenterY - carCentreY;
+     // heatSheild.x = (car.x + carCentreX ) - sheildCenterX;
+     // heatSheild.x = (car.x + 75 ) - sheildCenterX;
+     // heatSheild.y = (car.y + 75 ) - sheildCenterY;
+    // console.log("car.x = "+car.x);
+    // console.log("sheildCenterX = "+sheildCenterX);
+    // console.log("sheildOfsetX "+sheildOfsetX);
+    // console.log("heatSheild.x= "+heatSheild.x);
+    // console.log("car.width= "+car.width/2);
+     // console.log("car.centerX-heatSheild.centerX= "+car.body.centerX-heatSheild.body.centerX);
+     //
+},
+// ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// END UPDATE
+// ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
   drawHud: function() {
     // console.log("drawHud()  called");
@@ -359,6 +401,8 @@ var playState = {
     scoreText.setText( score );
     hexgrid.tilePosition.y += adjustedRate ;
     holesGroup.y += adjustedRate  ;
+    blockGroup.y += adjustedRate  ;
+
 
   },
   mainTick: function(){
@@ -403,6 +447,13 @@ var playState = {
       }
 
     }
+
+
+
+
+
+  },
+  messageUpdate: function(){
     if (currentTemp>= mess1Thesh && !mesFlag1){
       mesFlag1= true;
       textScroller(0);
@@ -415,22 +466,17 @@ var playState = {
       mesFlag3= true;
       textScroller(2);
     }
-
-    // switch (currentTemp) {
-    //   case 50 :
-    //     textScroller(0);
-    //     break;
-    //   case meltingPointOfLead:
-    //     textScroller(1);
-    //     break;
-    //   case meltingPointOfSilver:
-    //     textScroller(0);
-    //     break;
-    //   default:textScroller(0);
+  },
+  sheildUpdate: function(){
+    sheildCenterX = (heatSheild.width/2);
+    sheildCenterY = (heatSheild.width/2);
+    heatSheild.x = (car.x + 75 ) - sheildCenterX;
+    heatSheild.y = (car.y + 75 ) - sheildCenterY;
     //
-    // }
-
-
+    if(sheildScale >= 0){
+      sheildScale -= 0.01;
+      heatSheild.scale.setTo(sheildScale, sheildScale);
+    }
   },
   gameTick: function() {
     if(!phaseShift){
@@ -444,9 +490,12 @@ var playState = {
    }
   },
   secondTick: function(){
-    game.time.events.add(Phaser.Timer.SECOND * 0.1, this.secondTick, this);
+    //This is our 12 frame per second timer  
+    game.time.events.add(Phaser.Timer.SECOND * 0.12, this.secondTick, this);
     // console.log("secondTick");
     this.heat();
+    this.messageUpdate();
+    this.sheildUpdate();
   },
   secondHeat:function(){
     // console.log("secondHeat");
@@ -495,11 +544,18 @@ var playState = {
     endmessage1.setText(endMessage1);
     endmessage2.setText(endMessage3);
     game.time.events.add(Phaser.Timer.SECOND * 5, gameOver, this);
+  },
+   wall: function(){
+    console.log("wall");
+    car.body.velocity.x += drift;// smooth
+  },
+  checkWallRespawnTime: function(){
+    console.log("checkWallRespawnTime");
   }
 
 }; //end of playstate
 function crash(coH, coC) {
-  if(holeFull==false){
+  if(holeFull===false){
     holeFull=true;
     // if (!stuck) {
     //
@@ -635,8 +691,8 @@ function updateLine() {
 }
 
 
-function render() {
-
-     game.debug.geom(scrollingText.textBounds);
-
-}
+// function render() {
+//
+//      game.debug.geom(scrollingText.textBounds);
+//
+// }

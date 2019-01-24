@@ -1,6 +1,7 @@
 
-var gameBuild = "build 2.0"; //
+var gameBuild = "build 2.1"; //
 var testing = false;//  a bool used to switch between testing and production mode
+console.log("testing = "+testing);
     ///var hexgrid;
     var hole;//this will be the baddie
     //swap in and out the url string for the different enviroments
@@ -316,6 +317,7 @@ var noOfBreaks;// how many differetn animations  do we want for the temp
 //
 var heatSheild;
 var heatSheildMeter;
+var sheildScale =1;
 var emitter;
 var phaseShift =false;// have we got to melting point yet?
 //
@@ -328,3 +330,9 @@ var mp = false; //
 //
 var fullTimeS;// this  is here we will store teh total number of seconds needed to count to a million at our clickrate
 //
+var carCentreX ;
+var carCentreY ;
+var sheildCenterX;
+var sheildCenterY;
+var sheildOfsetX;
+var sheildOfsetY
