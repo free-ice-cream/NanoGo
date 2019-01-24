@@ -1,37 +1,27 @@
 var playState = {
   create: function() {
-
     //set up the graffic assets
     //set the background hexgrid
     // set the track and mode
     if(trackselection === 1){
       // the next line creates  the tilesprite bg
-      // var hexSprite =
       hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'graphene');
-      hexgrid.animations.add("cool",[0,1,3],2,true);
-      hexgrid.animations.add("warm",[0,1,2,3,4],4,true);
-      hexgrid.animations.add("hot",[4,5,6,7,8,9,10],12,true);
-      hexgrid.animations.play("cool");
-      // friction = warm;
       friction = cold;
       drift *= friction;
       //TODO check the use if friction
       trackMeltingPoint= meltingPointOfGraphene;
     }else if(trackselection === 2){
-      // hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'icehex');
       hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'silver');
-      hexgrid.animations.add("cool",[0,1,3],2,true);
-      hexgrid.animations.add("warm",[0,1,2,3,4],4,true);
-      hexgrid.animations.add("hot",[4,5,6,7,8,9,10],12,true);
-      hexgrid.animations.play("cool");
-      //
       friction = cold;
       drift *= friction;
       trackMeltingPoint = meltingPointOfSilver;
-      // console.log("drift = "+drift);
     }else{
       console.log("CRASH - no track");
     }
+    hexgrid.animations.add("cool",[0,1,3],2,true);
+    hexgrid.animations.add("warm",[0,1,2,3,4],4,true);
+    hexgrid.animations.add("hot",[4,5,6,7,8,9,10],12,true);
+    hexgrid.animations.play("cool");
     //
     //Set teh drift (lateral speed ) based on car selection
     if(carType === 1){
@@ -52,8 +42,14 @@ var playState = {
     hole = holesGroup.create(50, 50, 'hole');
     hole.body.x = holeX[currHole];
     //
-    //
+    //Power Ups
+    powerGroup = game.add.group();
+    powerGroup.enableBody = true;
+    bluePowerUp = powerGroup.create(200, -200, 'blue-power-up');
+    bluePowerUp.body.immovable = true;
+
     // remove comments to return block
+    //blocks - these will be the step shifts
     // blockGroup = game.add.group();
     // blockGroup.enableBody = true;
     // block = blockGroup.create(0, 0, 'block');
@@ -63,8 +59,8 @@ var playState = {
     //and the heatsheild
     heatSheild= game.add.sprite(0,0,'heatsheild');
     heatSheildMeter= game.add.sprite(690,50,'heatsheildmeter');
-    heatSheild.alpha = 0;
-    heatSheildMeter.alpha = 0;
+    heatSheild.alpha = 0.5;
+    heatSheildMeter.alpha = 0.7;
 
     //Create teh car
     if(carType===2){
@@ -74,55 +70,30 @@ var playState = {
       car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar');//CAR START POS
       // console.log("how many?");
     }
-
-    // car.alpha = 0;
     //
     var smlLogo = game.add.sprite(10, 10, 'logo');
     smlLogo.scale.setTo(0.5, 0.5);
     //
-    //Lets make some graphics
-    // the main hud background
-    //
-    hudTop = game.world.height - hudOffset;
-    hudLeft = 0;
-    hudRight = game.world.width;
-    hudBot = game.world.height;
-    //
-    hud = new Phaser.Polygon();
-    hud.setTo([new Phaser.Point(hudLeft, hudTop), new Phaser.Point(hudRight, hudTop), new Phaser.Point(hudRight, hudBot), new Phaser.Point(hudLeft, hudBot)]);
-    // game over background
-    gObg = new Phaser.Polygon();
-    gObg.setTo([new Phaser.Point(goLeft, goTop), new Phaser.Point(goRight, goTop), new Phaser.Point(goRight, goBot), new Phaser.Point(goLeft, goBot)]);
-    // gObg.setTo([ new Phaser.Point(100, 100), new Phaser.Point(700, 100), new Phaser.Point(700, 100), new Phaser.Point(100, 100) ]);
-    // game start gb
-    gStart = new Phaser.Polygon();
-    gStart.setTo([new Phaser.Point(gsLeft, gsTop), new Phaser.Point(gsRight, gsTop), new Phaser.Point(gsRight, gsBot), new Phaser.Point(gsLeft, gsBot)]);
-    //
 
     emitter = game.add.emitter(game.world.centerX, 0, 400);
     //
-    //and the new hud
+    //add the new hud
     //
     hudback = game.add.sprite(0, 491, 'instrument_back');
-    // scrollingText = this.add.text(12, game.world.height - hudOffset + 20, scollingTextCopy1, scrollingGreen );
     scrollingText = this.add.text(0,0, scollingTextCopy1, scrollingGreen );
-    // scrollingText.setTextBounds(12, 534, 380, 591);
     scrollingText.setTextBounds(12, 540, 368, 57);
     newHud = game.add.sprite(0, 491, 'instrument');
-
-
-
-
     //
     //Set some properties
     //
-    //
+    this.setLives();
     game.physics.arcade.enable(car);
     car.body.bounce.y = carBounce;
     car.body.gravity.y = carGrav; // CURR SWITCHED OFF
     car.body.collideWorldBounds = true;
     //
     game.physics.arcade.enable(hole);
+    game.physics.arcade.enable(bluePowerUp);
     // remove comments to return block
     // game.physics.arcade.enable(block);
 
@@ -147,55 +118,40 @@ var playState = {
     car.animations.add('crash', [9, 10, 11], 60, true);
     car.animations.add('spawn', [0, 12], 12, true);
     hole.animations.add('fizz', [0, 1, 2, 3, 4], 20, true);
+    bluePowerUp.animations.add('freeze', [0, 1, 2, 3, 4,5], 20, true);
+    //
     //TEXT
-    // this.drawHud();
-    this.setLives();
-
-    // clockX = game.world.width - 120;
-    // clockY = game.world.height - 100;
+    //
     scoreText = this.add.text(410, game.world.height - hudOffset + 40, scoreText, screen18green);
     clockText = this.add.text(521, game.world.height - hudOffset + 40, currentTemp, screen18green);// now the temperature
     siText = this.add.text(580, game.world.height - hudOffset + 40, tempScaleName, screen18green);
     siNm = this.add.text(460, game.world.height - hudOffset + 40, si, screen18green);
-    // scrollingText = this.add.text(30, game.world.height - hudOffset + 20, scollingTextCopy1, scrollingGreen );
     endmessage1 = this.add.text(200, 150 , "", main56);
     endmessage2 = this.add.text(130, 250 , "", thin28white);
-    //game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
-
-    // var hitPlatform = game.physics.arcade.collide(car, platforms);
+    //
     platforms.alpha = 1;
     hole.animations.play('fizz', true);
-    // cursors.up.onDown.add(this.playFx("rev")); // is this double damage here?
-    // cursors.down.onDown.add(this.playFx("rev"));
+    bluePowerUp.animations.play('freeze', true);
     //
-
     scaleToggle = game.add.sprite(699,512, 'tiny-toggle');
     //
     scaleToggle.inputEnabled=true;
     scaleToggle.events.onInputDown.add(this.toggle, this);
-    // scaleToggle.events.onInputOver.add(this.reshover,this);
-    // rscaleToggle.events.onInputOut.add(this.resout,this);
-    //
+
     this.mainTick();
     this.secondTick();
-    // carXpos = car.body.x;
-    // carYpos = car.body.y;
-    // car.body.drag.x=400;
-    // car.body.drag.y=400;
     try{
       bassLoop.stop();
     }catch(e){
       console.log("e ="+e);
     }
-    //TEmp Breaks
-    noOfBreaks = 10;
-    console.log("trackMeltingPoint = "+trackMeltingPoint);
+    //Temp Breaks
     for(i=0; i<= noOfBreaks-1 ; i++){
       tempBreaks[i] = (trackMeltingPoint/ noOfBreaks) * (i+1) ;
     }
-
     //
-    // test mode
+    // test mode settings
+    //
     if(testing){
       trackMeltingPoint = 500;
       tempIncrement = 100;
@@ -203,12 +159,9 @@ var playState = {
     }
     //
     spawnCar();
-
-
+    //
     carCentreX = car.width/2;
     carCentreY = car.height/2;
-    console.log("carCentreX= "+carCentreX);
-
   },
   // ---------------------------------------------------------------------------------------------------------------
   // ---------------------------------------------------------------------------------------------------------------
@@ -223,6 +176,11 @@ var playState = {
     }
     // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
+    game.physics.arcade.collide(car, powerGroup);
+    //
+    //detect hole collision
+    game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
+    game.physics.arcade.overlap(bluePowerUp, car, this.sheildUp, this.otherSheildCallback,this);
     // remove comments to return block
     // game.physics.arcade.collide(car, block);
 
@@ -307,9 +265,11 @@ var playState = {
         currHole = 0;
       }
 
+    }if(bluePowerUp.body.y >= game.world.height+150){
+      bluePowerUp.body.y = sheildRespawnBase;
+      bluePowerUp.body.x = holeRandomiser();
     }
-    //detect hole collision
-    game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
+
     // remove comments to return block
     // game.physics.arcade.overlap(block, car, this.wall, this.checkWallRespawnTime, this);
     //
@@ -380,7 +340,8 @@ var playState = {
     // scoreText.setText(displayText + score + si);
     scoreText.setText( score );
     hexgrid.tilePosition.y += adjustedRate ;
-    holesGroup.y += adjustedRate  ;
+    holesGroup.y += adjustedRate;
+    powerGroup.y += adjustedRate;
     // remove comments to return block
     // blockGroup.y += adjustedRate  ;
 
@@ -399,7 +360,8 @@ var playState = {
     if( currentTemp < trackMeltingPoint){
       var ent2 = (currentTemp * Math.random().toFixed())/ tempEffectX;
       var ent3 = (currentTemp * Math.random().toFixed())/ tempEffectY;
-
+      ent2 *= (1 - sheildScale);
+      ent3 *= (1 - sheildScale);
       // car.x += tempBoox ?  ent2 * -1 :  ent2;
       car.body.velocity.x += tempBoox ?  ent2 * -1 :  ent2;
       tempBoox = !tempBoox;
@@ -428,11 +390,6 @@ var playState = {
       }
 
     }
-
-
-
-
-
   },
   messageUpdate: function(){
     if (currentTemp>= mess1Thesh && !mesFlag1){
@@ -455,9 +412,21 @@ var playState = {
     heatSheild.y = (car.y + 75 ) - sheildCenterY;
     //
     if(sheildScale >= 0){
-      sheildScale -= 0.01;
+      sheildScale -= sheildDeminishRate;
       heatSheild.scale.setTo(sheildScale, sheildScale);
+      heatSheildMeter.scale.setTo(sheildScale, 1);
     }
+  },
+  sheildUp: function(){
+    sheildScale = 1;
+    car.body.velocity.x = 0;
+    car.body.velocity.y = 0;
+
+    bluePowerUp.y = sheildRespawnBase;
+    bluePowerUp.body.x = holeRandomiser();
+  },
+  otherSheildCallback: function(){
+    console.log("WT Fun");
   },
   gameTick: function() {
     if(!phaseShift){
@@ -477,7 +446,7 @@ var playState = {
     this.heat();
     this.messageUpdate();
     // uncomment this to return the heatcheild - also set its alpha back to  0.5
-    // this.sheildUpdate();
+     this.sheildUpdate();
   },
   secondHeat:function(){
     // console.log("secondHeat");
@@ -539,9 +508,6 @@ var playState = {
 function crash(coH, coC) {
   if(holeFull===false){
     holeFull=true;
-    // if (!stuck) {
-    //
-    // }
     //create a car in the space of crash TODO adjust this so that it is in the right place.
     if(carType==1){
       var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
@@ -671,10 +637,3 @@ function updateLine() {
     // }
 
 }
-
-
-// function render() {
-//
-//      game.debug.geom(scrollingText.textBounds);
-//
-// }

@@ -1,5 +1,5 @@
 
-var gameBuild = "build 2.2"; //
+var gameBuild = "build 2.3"; //
 var testing = false;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;
@@ -315,7 +315,7 @@ var scaleDiff =0; // a place to reference teh diffeence between k and c updated 
 //
 // Temperature break points
 var tempBreaks= [];
-var noOfBreaks;// how many differetn animations  do we want for the temp
+var noOfBreaks = 10;// how many differetn animations  do we want for the temp
 //
 var heatSheild;
 var heatSheildMeter;
@@ -337,4 +337,6 @@ var carCentreY ;
 var sheildCenterX;
 var sheildCenterY;
 var sheildOfsetX;
-var sheildOfsetY
+var sheildOfsetY;
+var sheildDeminishRate = 0.01;
+var sheildRespawnBase = -2000;
