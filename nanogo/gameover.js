@@ -3,15 +3,16 @@ var gameover = {
     console.log("State =gameover ");
     console.log("gameDuration = "+gameDuration);
     console.log("gameTime = "+gameTime);
-    var topbanner = game.add.sprite(0,0, 'greenheadbg');
-      restartButt = game.add.sprite(586,410, 'restart');
+    // var topbanner = game.add.sprite(0,0, 'greenheadbg');
+    var newEnd = game.add.sprite(0,0, 'endscreen');
+      restartButt = game.add.sprite(386,410, 'restart');
       //
       restartButt.inputEnabled=true;
       restartButt.events.onInputDown.add(this.ressel, this);
       restartButt.events.onInputOver.add(this.reshover,this);
       restartButt.events.onInputOut.add(this.resout,this);
       //
-      alarmButt = game.add.sprite(25,410, 'alarm');
+      alarmButt = game.add.sprite(586,410, 'alarm');
       //
       alarmButt.inputEnabled=true;
       alarmButt.events.onInputDown.add(this.alarmsel, this);
@@ -26,6 +27,13 @@ endlich = game.add.audio('endlich');
 endlich.loopFull();
 
   },
+  // ---------------------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------------------------------------
+  // END CREATE
+  // ---------------------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------------------------------------
+
+
   update: function(){
 
   },
@@ -52,12 +60,12 @@ endlich.loopFull();
     //
     //this.(fullTimeS);
 
-    goT = this.add.text(5, 8, goTitle, main28white);
+    // goT = this.add.text(5, 8, goTitle, main28white);
     console.log("spentTime= "+spentTime);
     console.log("gameTime= "+gameTime);
-    goTo1=this.add.text(30,83,goto1a+score+goto1b+spentTime+goto1c+roundedCicks+goto1d,first18greenc);
-    goTo2=this.add.text(30,155,goto2a+fini+goto2c,first18greenc);
-    goTo3 = this.add.text(30,255,goto3,main18bluec );
+    goTo1=this.add.text(40,187,goto1a+score+goto1b+spentTime+goto1c+roundedCicks+goto1d,collumOne);
+    goTo2=this.add.text(40,355,goto2a+fini+goto2c,collumOne);
+    goTo3 = this.add.text(418,53,goto3,collumTwo);
 
     // distanceTraveled = game.add.text( 236,240,score+si, endStyle);
     // timeTaken = game.add.text(439,240, gameDuration - gameTime+"s", endStyle);

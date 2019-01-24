@@ -28,6 +28,8 @@ var loadState = {
     //more graphic assets
     //start screen
     game.load.image('logo', ficurl+'assets/Nano Go Logo v1.png');
+    //
+    game.load.image('endscreen', ficurl+'assets/new-end.png');
     // game.load.image('logo', ficurl+'assets/Nano Go Logo v1.png');
     // game.load.image('startbut1', ficurl+'assets/Start pt1.png');
     // game.load.image('startbut2', ficurl+'assets/Start pt2.png');

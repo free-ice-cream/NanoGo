@@ -1,5 +1,5 @@
 
-var gameBuild = "build 2.1"; //
+var gameBuild = "build 2.2"; //
 var testing = false;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;
@@ -217,6 +217,8 @@ console.log("testing = "+testing);
    var main18bluec ={font: ' 17pt Consolas', fill: '#1E3CDC', align:'left', wordWrap: true, wordWrapWidth: 750 };
    var screen18green ={font: ' 18pt ChintzyCPUBRK', fill: '#3BFC34', align:'right', wordWrap: true, wordWrapWidth: 600 };
    var scrollingGreen ={font: ' 28pt ChintzyCPUBRK', fill: '#3BFC34', boundsAlignH: "right", wordWrap: false, wordWrapWidth: 368 };
+    var collumOne ={font: ' 16pt Consolas', fill: 'green', align:'left', wordWrap: true, wordWrapWidth: 350 };// endscreen collumn 1
+    var collumTwo ={font: ' 17pt Consolas', fill: '#1E3CDC', align:'left', wordWrap: true, wordWrapWidth: 350};// endscreen collum 2
    //
    //
    // var main32 ={font: ' 32pt ChintzyCPUBRK', fill: var(--overbrightgreen), align:'left', wordWrap: true, wordWrapWidth: 650 };

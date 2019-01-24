@@ -53,17 +53,18 @@ var playState = {
     hole.body.x = holeX[currHole];
     //
     //
-    blockGroup = game.add.group();
-    blockGroup.enableBody = true;
-    block = blockGroup.create(0, 0, 'block');
-    block.body.x = 0;
-    block.body.immovable = true;
-
+    // remove comments to return block
+    // blockGroup = game.add.group();
+    // blockGroup.enableBody = true;
+    // block = blockGroup.create(0, 0, 'block');
+    // block.body.x = 0;
+    // block.body.immovable = true;
+    //
     //and the heatsheild
     heatSheild= game.add.sprite(0,0,'heatsheild');
     heatSheildMeter= game.add.sprite(690,50,'heatsheildmeter');
-    heatSheild.alpha = 0.5;
-    heatSheildMeter.alpha = 0.5;
+    heatSheild.alpha = 0;
+    heatSheildMeter.alpha = 0;
 
     //Create teh car
     if(carType===2){
@@ -122,7 +123,8 @@ var playState = {
     car.body.collideWorldBounds = true;
     //
     game.physics.arcade.enable(hole);
-    game.physics.arcade.enable(block);
+    // remove comments to return block
+    // game.physics.arcade.enable(block);
 
     //lets add some AUDIO
     rev = game.add.audio('rev');
@@ -221,19 +223,10 @@ var playState = {
     }
     // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
-    game.physics.arcade.collide(car, block);
-    // game.physics.arcade.collide(car, emitter);
-      // if (!stuck) {// a bool to check if we have hit something
-        // if (gameLive === false) {// a bool to check if the game is running or not
-        //   car.scale.setTo(2, 2);
-        //   car.alpha = 1;
-        //   game.add.tween(car.scale).to({
-        //     x: 1,
-        //     y: 1
-        //   }, 2000, Phaser.Easing.Bounce.Out, true);
-        //   gameLive = true;
-        // //  this.mainTick();
-        // }
+    // remove comments to return block
+    // game.physics.arcade.collide(car, block);
+
+
     //SIDEWAYS
     // phase transition from here
     if(gameLive){// this should prevent us from moving further once the track melts
@@ -317,25 +310,12 @@ var playState = {
     }
     //detect hole collision
     game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
-    game.physics.arcade.overlap(block, car, this.wall, this.checkWallRespawnTime, this);
+    // remove comments to return block
+    // game.physics.arcade.overlap(block, car, this.wall, this.checkWallRespawnTime, this);
     //
      // game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
-    // sheildCenterX = (heatSheild.width/2);
-    // sheildCenterY = (heatSheild.width/2);
-    // carCentreX
-    // sheildOfsetX = sheildCenterX - (carCentreX+car.x);
-    // sheildOfsetY = sheildCenterY - carCentreY;
-     // heatSheild.x = (car.x + carCentreX ) - sheildCenterX;
-     // heatSheild.x = (car.x + 75 ) - sheildCenterX;
-     // heatSheild.y = (car.y + 75 ) - sheildCenterY;
-    // console.log("car.x = "+car.x);
-    // console.log("sheildCenterX = "+sheildCenterX);
-    // console.log("sheildOfsetX "+sheildOfsetX);
-    // console.log("heatSheild.x= "+heatSheild.x);
-    // console.log("car.width= "+car.width/2);
-     // console.log("car.centerX-heatSheild.centerX= "+car.body.centerX-heatSheild.body.centerX);
-     //
+
 },
 // ---------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------
@@ -401,7 +381,8 @@ var playState = {
     scoreText.setText( score );
     hexgrid.tilePosition.y += adjustedRate ;
     holesGroup.y += adjustedRate  ;
-    blockGroup.y += adjustedRate  ;
+    // remove comments to return block
+    // blockGroup.y += adjustedRate  ;
 
 
   },
@@ -490,12 +471,13 @@ var playState = {
    }
   },
   secondTick: function(){
-    //This is our 12 frame per second timer  
+    //This is our 12 frame per second timer
     game.time.events.add(Phaser.Timer.SECOND * 0.12, this.secondTick, this);
     // console.log("secondTick");
     this.heat();
     this.messageUpdate();
-    this.sheildUpdate();
+    // uncomment this to return the heatcheild - also set its alpha back to  0.5
+    // this.sheildUpdate();
   },
   secondHeat:function(){
     // console.log("secondHeat");
