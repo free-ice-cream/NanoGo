@@ -103,6 +103,7 @@ var playState = {
     holeDeath = game.add.audio('death');
     gameOverChime = game.add.audio('win');
     swipe = game.add.audio('swipe');
+    powerUpBlips = game.add.audio('power-up-blips');
     mainTheme.loopFull(0.8);
     //
     // Get keyboard input
@@ -421,7 +422,7 @@ var playState = {
     sheildScale = 1;
     car.body.velocity.x = 0;
     car.body.velocity.y = 0;
-
+    powerUpBlips.play();
     bluePowerUp.y = sheildRespawnBase;
     bluePowerUp.body.x = holeRandomiser();
   },

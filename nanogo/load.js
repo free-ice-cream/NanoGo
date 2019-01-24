@@ -59,6 +59,7 @@ var loadState = {
   game.load.audio('bass-loop','assets/bass-loop2.mp3')
   game.load.audio('endlich', 'assets/endlich_v3.mp3');
   game.load.audio('swipe', 'assets/car-3.mp3');
+  game.load.audio('power-up-blips', 'assets/power-up-blips.mp3');
   //
 
   },
