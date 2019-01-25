@@ -1,6 +1,6 @@
 
-var gameBuild = "build 2.4"; //
-var testing = true;//  a bool used to switch between testing and production mode
+var gameBuild = "build 2.5"; //
+var testing = false;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;
     var hole;//this will be the baddie
@@ -360,3 +360,13 @@ var sheildOfsetX;
 var sheildOfsetY;
 var sheildDeminishRate = 0.005;
 var sheildRespawnBase = -3000;
+//
+var outRig1;// vars for the outriggers
+var outRig2;
+var outRig3;
+var outRig4;
+var outFramNo = 0;
+var outBool1 =false;// are they active
+var outBool2 =false;
+var outBool3 =false;
+var outBool4 =false;

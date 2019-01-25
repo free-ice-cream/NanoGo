@@ -57,10 +57,18 @@ var playState = {
     // block.body.immovable = true;
     //
     //and the heatsheild
-    heatSheild= game.add.sprite(0,0,'heatsheild');
+    // heatSheild= game.add.sprite(0,0,'heatsheild');
     heatSheildMeter= game.add.sprite(690,50,'heatsheildmeter');
-    heatSheild.alpha = 0.5;
+    // heatSheild.alpha = 0.5;
     heatSheildMeter.alpha = 0.7;
+    heatSheildMeter.scale.setTo(0, 1);
+    //
+    outRiggers = game.add.group();
+    outRiggers.enableBody = true;
+    outRig1 = outRiggers.create(-200,-200,'outrigger');
+    outRig2 = outRiggers.create(-200,-200,'outrigger');
+    outRig3 = outRiggers.create(-200,-200,'outrigger');
+    outRig4 = outRiggers.create(-200,-200,'outrigger');
 
     //Create teh car
     if(carType===2){
@@ -120,6 +128,7 @@ var playState = {
     car.animations.add('spawn', [0, 12], 12, true);
     hole.animations.add('fizz', [0, 1, 2, 3, 4], 20, true);
     bluePowerUp.animations.add('freeze', [0, 1, 2, 3, 4,5], 20, true);
+    // outRigger.animations.add("rotate",[0,1,2,3,4,5,6,7,8,9],20,true);
     //
     //TEXT
     //
@@ -219,7 +228,8 @@ var playState = {
         if (cursors.up.isDown) {
           // console.log("frame= "+car.frame);
          if (!upTog) {
-            this.moveIt(1);
+            this.moveTiles(1);
+            this.moveWheels(1);
             this.playFx("rev");
             // car.body.velocity.y -= drift;//TODO Remove me
             if(frameNo<=carLoopLength-1){
@@ -239,7 +249,8 @@ var playState = {
         if (cursors.down.isDown) {
 
          if (!downTog) {
-            this.moveIt(-1);
+            this.moveTiles(-1);
+            this.moveWheels(-1);
             this.playFx("rev");
             // car.body.velocity.y += drift;//TODO Remove me
             downTog=true;
@@ -331,13 +342,10 @@ var playState = {
   spawnHole: function() {
     hole = game.add.sprite(50, 50, 'hole');
   },
-  moveIt: function(d){
-
-    // score += d * friction;
+  moveTiles: function(d){
     score += d ;
     var adjustedRate = tileRate * d * friction;
     var adjustedRate = tileRate * d;
-                            // carXpos
     // scoreText.setText(displayText + score + si);
     scoreText.setText( score );
     hexgrid.tilePosition.y += adjustedRate ;
@@ -345,8 +353,25 @@ var playState = {
     powerGroup.y += adjustedRate;
     // remove comments to return block
     // blockGroup.y += adjustedRate  ;
-
-
+  },
+  moveWheels: function(d){
+    if(outFramNo < 9 && outFramNo >=0){
+    outRig1.frame +=d;
+    outRig2.frame +=d;
+    outRig3.frame +=d;
+    outRig4.frame +=d;
+  }else{
+    outFramNo = 0
+  }
+    // var adjustedRate = tileRate * d * friction;
+    // var adjustedRate = tileRate * d;
+    // scoreText.setText(displayText + score + si);
+    // scoreText.setText( score );
+    // hexgrid.tilePosition.y += adjustedRate ;
+    // holesGroup.y += adjustedRate;
+    // powerGroup.y += adjustedRate;
+    // remove comments to return block
+    // blockGroup.y += adjustedRate  ;
   },
   mainTick: function(){
     // console.log("mainTick");
@@ -354,7 +379,7 @@ var playState = {
     // game.time.events.add(true, this.mainTick, this);
     this.gameTick();
     //this.heat();
-    // this.moveIt(1);
+    // this.moveTiles(1);
   },
   heat: function(){
 
@@ -416,22 +441,91 @@ var playState = {
     }
   },
   sheildUpdate: function(){
-    sheildCenterX = (heatSheild.width/2);
-    sheildCenterY = (heatSheild.width/2);
-    heatSheild.x = (car.x + 75 ) - sheildCenterX;
-    heatSheild.y = (car.y + 75 ) - sheildCenterY;
+    // sheildCenterX = (heatSheild.width/2);
+    // sheildCenterY = (heatSheild.width/2);
+    // heatSheild.x = (car.x + 75 ) - sheildCenterX;
+    // heatSheild.y = (car.y + 75 ) - sheildCenterY;
     //
-    if(sheildScale >= 0){
+    if(sheildScale > 0){
       sheildScale -= sheildDeminishRate;
-      heatSheild.scale.setTo(sheildScale, sheildScale);
+      // heatSheild.scale.setTo(sheildScale, sheildScale);
       heatSheildMeter.scale.setTo(sheildScale, 1);
+      //
+      if(sheildScale < 0.75 && outBool1){
+        outBool1 = false;
+        velocityRandomiser(outRig1);
+      }
+      if(sheildScale < 0.5 && outBool2){
+        outBool2 = false;
+        velocityRandomiser(outRig2);
+      }
+      if(sheildScale < 0.25 && outBool3){
+        outBool3 = false;
+        velocityRandomiser(outRig3);
+      }
+      if(sheildScale < 0.05 && outBool4){
+        outBool4 = false;
+        velocityRandomiser(outRig4);
+      }
+      if(outBool1){
+        outRig1.x = car.x - 40;
+        outRig1.y = car.y + 50;
+      }
+      // else {
+      //   outRig1.body.velocity.x=velocityRandomiser();
+      //   outRig1.body.velocity.y=velocityRandomiser();
+      // }
+
+      //
+      if(outBool2){
+      outRig2.x = car.x +60;
+      outRig2.y = car.y - 60;
     }
+    // else{
+    //   outRig2.body.velocity.x=velocityRandomiser();
+    //   outRig2.body.velocity.y=velocityRandomiser();
+    // }
+      //
+      if(outBool3){
+      outRig3.x = car.x +150;
+      outRig3.y = car.y+50;
+    }
+    // else{
+    //   outRig3.body.velocity.x=velocityRandomiser();
+    //   outRig3.body.velocity.y=velocityRandomiser();
+    // }
+      //
+      if(outBool4){
+      outRig4.x = car.x + 60;
+      outRig4.y = car.y + 150;
+    }
+    // else{
+    //   outRig4.body.velocity.x=velocityRandomiser();
+    //   outRig4.body.velocity.y=velocityRandomiser();
+    // }
+      //
+    }
+
+
   },
   sheildUp: function(){
     sheildScale = 1;
     car.body.velocity.x = 0;
     car.body.velocity.y = 0;
     powerUpBlips.play();
+    outBool1 = true;
+    outBool2 = true;
+    outBool3 = true;
+    outBool4 = true;
+    //
+    outRig1.body.velocity.x=0;
+    outRig1.body.velocity.y=0;
+    outRig2.body.velocity.x=0;
+    outRig2.body.velocity.y=0;
+    outRig3.body.velocity.x=0;
+    outRig3.body.velocity.y=0;
+    outRig4.body.velocity.x=0;
+    outRig4.body.velocity.y=0;
   },
   movePowerUp: function(){
     bluePowerUp.y = sheildRespawnBase;
@@ -536,6 +630,7 @@ function crash(coH, coC) {
       car.alpha = 0;
     }
   }
+//  sheildScale = 0;// add this back in to lose heatsheild on crash
 }
 
 function spawnCar() {
@@ -608,6 +703,23 @@ function spriteRandomiser() {
     n = pad;
   }
   return n;
+}
+function velocityRandomiser(sprite) {
+
+  var a =  playState.getRandomInt(10);
+  var b =  playState.getRandomInt(10);
+  var n = playState.getRandomInt(800);
+  var m = playState.getRandomInt(800);
+
+  if(a <= 5){
+     n *= -1 ;
+  }
+  if(b <= 5){
+     m *= -1 ;
+  }
+  sprite.body.velocity.x=n;
+  sprite.body.velocity.y=m;
+
 }
 function textScroller(messNo){
    // scrollingText.setText(text);

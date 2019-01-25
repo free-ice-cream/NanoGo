@@ -50,6 +50,7 @@ var loadState = {
     game.load.spritesheet('car', 'assets/car7-spritesheet-v3.png', 150, 150);
     game.load.spritesheet('hole','assets/holes100px.png', 100,100);
     game.load.spritesheet('blue-power-up','assets/blue-power-up.png', 30,30);
+    game.load.spritesheet('outrigger','assets/outrigger_v2.png', 30, 30);
     //paritcle timeout
     game.load.spritesheet('matrix', 'assets/sliver_v1.png', 110, 100);
     game.load.spritesheet('atoms', 'assets/blackatoms_v1.png', 9, 9);
