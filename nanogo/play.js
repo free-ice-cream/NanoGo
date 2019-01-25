@@ -45,7 +45,7 @@ var playState = {
     //Power Ups
     powerGroup = game.add.group();
     powerGroup.enableBody = true;
-    bluePowerUp = powerGroup.create(200, -200, 'blue-power-up');
+    bluePowerUp = powerGroup.create(-200, -200, 'blue-power-up');
     bluePowerUp.body.immovable = true;
 
     // remove comments to return block
@@ -154,7 +154,7 @@ var playState = {
     // test mode settings
     //
     if(testing){
-      trackMeltingPoint = 500;
+      trackMeltingPoint = 5000;
       tempIncrement = 100;
       audioLive = false;
     }
@@ -181,7 +181,7 @@ var playState = {
     //
     //detect hole collision
     game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
-    game.physics.arcade.overlap(bluePowerUp, car, this.sheildUp, this.otherSheildCallback,this);
+    game.physics.arcade.overlap(bluePowerUp, car, this.sheildUp, this.movePowerUp,this);
     // remove comments to return block
     // game.physics.arcade.collide(car, block);
 
@@ -259,7 +259,7 @@ var playState = {
     if (hole.body.y >= game.world.height) {
       holeFull=false;
       hole.body.y = holeYstart;
-      hole.body.x = holeRandomiser();
+      hole.body.x = spriteRandomiser();
       currHole++;
       if (currHole == 5) {
 
@@ -268,7 +268,7 @@ var playState = {
 
     }if(bluePowerUp.body.y >= game.world.height+150){
       bluePowerUp.body.y = sheildRespawnBase;
-      bluePowerUp.body.x = holeRandomiser();
+      bluePowerUp.body.x = spriteRandomiser();
     }
 
     // remove comments to return block
@@ -359,6 +359,7 @@ var playState = {
   heat: function(){
 
     if( currentTemp < trackMeltingPoint){
+      // introduce a little entropy
       var ent2 = (currentTemp * Math.random().toFixed())/ tempEffectX;
       var ent3 = (currentTemp * Math.random().toFixed())/ tempEffectY;
       ent2 *= (1 - sheildScale);
@@ -379,7 +380,15 @@ var playState = {
           lasti=i;
         }
       }
-      hexgrid.frame= this.getRandomInt(lasti);
+      var frameH = this.getRandomInt(lasti);
+      // console.log("1 hexgrid.frame: frameH = "+hexgrid.frame+" "+frameH);
+      //
+      //update the frame to a random frame check to see if this is our durrent frame add 1 if so
+      //TODO this seems to output the occasional unexplainable frame no. ?
+      hexgrid.frame =  hexgrid.frame === frameH ? frameH + 1: frameH;
+      // console.log("2 hexgrid.frame: frameH = "+hexgrid.frame+" "+frameH);
+
+
       // console.log("cur frame = "+hexgrid.frame);
       // console.log("random int 3 = "+ this.getRandomInt(3));
     } else{
@@ -423,11 +432,10 @@ var playState = {
     car.body.velocity.x = 0;
     car.body.velocity.y = 0;
     powerUpBlips.play();
-    bluePowerUp.y = sheildRespawnBase;
-    bluePowerUp.body.x = holeRandomiser();
   },
-  otherSheildCallback: function(){
-    console.log("WT Fun");
+  movePowerUp: function(){
+    bluePowerUp.y = sheildRespawnBase;
+    bluePowerUp.body.x = spriteRandomiser();
   },
   gameTick: function() {
     if(!phaseShift){
@@ -592,7 +600,7 @@ function checkRespawnTime() {
   }
 }
 
-function holeRandomiser() {
+function spriteRandomiser() {
   var pad = 40;
   var x = game.world.width - pad;
   var n = Math.floor(Math.random() * Math.floor(x));

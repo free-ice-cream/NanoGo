@@ -1,6 +1,6 @@
 
-var gameBuild = "build 2.3"; //
-var testing = false;//  a bool used to switch between testing and production mode
+var gameBuild = "build 2.4"; //
+var testing = true;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;
     var hole;//this will be the baddie
@@ -64,13 +64,33 @@ console.log("testing = "+testing);
    var oTo33 ;
    var oTo34 ;
    var oTo35 ;
-   // options pge 2 strings
+   // options pge 3 strings
    var oto31 = "Step 3: Click to select a race track.";
    var oto32 = "Track 1";
    var oto33 = "Track 2";
    var oto34 = "This track is made from Graphene. Graphene is just one super thin crystal of carbon. With a melting point of 4800 ºk you will have a tough time getting to the end of this track";
    var oto35 = "This track is made from Silver. There will not me much time, silver melts at just  1234.93 ºK";
-//
+   //option page 4 text objects and STRINGS
+   var oTo41;
+   var oTo42;
+   var oTo43;
+   var oTo44;
+   var oTo45;
+   var oTo46;
+   var oTo47;
+   var oTo48;
+   var oTo49;
+   //
+   var oto41 = "Stage 4. What to look out for!";// page title
+   var oto42 = "Heat!"; //obj title 1
+   var oto43 = "Watch out, as the heat rises the increasing speed of the molecules will start to knock your racer about the track.";
+   var oto44 = "Holes !";
+   var oto45 = "if you hit one of these you will lose a life.";
+   var oto46 = "Power ups !!";
+   var oto47 = "Tired of being pushed about by the heat? This power up will temporarily increase your traction to the track with a sticky outrigger molecule. ";
+   var oto48 = "Step Fractures !";
+   var oto49 = "This is where the material of the race track itself changes in height. These are edges and you can fall off them!";
+   //
    var endmessage1 ;// a var for the object
    var endmessage2 ;//
    var endMessage1 = "GAME OVER!";// avar for the string
@@ -217,8 +237,13 @@ console.log("testing = "+testing);
    var main18bluec ={font: ' 17pt Consolas', fill: '#1E3CDC', align:'left', wordWrap: true, wordWrapWidth: 750 };
    var screen18green ={font: ' 18pt ChintzyCPUBRK', fill: '#3BFC34', align:'right', wordWrap: true, wordWrapWidth: 600 };
    var scrollingGreen ={font: ' 28pt ChintzyCPUBRK', fill: '#3BFC34', boundsAlignH: "right", wordWrap: false, wordWrapWidth: 368 };
-    var collumOne ={font: ' 16pt Consolas', fill: 'green', align:'left', wordWrap: true, wordWrapWidth: 350 };// endscreen collumn 1
-    var collumTwo ={font: ' 17pt Consolas', fill: '#1E3CDC', align:'left', wordWrap: true, wordWrapWidth: 350};// endscreen collum 2
+   var collumOne ={font: ' 16pt Consolas', fill: 'green', align:'left', wordWrap: true, wordWrapWidth: 350 };// endscreen collumn 1
+   var collumTwo ={font: ' 17pt Consolas', fill: '#1E3CDC', align:'left', wordWrap: true, wordWrapWidth: 350};// endscreen collum 2
+   var main28blue ={font: ' 28pt ChintzyCPUBRK', fill: '#1E3CDC', align:'left', wordWrap: true, wordWrapWidth: 650 };
+   var main18blue ={font: ' 17pt Consolas', fill: '#1E3CDC', align:'left', wordWrap: true, wordWrapWidth: 600 };
+   var main28red ={font: ' 28pt ChintzyCPUBRK', fill: '#AA232A', align:'left', wordWrap: true, wordWrapWidth: 650 };
+   var main18red ={font: ' 17pt Consolas', fill: '#AA232A', align:'left', wordWrap: true, wordWrapWidth: 600 };
+   var main18reds ={font: ' 17pt Consolas', fill: '#AA232A', align:'left', wordWrap: true, wordWrapWidth: 400 };
    //
    //
    // var main32 ={font: ' 32pt ChintzyCPUBRK', fill: var(--overbrightgreen), align:'left', wordWrap: true, wordWrapWidth: 650 };
@@ -319,16 +344,11 @@ var noOfBreaks = 10;// how many differetn animations  do we want for the temp
 //
 var heatSheild;
 var heatSheildMeter;
-var sheildScale =1;
+var sheildScale = 0;// we start out with no sheild
 var emitter;
 var phaseShift =false;// have we got to melting point yet?
 //
 var audioLive = true;// a toggle to switch the music on / OFF
-//
-var meltLoops= 5;
-var currMeltLoops = 0 ;
-var mp = false; //
-
 //
 var fullTimeS;// this  is here we will store teh total number of seconds needed to count to a million at our clickrate
 //
@@ -338,5 +358,5 @@ var sheildCenterX;
 var sheildCenterY;
 var sheildOfsetX;
 var sheildOfsetY;
-var sheildDeminishRate = 0.01;
-var sheildRespawnBase = -2000;
+var sheildDeminishRate = 0.005;
+var sheildRespawnBase = -3000;

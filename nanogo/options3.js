@@ -140,8 +140,8 @@ nextout: function(){
 },
 nextsel: function(){
   console.log("next");
-  game.state.start('play');
-  // game.state.start('options4');
+  // game.state.start('play');
+  game.state.start('options4');
   // if(trackselection== 1){
     //nextbut.animations.play('no-hover', true);
   // }

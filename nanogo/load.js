@@ -8,24 +8,27 @@ var loadState = {
     game.load.image('glob1', ficurl+'assets/glob1.png');
     game.load.image('glob2', ficurl+'assets/glob2.png');
     game.load.image('glob3', ficurl+'assets/glob3.png');
-    game.load.image('heart', ficurl+'assets/heart2.png');
     game.load.image('bar', ficurl+'assets/bar.png');
     game.load.image('block', ficurl+'assets/block1.png');
     game.load.image('logo', ficurl+'assets/Nano Go Logo v1.png');
     game.load.image('startbut2', ficurl+'assets/Start pt2.png');
     game.load.image('resultsScreen', ficurl+'assets/results-screen.png');
     game.load.image('endscreen', ficurl+'assets/new-end.png');
+    // options
     game.load.image('tutorialScreen', ficurl+'assets/tutorial_screen_v1.jpg');
     game.load.image('ministart1', ficurl+'assets/miniStart-pt1.png');
     game.load.image('ministart2', ficurl+'assets/miniStart-pt2.png');
-    game.load.image('blue-power-up', ficurl+'assets/blue-power-up.png');
     game.load.image('greenheadbg', ficurl+'assets/greenheadbg.png');
+    // game.load.image('miniscreen', ficurl+'assets/mini-screen.png');
     // play screen
+    game.load.image('heatsheild', ficurl+'assets/heatsheild_v2.png');
+    game.load.image('blue-power-up', ficurl+'assets/blue-power-up.png');
+    game.load.image('heart', ficurl+'assets/heart2.png');
     game.load.image('instrument', ficurl+'assets/instrument_v3.png');
     game.load.image('instrument_back', ficurl+'assets/instrument_back.png');
     game.load.image('heatsheildmeter', ficurl+'assets/heatsheildmeter_v1.png');
     game.load.image('heatsheild', ficurl+'assets/heatsheild_v2.png');
-    //SPRITES
+
 
     //SPRITESHEETS
     game.load.spritesheet('ministartss',ficurl+'assets/mini-start-546-103.png',268,103);
@@ -37,6 +40,7 @@ var loadState = {
     game.load.spritesheet('track2','assets/track2sprite-v2.png', 160,157);
     game.load.spritesheet('tracknext','assets/tracknext-v1.png', 122,119);
     game.load.spritesheet('optionsback','assets/backbut_v1.png', 122,119);
+    game.load.spritesheet('meterK','assets/rising-scale.png', 90, 40);
     //
     game.load.spritesheet('tubecar','assets/nanotube-racer-spritesheet-150-150-9f_v6.png', 150,150);
     game.load.spritesheet('buckycar','assets/buckyball-racer-spritesheet_v3.png', 150,150);
@@ -49,7 +53,7 @@ var loadState = {
     //paritcle timeout
     game.load.spritesheet('matrix', 'assets/sliver_v1.png', 110, 100);
     game.load.spritesheet('atoms', 'assets/blackatoms_v1.png', 9, 9);
-    game.load.spritesheet('graphene', 'assets/graphene_v4.png', 120, 136);
+    game.load.spritesheet('graphene', 'assets/graphene_v5.png', 120, 136);
     game.load.spritesheet('silver', 'assets/silver_v2.png', 100, 150);
   //and some AUDIO
   game.load.audio('rev', 'assets/car-2.mp3');
