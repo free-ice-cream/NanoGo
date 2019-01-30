@@ -47,6 +47,19 @@ var playState = {
     powerGroup.enableBody = true;
     bluePowerUp = powerGroup.create(-200, -200, 'blue-power-up');
     bluePowerUp.body.immovable = true;
+    //Steps
+    stepGroup = game.add.group();
+     stepGroup.enableBody = true;
+    createSteps();
+    //
+    deadGroup = game.add.group();
+    // powerGroup.enableBody = true;
+    // deadCar= powerGroup.create(-200, -200, 'blue-power-up');
+    // bluePowerUp.body.immovable = true;
+    //Steps
+
+    // step = stepGroup.create(-290, 0, 'step');
+
 
     // remove comments to return block
     //blocks - these will be the step shifts
@@ -91,6 +104,7 @@ var playState = {
     scrollingText = this.add.text(0,0, scollingTextCopy1, scrollingGreen );
     scrollingText.setTextBounds(12, 540, 368, 57);
     newHud = game.add.sprite(0, 491, 'instrument');
+    // newHud.alpha = 0.1;
     //
     //Set some properties
     //
@@ -172,6 +186,10 @@ var playState = {
     //
     carCentreX = car.width/2;
     carCentreY = car.height/2;
+    //
+    // pole = d.getTime();
+
+    // pole2 = d2.getTime();
   },
   // ---------------------------------------------------------------------------------------------------------------
   // ---------------------------------------------------------------------------------------------------------------
@@ -187,10 +205,13 @@ var playState = {
     // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
     game.physics.arcade.collide(car, powerGroup);
+    game.physics.arcade.collide(car, stepGroup);
     //
     //detect hole collision
     game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
     game.physics.arcade.overlap(bluePowerUp, car, this.sheildUp, this.movePowerUp,this);
+    //try this first
+    game.physics.arcade.overlap(stepGroup, car, drop, secCall, this);
     // remove comments to return block
     // game.physics.arcade.collide(car, block);
 
@@ -203,6 +224,7 @@ var playState = {
          if (!leftTog) {
            car.body.x -= drift; //clicky
              // car.body.velocity.x -= drift;// smooth
+             car.body.velocity.x -= miniNudge;// have some inpact on velocity too
              // car.body.drag.x=800;
              // carXpos -= drift;
              this.playFx("swipe");
@@ -215,6 +237,7 @@ var playState = {
          if (!rightTog) {
             car.body.x += drift;//clicky
             // car.body.velocity.x += drift;//smooth
+            car.body.velocity.x += miniNudge;//
             // car.body.drag.x=800;
             // carXpos+= drift;
             this.playFx("swipe");
@@ -277,11 +300,16 @@ var playState = {
         currHole = 0;
       }
 
-    }if(bluePowerUp.body.y >= game.world.height+150){
+    }
+    if(bluePowerUp.body.y >= game.world.height+150){
       bluePowerUp.body.y = sheildRespawnBase;
       bluePowerUp.body.x = spriteRandomiser();
     }
-
+    //
+    staircaseCheck();
+    // if(step.body.y >= 500){
+    //   step.body.y = -50;
+    // }
     // remove comments to return block
     // game.physics.arcade.overlap(block, car, this.wall, this.checkWallRespawnTime, this);
     //
@@ -344,15 +372,18 @@ var playState = {
   },
   moveTiles: function(d){
     score += d ;
-    var adjustedRate = tileRate * d * friction;
-    var adjustedRate = tileRate * d;
+
+    // var adjustedRate = tileRate * d * friction;
+    adjustedRate = tileRate * d;
     // scoreText.setText(displayText + score + si);
     scoreText.setText( score );
     hexgrid.tilePosition.y += adjustedRate ;
     holesGroup.y += adjustedRate;
     powerGroup.y += adjustedRate;
-    // remove comments to return block
-    // blockGroup.y += adjustedRate  ;
+    stepGroup.y += adjustedRate  ;
+  deadGroup.y += adjustedRate  ;//meh
+    //if()
+    updateTrackBounds(d);
   },
   moveWheels: function(d){
     if(outFramNo < 9 && outFramNo >=0){
@@ -374,10 +405,11 @@ var playState = {
     // blockGroup.y += adjustedRate  ;
   },
   mainTick: function(){
-    // console.log("mainTick");
+    console.log("mainTick");
     game.time.events.add(1000, this.mainTick, this);
     // game.time.events.add(true, this.mainTick, this);
     this.gameTick();
+    // this.staircaseCheck();
     //this.heat();
     // this.moveTiles(1);
   },
@@ -605,9 +637,26 @@ var playState = {
   },
   checkWallRespawnTime: function(){
     console.log("checkWallRespawnTime");
-  }
+  },
+// staircaseCheck: function(){
+//     for (i=0; i<12; i += 1){
+//
+//
+//       if(staircase[i].body.y >= 500 ){
+//         console.log("staircase[i].y ="+staircase[i].y);
+//         staircase[i].body.y = -50;
+//
+//       }
+//     }
+//   }
 
 }; //end of playstate
+// ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// END OF PLAYSTATE
+// ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+
 function crash(coH, coC) {
   if(holeFull===false){
     holeFull=true;
@@ -632,6 +681,37 @@ function crash(coH, coC) {
   }
 //  sheildScale = 0;// add this back in to lose heatsheild on crash
 }
+//
+function secCall() {
+  //
+}
+function drop(coH, coC) {
+  console.log("coH.x  = "+coH.x);
+  console.log("stepGroup.height = "+stepGroup.height);
+  if(stepFull===false){
+    stepFull=true;
+    // create a car in the space of crash TODO adjust this so that it is in the right place.
+    if(carType==1){
+      var fall= deadGroup.create(coH.x, coH.y, 'tubefall');
+    }else if(carType==2){
+      var fall = deadGroup.create(coH.x, coH.y, 'buckycar');
+    }
+
+    fall.animations.add('crash', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], 20, false);
+    fall.animations.play('crash', true);
+    //reset the car in spawn mode
+
+
+    loseLife();
+    if(gameLive){
+      spawnCar();
+      // stepFull = false;
+    }else{
+      car.alpha = 0;
+    }
+   }
+//  sheildScale = 0;// add this back in to lose heatsheild on crash
+}
 
 function spawnCar() {
   // console.log("spawnCar !!");
@@ -643,10 +723,11 @@ function spawnCar() {
     x: 1,
     y: 1
   }, 2000, Phaser.Easing.Bounce.Out, true);
-
+  stepFull = false;
 }
 
 function loseLife() {
+  // console.log("loseLife");
   if (lives === 3) {
     heart3.alpha = 0;
     lives = 2;
@@ -682,7 +763,7 @@ function gameOver(){
 }
 
 function checkRespawnTime() {
-  console.log("respawncheck");
+
   var currTOD = game.time.time;
   if (lives != 3) {
     if (currTOD - timeOfDeath >= safeSpawnTime) {
@@ -757,4 +838,106 @@ function updateLine() {
     //     game.time.events.add(Phaser.Timer.SECOND * 2, textScroller, this);
     // }
 
+}
+function createSteps(){
+  // create a set of step graffics
+  for (i=0; i< stepLimit; i++){
+    // step = stepGroup.create(-290 +i , i*5, 'step');
+    staircase[i] = stepGroup.create(780, (i*stepTileH)-stepTileH,'half-graphene');
+    // staircase[i] = game.add.tileSprite(750, (i*stepTileH)-stepTileH,  300, 50,'silver');
+    staircase[i].body.immovable = true;
+    // staircase[i].alpha =0.5;
+    // stepBools[i]=true;
+  }
+
+}
+function staircaseCheck(){
+  // limit the rate at which we check the position and redraw the blocks
+  // if(!dateBool1){
+  //   d =  new Date();
+  //   dateBool1 =  true;
+  // }
+  // d2 =  new Date();
+  // pole = d.getTime();
+  // pole2 = d2.getTime();
+  // if(pole2 - pole > diff){
+  //   d =  new Date();
+  //   pole = d.getTime();
+  // }
+  // sconsole.log("staircaseCheck");
+
+if (score > distCheck){
+  // console.log("score = "+score+" : dist= "+distCheck);
+  distCheck++;
+  for (i=0; i < stepLimit ; i++){
+    if(staircase[i].body.y >= bottomOtheWorld){
+      //
+      staircase[i].body.y =  staircase[i].body.y-(stepLimit * stepTileH);
+      // staircase[i].body.x = stepPath(staircase[i].body.x );
+      // staircase[i].body.x = stepPath(staircase[i]);
+      staircase[i].body.x = stepPath(i);
+      console.log("bottom o the world");
+
+    }
+  }
+}
+
+
+}
+
+function stepPath(n){
+
+  if(n === staircase.length -1 ){
+    // console.log("last");
+    var lastStepX = staircase[0].body.x;
+  }else {
+    // console.log("not last");
+    var lastStepX = staircase[n+1].body.x;
+    // console.log("lastStepX  = "+lastStepX+ " and i = "+i);
+  }
+  var pinger = lastStepX;
+  //
+  if(rightZig){
+    console.log("rightZig");
+    if( lastStepX  >= rightInnerBound ){
+      // console.log(" x >= rightInnerBound");
+      pinger -= attackRate;
+    }else {
+      rightZig = false;
+    }
+  }else if(rightZag){
+    console.log("rightZag");
+    if(lastStepX <= rightOuterBound){
+      // console.log("x <= rightOuterBound");
+      pinger += attackRate;
+    }else{
+      rightZag = false;
+    }
+  }
+  //
+if(!rightZig && !rightZag){
+  // console.log("!rightZig && !rightZag");
+  currRest++;
+   if (restSteps >= currRest) {
+     // console.log("restSteps >= currRest");
+    if(lastStepX <= rightInnerBound){
+      // console.log("x <= rightInnerBoun");
+      rightZag = true;
+      currRest = 0;
+    }else if (lastStepX >= rightOuterBound) {
+      // console.log("x >= rightOuterBound");
+      rightZig = true;
+      currRest = 0;
+    }
+  }
+}
+// console.log("pinger = "+pinger);
+return pinger;
+}
+function updateTrackBounds(n){
+  if(rightInnerBound > rightInnerBoundLimit){
+    rightInnerBound -= n;
+  }else{
+    console.log("RIGHT LIMIT");
+  }
 }

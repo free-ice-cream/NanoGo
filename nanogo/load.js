@@ -28,6 +28,7 @@ var loadState = {
     game.load.image('instrument_back', ficurl+'assets/instrument_back.png');
     game.load.image('heatsheildmeter', ficurl+'assets/heatsheildmeter_v1.png');
     game.load.image('heatsheild', ficurl+'assets/heatsheild_v2.png');
+    game.load.image('step', ficurl+'assets/step_v1.png');
 
 
     //SPRITESHEETS
@@ -51,11 +52,14 @@ var loadState = {
     game.load.spritesheet('hole','assets/holes100px.png', 100,100);
     game.load.spritesheet('blue-power-up','assets/blue-power-up.png', 30,30);
     game.load.spritesheet('outrigger','assets/outrigger_v2.png', 30, 30);
+    //
+    game.load.spritesheet('tubefall', 'assets/tuberacer-fall_v1.png', 300, 180);
     //paritcle timeout
     game.load.spritesheet('matrix', 'assets/sliver_v1.png', 110, 100);
     game.load.spritesheet('atoms', 'assets/blackatoms_v1.png', 9, 9);
     game.load.spritesheet('graphene', 'assets/graphene_v5.png', 120, 136);
-    game.load.spritesheet('silver', 'assets/silver_v2.png', 100, 150);
+    game.load.spritesheet('silver', 'assets/silver_v3.png', 100, 150);
+    game.load.spritesheet('half-graphene', 'assets/half-graphene_v5.png', 60, 68);
   //and some AUDIO
   game.load.audio('rev', 'assets/car-2.mp3');
   game.load.audio('theme', 'assets/maintrack4.mp3');

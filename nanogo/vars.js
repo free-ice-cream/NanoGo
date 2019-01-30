@@ -1,5 +1,5 @@
 
-var gameBuild = "build 2.5"; //
+var gameBuild = "build 2.6"; //
 var testing = false;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;
@@ -304,6 +304,7 @@ var howToStartBut;
 var carType = 1;
 var carLoopLength = 8;
 var holeFull = false;//is there a a car in teh hole
+var stepFull = false;//has as car just fallen over the edge
 //
 var startTemp = 4;//starting temp in kelvin
 var absolute0 = -273;// absolute zero, to be used to convert between k and c
@@ -313,13 +314,14 @@ var siC = "c";// the si unit for celcius
 var currentTemp = startTemp;
 var blooBleeb = 0;// a test var to see if this heat () problem is general
 var entropy = 0;//set this here maybe ?
-var tempEffect1 =  10; // how small an effect temp is on the car
-var tempEffect2 =  20; // how small an effect temp is on the car
+var tempEffect1 =  5; // how small an effect temp is on the car
+var tempEffect2 =  10; // how small an effect temp is on the car
 var tempEffectY = tempEffect1 ;//a var to store the effec on y as it changes form car to car
 var tempEffectX = tempEffect1 ;
 var tempBoox = true; //a toggle to get pos and ned vals in the temp changes for x
 var tempBooy = true; //a toggle to get pos and ned vals in the temp changes for y
 var tempIncrement = 10;// how much he temp goes up per secon
+var miniNudge = 5;// how much the player can effect velocity.
 //
 var carXpos;
 var carYpos;// vars to hold teh position so we dont manupulate it directly with the functions
@@ -370,3 +372,27 @@ var outBool1 =false;// are they active
 var outBool2 =false;
 var outBool3 =false;
 var outBool4 =false;
+//
+var staircase = [];// somewhere to keep the steps :)
+// var stepBools = [];
+var d //
+var pole; //used to set check the time so we can redraw less frequently when using the update loop.
+var d2;// =new Date();
+var pole2 ;
+var diff = 3000;// the tiem diff we are looking for ie the cadence of teh redraw
+var dateBool1 = false;// a bool to check if we have set the time the first time
+var stepLimit = 12; // the number of steps we re going to make
+var distCheck = 0; // this might be a better way to check to see if we shoucl redraw ....
+//
+var adjustedRate;// this is where the rate of the tiles is held
+var stepTileH = 50;// the height of the step tile
+var bottomOtheWorld = 500;
+//
+var rightZig = true;//going left
+var rightZag = false;// going right
+var rightInnerBoundLimit = 600;// limit x position for the steps
+var rightInnerBound = 750;
+var rightOuterBound = 795;// limit x position for the steps
+var restSteps = 20;// how long to wait at teh top or bottom
+var currRest = 0;
+var attackRate = 6; // the rate at shich teh stepps will change
