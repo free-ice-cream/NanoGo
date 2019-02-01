@@ -10,19 +10,22 @@ var optionsState4 = {
     var powerUp = game.add.sprite(60,278,'blue-power-up');
     // var powerUp = game.add.sprite(60,278,'meterK');
     var meter = game.add.sprite(32,88,'meterK');
-    // var meter = game.add.sprite(32,78,'risingscale');
+    var edges = game.add.sprite(32,395,'drop-loop');
     //
     hole.scale.setTo(0.6,0.6);
+    edges.scale.setTo(0.5,0.5);
     //
     //ANIMATIONS
     //
     hole.animations.add('fizz', [0, 1, 2, 3, 4], 20, true);
     powerUp.animations.add('freeze', [0, 1, 2, 3, 4, 5], 20, true);
     meter.animations.add('meterup', [0, 1, 2, 3, 4, 5,6 ,7 ,8 ,9], 2, true);
+    edges.animations.add('wiggle', [0, 1, 2, 3, 4, 5,6 ,7 ,8 ,9,10,11,12,13,14,15,16], 20, true);
     //
     hole.animations.play('fizz', true);
     powerUp.animations.play('freeze', true);
     meter.animations.play('meterup', true);
+    edges.animations.play('wiggle', true);
     // TEXT
     //
     oTo41 = this.add.text(5, 8, oto41, main28white);
@@ -32,8 +35,8 @@ var optionsState4 = {
     oTo45 = this.add.text(190, 243, oto45, main18red);
     oTo46 = this.add.text(170, 273, oto46, main28blue);
     oTo47 = this.add.text(190, 315, oto47, main18blue);
-    // oTo48 = this.add.text(170, 395, oto48, main28red); //add when we have them  :)
-    // oTo49 = this.add.text(190, 438, oto49, main18reds);
+    oTo48 = this.add.text(170, 395, oto48, main28red); //add when we have them  :)
+    oTo49 = this.add.text(190, 438, oto49, main18reds);
 
 
 

@@ -1,5 +1,5 @@
 
-var gameBuild = "build 2.6"; //
+var gameBuild = "build 2.7"; //
 var testing = false;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;
@@ -82,14 +82,14 @@ console.log("testing = "+testing);
    var oTo49;
    //
    var oto41 = "Stage 4. What to look out for!";// page title
-   var oto42 = "Heat!"; //obj title 1
+   var oto42 = "Heat !"; //obj title 1
    var oto43 = "Watch out, as the heat rises the increasing speed of the molecules will start to knock your racer about the track.";
    var oto44 = "Holes !";
    var oto45 = "if you hit one of these you will lose a life.";
    var oto46 = "Power ups !!";
    var oto47 = "Tired of being pushed about by the heat? This power up will temporarily increase your traction to the track with a sticky outrigger molecule. ";
    var oto48 = "Step Fractures !";
-   var oto49 = "This is where the material of the race track itself changes in height. These are edges and you can fall off them!";
+   var oto49 = "This is where the material of the race track itself changes in height. If you fall off an edge you will lose a life.";
    //
    var endmessage1 ;// a var for the object
    var endmessage2 ;//
@@ -314,10 +314,10 @@ var siC = "c";// the si unit for celcius
 var currentTemp = startTemp;
 var blooBleeb = 0;// a test var to see if this heat () problem is general
 var entropy = 0;//set this here maybe ?
-var tempEffect1 =  5; // how small an effect temp is on the car
-var tempEffect2 =  10; // how small an effect temp is on the car
+var tempEffect1 =  15; // how small an effect temp is on the car !!the smaller the number the larger the effect
+var tempEffect2 =  30; // how small an effect temp is on the car
 var tempEffectY = tempEffect1 ;//a var to store the effec on y as it changes form car to car
-var tempEffectX = tempEffect1 ;
+var tempEffectX = tempEffect1 ;//
 var tempBoox = true; //a toggle to get pos and ned vals in the temp changes for x
 var tempBooy = true; //a toggle to get pos and ned vals in the temp changes for y
 var tempIncrement = 10;// how much he temp goes up per secon
@@ -373,14 +373,16 @@ var outBool2 =false;
 var outBool3 =false;
 var outBool4 =false;
 //
-var staircase = [];// somewhere to keep the steps :)
+var rightStaircase = [];// somewhere to keep the steps :)
+var leftStaircase = [];// somewhere to keep the steps :)
 // var stepBools = [];
-var d //
-var pole; //used to set check the time so we can redraw less frequently when using the update loop.
-var d2;// =new Date();
-var pole2 ;
-var diff = 3000;// the tiem diff we are looking for ie the cadence of teh redraw
-var dateBool1 = false;// a bool to check if we have set the time the first time
+//TOOO delete these
+// var d //
+// var pole; //used to set check the time so we can redraw less frequently when using the update loop.
+// var d2;// =new Date();
+// var pole2 ;
+// var diff = 3000;// the tiem diff we are looking for ie the cadence of teh redraw
+// var dateBool1 = false;// a bool to check if we have set the time the first time
 var stepLimit = 12; // the number of steps we re going to make
 var distCheck = 0; // this might be a better way to check to see if we shoucl redraw ....
 //
@@ -393,6 +395,19 @@ var rightZag = false;// going right
 var rightInnerBoundLimit = 600;// limit x position for the steps
 var rightInnerBound = 750;
 var rightOuterBound = 795;// limit x position for the steps
-var restSteps = 20;// how long to wait at teh top or bottom
-var currRest = 0;
+var rightOuterBoundLimit= 700;
+//
+var leftZig = true;//going left
+var leftZag = false;// going right
+// OK SO the logic of inner and outer is now reversed, but I mnot going to change it as it is already set
+var leftInnerBoundLimit = -300;//
+var leftInnerBound = -200;
+//
+var leftOuterBound = -100;// limit x position for the steps
+var leftOuterBoundLimit = 0;
+ var restSteps = 20;// how long to wait at teh top or bottom
+var rightCurrRest = 0;
+var leftCurrRest = 0;
 var attackRate = 6; // the rate at shich teh stepps will change
+var cree = false;
+var creeTime = 4;// how long have you got invincibility for after respawn

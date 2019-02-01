@@ -60,6 +60,8 @@ var loadState = {
     game.load.spritesheet('graphene', 'assets/graphene_v5.png', 120, 136);
     game.load.spritesheet('silver', 'assets/silver_v3.png', 100, 150);
     game.load.spritesheet('half-graphene', 'assets/half-graphene_v5.png', 60, 68);
+    game.load.spritesheet('half-grapheneL', 'assets/half-graphene_v5-L.png', 60, 68);
+    game.load.spritesheet('drop-loop', 'assets/drop-loop_v1.png', 229, 118);
   //and some AUDIO
   game.load.audio('rev', 'assets/car-2.mp3');
   game.load.audio('theme', 'assets/maintrack4.mp3');
@@ -69,6 +71,7 @@ var loadState = {
   game.load.audio('endlich', 'assets/endlich_v3.mp3');
   game.load.audio('swipe', 'assets/car-3.mp3');
   game.load.audio('power-up-blips', 'assets/power-up-blips.mp3');
+  game.load.audio('fall-sfx', 'assets/fall_v1.mp3');
   //
 
   },
