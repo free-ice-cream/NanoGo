@@ -1,5 +1,5 @@
 
-var gameBuild = "build 2.8"; //
+var gameBuild = "build 2.9"; //
 var testing = false;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;
@@ -157,14 +157,14 @@ console.log("testing = "+testing);
 
 
    var countDown;
-   var gameTime=0;
+   var gameTime = 0;
    // var gameStartTime=0;
    const gameDuration = 30;
    //
    var clockX=  150;
    var clockY = 16;
    //
-   var endX =70;
+   var endX = 70;
    var endY = 180;
    //
    //SOME POINT POSITIONS
@@ -200,6 +200,8 @@ console.log("testing = "+testing);
    var carBounce = 0.3;// the bounce factor when teh car lands at teh start
    var tileRate = 24 ;//the rate at which the background moves
    var carAccelRate = 50;
+   //
+   var trackRate = 1;
    //
    var rev;
    var mainTheme;
@@ -274,7 +276,7 @@ var drift = driftBase;
 
 // var thrust
 var friction = 0;
-var warm = 1;//these are the multiplers used for the different tracks
+var warm = 1;//these are the multiplers used for the differ tracks
 var cold = 2;
 //
 // some values to feed in to our random position function to set up holes
@@ -323,7 +325,7 @@ var tempEffectR = 100;// the amount temp affects rotaton
 var tempBoox = true; //a toggle to get pos and ned vals in the temp changes for x
 var tempBooy = true; //a toggle to get pos and ned vals in the temp changes for y
 var tempBooR = true;// the same but for rotaion
-var tempIncrement = 10;// how much he temp goes up per secon
+var tempIncrement = 3;// was 10 : how much he temp goes up per secon
 var miniNudge = 10;// was 5  how much the player can effect velocity.
 //
 var carXpos;

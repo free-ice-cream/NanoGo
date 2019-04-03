@@ -115,6 +115,7 @@ var playState = {
     car.body.gravity.y = carGrav; // CURR SWITCHED OFF
     car.body.collideWorldBounds = true;
     car.anchor.setTo(0.5, 0.5);
+    // car.anchor.setTo(0.25, 0.25);
     //
     game.physics.arcade.enable(hole);
     game.physics.arcade.enable(bluePowerUp);
@@ -228,12 +229,17 @@ var playState = {
       if (cursors.left.isDown) {
         //  console.log("left");
         if (!leftTog) {
-          car.body.x -= drift; //clicky
+          //    car.body.x -= drift; //clicky
           // car.body.velocity.x -= drift;// smooth
-          car.body.velocity.x -= miniNudge; // have some inpact on velocity too
+               car.body.velocity.x -= miniNudge; // have some inpact on velocity too
           // car.body.drag.x=800;
           // carXpos -= drift;
           this.playFx("swipe");
+          //
+          if (car.angle >= -80) {
+            car.angle -= 10; //lets try rotation
+          }
+          //
           leftTog = true;
         }
       } else {
@@ -241,13 +247,20 @@ var playState = {
       }
       if (cursors.right.isDown) {
         if (!rightTog) {
-          car.body.x += drift; //clicky
+          //    car.body.x += drift; //clicky
           // car.body.velocity.x += drift;//smooth
-          car.body.velocity.x += miniNudge; //
+              car.body.velocity.x += miniNudge; //
+
           // car.body.drag.x=800;
           // carXpos+= drift;
           this.playFx("swipe");
+          //
+          if (car.angle <= 80) {
+            car.angle += 10; //lets try rotation
+          }
+          //
           rightTog = true;
+
         }
       } else {
         rightTog = false;
@@ -260,10 +273,27 @@ var playState = {
           this.moveTiles(1);
           this.moveWheels(1);
           this.playFx("rev");
-          if(car.body.y > 250){
-            car.body.velocity.y -= carAccelRate ;//drift;//TODO Remove me
-            console.log("car angle = ", car.angle);
-            
+          if (car.body.y > 250) {
+            // car.body.velocity.y -= carAccelRate ;//drift;//TODO Remove me
+            console.log("car.body.y > 250 ie we shoud go");
+            if (car.angle >= 0) {
+              // car.body.velocity.y -= carAccelRate ;
+              console.log("car angle  > 0 = ", car.angle);
+              let adj = Math.cos(car.angle * (Math.PI / 180)) * carAccelRate;
+              console.log("adj = ", adj);
+              car.body.velocity.y -= adj;
+              let opp = Math.sin(car.angle * (Math.PI / 180)) * adj;
+              console.log("opp = ", opp);
+              car.body.velocity.x += opp;
+              trackRate = adj / carAccelRate; // we'll use this to mod the tracks rate of movement too.
+            } else {
+              // car.body.velocity.y -= carAccelRate ;
+              console.log("car angle  < 0 = ", car.angle);
+              let adj = Math.cos(car.angle * (Math.PI / 180)) * carAccelRate;
+              car.body.velocity.y -= adj;
+              let opp = (Math.sin(car.angle * (Math.PI / 180)) * adj);
+              car.body.velocity.x += opp;
+            }
           }
 
           if (frameNo <= carLoopLength - 1) {
@@ -385,7 +415,7 @@ var playState = {
     score += d;
 
     // var adjustedRate = tileRate * d * friction;
-    adjustedRate = tileRate * d;
+    adjustedRate = (tileRate * d) * trackRate;
     // scoreText.setText(displayText + score + si);
     scoreText.setText(score);
     hexgrid.tilePosition.y += adjustedRate;
@@ -437,7 +467,9 @@ var playState = {
       car.body.velocity.x += tempBoox ? ent2 * -1 : ent2;
       tempBoox = !tempBoox;
       //
-      car.angle +=  tempBooR ? ent1 * -1 : ent1;
+      if (car.angle > -80 && car.angle < 80) {// set the bounds of the rotation
+        car.angle += tempBooR ? ent1 * -1 : ent1;
+      }
       tempBooR = !tempBooR;
       //
       // car.y += tempBooy ?  ent3 * -1 :  ent3;
@@ -516,8 +548,8 @@ var playState = {
       }
       if (outBool1) {
         //left
-        outRig1.x = (car.x - (car.width / 2) ) - 50;// ok so after changing teh car to use an anchor position of 0.5 0.5 i have adjusted the outriggers accordingly, but its abit  tar ball :)
-        outRig1.y = (car.y - (car.height / 2) )  + 50;
+        outRig1.x = (car.x - (car.width / 2)) - 50; // ok so after changing teh car to use an anchor position of 0.5 0.5 i have adjusted the outriggers accordingly, but its abit  tar ball :)
+        outRig1.y = (car.y - (car.height / 2)) + 50;
       }
       // else {
       //   outRig1.body.velocity.x=velocityRandomiser();
@@ -527,8 +559,8 @@ var playState = {
       //
       if (outBool2) {
         //top
-        outRig2.x = (car.x - (car.width / 2) ) + 58;
-        outRig2.y = (car.y - (car.height / 2) ) -55;
+        outRig2.x = (car.x - (car.width / 2)) + 58;
+        outRig2.y = (car.y - (car.height / 2)) - 55;
       }
       // else{
       //   outRig2.body.velocity.x=velocityRandomiser();
@@ -537,8 +569,8 @@ var playState = {
       //
       if (outBool3) {
         //right
-        outRig3.x = (car.x - (car.width / 2) ) + 160;
-        outRig3.y = (car.y - (car.height / 2) ) + 50;
+        outRig3.x = (car.x - (car.width / 2)) + 160;
+        outRig3.y = (car.y - (car.height / 2)) + 50;
       }
       // else{
       //   outRig3.body.velocity.x=velocityRandomiser();
@@ -547,8 +579,8 @@ var playState = {
       //
       if (outBool4) {
         //bottom
-        outRig4.x = (car.x - (car.width / 2) ) + 58;
-        outRig4.y = (car.y - (car.height / 2) ) + 170;
+        outRig4.x = (car.x - (car.width / 2)) + 58;
+        outRig4.y = (car.y - (car.height / 2)) + 170;
       }
       // else{
       //   outRig4.body.velocity.x=velocityRandomiser();
@@ -662,7 +694,7 @@ var playState = {
     cree = true;
     // game.time.events.add(Phaser.Timer.SECOND * creeTime, ct, this);
     console.log("creeTime = ", creeTime);
-    game.time.events.add(Phaser.Timer.SECOND * creeTime, noCree => cree = false, this);// for soem reason this wont accept the var
+    game.time.events.add(Phaser.Timer.SECOND * creeTime, noCree => cree = false, this); // for soem reason this wont accept the var
   }
   // staircaseCheck: function(){
   //     for (i=0; i<12; i += 1){
@@ -718,23 +750,23 @@ function drop(coH, coC) {
   console.log("drop(): cree= " + cree);
   if (!cree) {
     // if (holeFull === false) {
-      //holeFull = true;
-      //create a car in the space of crash TODO adjust this so that it is in the right place.
-      if (carType == 1) {
-        var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
-      } else if (carType == 2) {
-        var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
-      }
-      crash.animations.add('crash', [8, 9], 6, true);
-      crash.animations.play('crash', true);
-      //reset the car in spawn mode
-      loseLife("hole");
-      if (gameLive) {
-        spawnCar(false);
-      } else {
-        car.alpha = 0;
-      }
-   // }
+    //holeFull = true;
+    //create a car in the space of crash TODO adjust this so that it is in the right place.
+    if (carType == 1) {
+      var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
+    } else if (carType == 2) {
+      var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
+    }
+    crash.animations.add('crash', [8, 9], 6, true);
+    crash.animations.play('crash', true);
+    //reset the car in spawn mode
+    loseLife("hole");
+    if (gameLive) {
+      spawnCar(false);
+    } else {
+      car.alpha = 0;
+    }
+    // }
     //  sheildScale = 0;// add this back in to lose heatsheild on crash
   } else {
     console.log("Cree = true");
@@ -776,6 +808,7 @@ function spawnCar(start) {
   //lets make sure we dont inherit some movement
   car.body.velocity.x = 0;
   car.body.velocity.y = 0;
+  car.angle = 0 ;
   //
   car.body.x = game.world.width / 2 - 125;
   car.body.y = carStartY;
