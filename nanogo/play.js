@@ -1,32 +1,33 @@
 var playState = {
+
   create: function() {
     //set up the graffic assets
     //set the background hexgrid
     // set the track and mode
-    if(trackselection === 1){
+    if (trackselection === 1) {
       // the next line creates  the tilesprite bg
       hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'graphene');
       friction = cold;
       drift *= friction;
       //TODO check the use if friction
-      trackMeltingPoint= meltingPointOfGraphene;
-    }else if(trackselection === 2){
+      trackMeltingPoint = meltingPointOfGraphene;
+    } else if (trackselection === 2) {
       hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'silver');
       friction = cold;
       drift *= friction;
       trackMeltingPoint = meltingPointOfSilver;
-    }else{
+    } else {
       console.log("CRASH - no track");
     }
-    hexgrid.animations.add("cool",[0,1,3],2,true);
-    hexgrid.animations.add("warm",[0,1,2,3,4],4,true);
-    hexgrid.animations.add("hot",[4,5,6,7,8,9,10],12,true);
+    hexgrid.animations.add("cool", [0, 1, 3], 2, true);
+    hexgrid.animations.add("warm", [0, 1, 2, 3, 4], 4, true);
+    hexgrid.animations.add("hot", [4, 5, 6, 7, 8, 9, 10], 12, true);
     hexgrid.animations.play("cool");
     //
     //Set teh drift (lateral speed ) based on car selection
-    if(carType === 1){
+    if (carType === 1) {
       drift /= 2;
-      tempEffectX = tempEffect2;//set the lateral random movement fro heat.
+      tempEffectX = tempEffect2; //set the lateral random movement fro heat.
     }
     hexgrid.alpha = 1;
     //
@@ -34,7 +35,7 @@ var playState = {
     platforms.enableBody = true;
     var barr = platforms.create(0, game.world.height - 159, 'bar');
     barr.body.immovable = true;
-    barr.alpha =0;
+    barr.alpha = 0;
     //
     //Holes
     holesGroup = game.add.group();
@@ -49,7 +50,7 @@ var playState = {
     bluePowerUp.body.immovable = true;
     //Steps
     stepGroup = game.add.group();
-     stepGroup.enableBody = true;
+    stepGroup.enableBody = true;
     createSteps();
     //
     deadGroup = game.add.group();
@@ -71,24 +72,24 @@ var playState = {
     //
     //and the heatsheild
     // heatSheild= game.add.sprite(0,0,'heatsheild');
-    heatSheildMeter= game.add.sprite(690,50,'heatsheildmeter');
+    heatSheildMeter = game.add.sprite(690, 50, 'heatsheildmeter');
     // heatSheild.alpha = 0.5;
     heatSheildMeter.alpha = 0.7;
     heatSheildMeter.scale.setTo(0, 1);
     //
     outRiggers = game.add.group();
     outRiggers.enableBody = true;
-    outRig1 = outRiggers.create(-200,-200,'outrigger');
-    outRig2 = outRiggers.create(-200,-200,'outrigger');
-    outRig3 = outRiggers.create(-200,-200,'outrigger');
-    outRig4 = outRiggers.create(-200,-200,'outrigger');
+    outRig1 = outRiggers.create(-200, -200, 'outrigger');
+    outRig2 = outRiggers.create(-200, -200, 'outrigger');
+    outRig3 = outRiggers.create(-200, -200, 'outrigger');
+    outRig4 = outRiggers.create(-200, -200, 'outrigger');
 
     //Create teh car
-    if(carType===2){
-      car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'buckycar');//CAR START POS
+    if (carType === 2) {
+      car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'buckycar'); //CAR START POS
       // console.log("how many?");
-    }else if(carType===1){
-      car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar');//CAR START POS
+    } else if (carType === 1) {
+      car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar'); //CAR START POS
       // console.log("how many?");
     }
     //
@@ -101,7 +102,7 @@ var playState = {
     //add the new hud
     //
     hudback = game.add.sprite(0, 491, 'instrument_back');
-    scrollingText = this.add.text(0,0, scollingTextCopy1, scrollingGreen );
+    scrollingText = this.add.text(0, 0, scollingTextCopy1, scrollingGreen);
     scrollingText.setTextBounds(12, 540, 368, 57);
     newHud = game.add.sprite(0, 491, 'instrument');
     // newHud.alpha = 0.1;
@@ -113,6 +114,7 @@ var playState = {
     car.body.bounce.y = carBounce;
     car.body.gravity.y = carGrav; // CURR SWITCHED OFF
     car.body.collideWorldBounds = true;
+    car.anchor.setTo(0.5, 0.5);
     //
     game.physics.arcade.enable(hole);
     game.physics.arcade.enable(bluePowerUp);
@@ -142,56 +144,57 @@ var playState = {
     car.animations.add('crash', [9, 10, 11], 60, true);
     car.animations.add('spawn', [0, 12], 12, true);
     hole.animations.add('fizz', [0, 1, 2, 3, 4], 20, true);
-    bluePowerUp.animations.add('freeze', [0, 1, 2, 3, 4,5], 20, true);
+    bluePowerUp.animations.add('freeze', [0, 1, 2, 3, 4, 5], 20, true);
     // outRigger.animations.add("rotate",[0,1,2,3,4,5,6,7,8,9],20,true);
     //
     //TEXT
     //
     scoreText = this.add.text(410, game.world.height - hudOffset + 40, scoreText, screen18green);
-    clockText = this.add.text(521, game.world.height - hudOffset + 40, currentTemp, screen18green);// now the temperature
+    clockText = this.add.text(521, game.world.height - hudOffset + 40, currentTemp, screen18green); // now the temperature
     siText = this.add.text(580, game.world.height - hudOffset + 40, tempScaleName, screen18green);
     siNm = this.add.text(460, game.world.height - hudOffset + 40, si, screen18green);
-    endmessage1 = this.add.text(200, 150 , "", main56);
-    endmessage2 = this.add.text(130, 250 , "", thin28white);
+    endmessage1 = this.add.text(200, 150, "", main56);
+    endmessage2 = this.add.text(130, 250, "", thin28white);
     //
     platforms.alpha = 1;
     hole.animations.play('fizz', true);
     bluePowerUp.animations.play('freeze', true);
     //
-    scaleToggle = game.add.sprite(699,512, 'tiny-toggle');
+    scaleToggle = game.add.sprite(699, 512, 'tiny-toggle');
     //
-    scaleToggle.inputEnabled=true;
+    scaleToggle.inputEnabled = true;
     scaleToggle.events.onInputDown.add(this.toggle, this);
 
     this.mainTick();
     this.secondTick();
-    try{
+    try {
       bassLoop.stop();
-    }catch(e){
-      console.log("e ="+e);
+    } catch (e) {
+      console.log("e =" + e);
     }
     //Temp Breaks
-    for(i=0; i<= noOfBreaks-1 ; i++){
-      tempBreaks[i] = (trackMeltingPoint/ noOfBreaks) * (i+1) ;
+    for (i = 0; i <= noOfBreaks - 1; i++) {
+      tempBreaks[i] = (trackMeltingPoint / noOfBreaks) * (i + 1);
     }
     //
     // test mode settings
     //
-    if(testing){
+    if (testing) {
       // trackMeltingPoint = 5000;
       // tempIncrement = 100;
       audioLive = false;
-      creeTime = 20000;// invulnerable after the first hit
+      // creeTime = 200000; // can be used to create invulnerable after the first hit
     }
     //
-    spawnCar(true);// calls a car in to being. true if this is game start false otherwise this sets the cree function
+    spawnCar(true); // calls a car in to being. true if this is game start false otherwise this sets the cree function
     //
-    carCentreX = car.width/2;
-    carCentreY = car.height/2;
+    carCentreX = car.width / 2;
+    carCentreY = car.height / 2;
     //
     // pole = d.getTime();
 
     // pole2 = d2.getTime();
+
   },
   // ---------------------------------------------------------------------------------------------------------------
   // ---------------------------------------------------------------------------------------------------------------
@@ -199,9 +202,9 @@ var playState = {
   // ---------------------------------------------------------------------------------------------------------------
   // ---------------------------------------------------------------------------------------------------------------
   update: function() {
-    if(audioLive){
+    if (audioLive) {
       //mainTheme.play();
-    }else{
+    } else {
       mainTheme.stop();
     }
     // game.emitter.setYSpeed(currentTemp);
@@ -211,8 +214,9 @@ var playState = {
     //
     //detect hole collision
     game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
-    game.physics.arcade.overlap(bluePowerUp, car, this.sheildUp, this.movePowerUp,this);
+    game.physics.arcade.overlap(bluePowerUp, car, this.sheildUp, this.movePowerUp, this);
     //try this first
+    // game.physics.arcade.overlap(stepGroup, car, crash, secCall, this);
     game.physics.arcade.overlap(stepGroup, car, drop, secCall, this);
     // remove comments to return block
     // game.physics.arcade.collide(car, block);
@@ -220,80 +224,85 @@ var playState = {
 
     //SIDEWAYS
     // phase transition from here
-    if(gameLive){// this should prevent us from moving further once the track melts
-        if (cursors.left.isDown) {
+    if (gameLive) { // this should prevent us from moving further once the track melts
+      if (cursors.left.isDown) {
         //  console.log("left");
-         if (!leftTog) {
-           car.body.x -= drift; //clicky
-             // car.body.velocity.x -= drift;// smooth
-             car.body.velocity.x -= miniNudge;// have some inpact on velocity too
-             // car.body.drag.x=800;
-             // carXpos -= drift;
-             this.playFx("swipe");
-            leftTog=true;
-         }
-        } else {
-          leftTog=false;
+        if (!leftTog) {
+          car.body.x -= drift; //clicky
+          // car.body.velocity.x -= drift;// smooth
+          car.body.velocity.x -= miniNudge; // have some inpact on velocity too
+          // car.body.drag.x=800;
+          // carXpos -= drift;
+          this.playFx("swipe");
+          leftTog = true;
         }
-        if (cursors.right.isDown) {
-         if (!rightTog) {
-            car.body.x += drift;//clicky
-            // car.body.velocity.x += drift;//smooth
-            car.body.velocity.x += miniNudge;//
-            // car.body.drag.x=800;
-            // carXpos+= drift;
-            this.playFx("swipe");
-            rightTog=true;
-         }
-        } else  {
-          rightTog=false;
-        }
-        //UP DOWN
-
-        if (cursors.up.isDown) {
-          // console.log("frame= "+car.frame);
-         if (!upTog) {
-            this.moveTiles(1);
-            this.moveWheels(1);
-            this.playFx("rev");
-            // car.body.velocity.y -= drift;//TODO Remove me
-            if(frameNo<=carLoopLength-1){
-              frameNo+=1;
-              car.frame = frameNo;
-            }else{
-              frameNo=1;
-              car.frame = frameNo;
-            }
-            upTog=true;
-         }
-
-      }else{
-        upTog=false;
+      } else {
+        leftTog = false;
       }
-        //
-        if (cursors.down.isDown) {
+      if (cursors.right.isDown) {
+        if (!rightTog) {
+          car.body.x += drift; //clicky
+          // car.body.velocity.x += drift;//smooth
+          car.body.velocity.x += miniNudge; //
+          // car.body.drag.x=800;
+          // carXpos+= drift;
+          this.playFx("swipe");
+          rightTog = true;
+        }
+      } else {
+        rightTog = false;
+      }
+      //UP DOWN
 
-         if (!downTog) {
-            this.moveTiles(-1);
-            this.moveWheels(-1);
-            this.playFx("rev");
-            // car.body.velocity.y += drift;//TODO Remove me
-            downTog=true;
-            if(frameNo>=2){
-              frameNo-=1;
-              car.frame = frameNo;
-            }else{
-              frameNo=carLoopLength;
-              car.frame = frameNo;
-            }
-         }
-       }  else {
-         downTog = false;
-       }
-     }// end phaseShift
-      //} // end stuck
+      if (cursors.up.isDown) {
+        // console.log("frame= "+car.frame);
+        if (!upTog) {
+          this.moveTiles(1);
+          this.moveWheels(1);
+          this.playFx("rev");
+          if(car.body.y > 250){
+            car.body.velocity.y -= carAccelRate ;//drift;//TODO Remove me
+            console.log("car angle = ", car.angle);
+            
+          }
+
+          if (frameNo <= carLoopLength - 1) {
+            frameNo += 1;
+            car.frame = frameNo;
+          } else {
+            frameNo = 1;
+            car.frame = frameNo;
+          }
+          upTog = true;
+        }
+
+      } else {
+        upTog = false;
+      }
+      //
+      //  if (cursors.down.isDown) {
+      //
+      //   if (!downTog) {
+      //      this.moveTiles(-1);
+      //      this.moveWheels(-1);
+      //      this.playFx("rev");
+      //      // car.body.velocity.y += drift;//TODO Remove me
+      //      downTog=true;
+      //      if(frameNo>=2){
+      //        frameNo-=1;
+      //        car.frame = frameNo;
+      //      }else{
+      //        frameNo=carLoopLength;
+      //        car.frame = frameNo;
+      //      }
+      //   }
+      // }  else {
+      //   downTog = false;
+      // }
+    } // end phaseShift
+    //} // end stuck
     if (hole.body.y >= game.world.height) {
-      holeFull=false;
+      holeFull = false;
       hole.body.y = holeYstart;
       hole.body.x = spriteRandomiser();
       currHole++;
@@ -303,7 +312,7 @@ var playState = {
       }
 
     }
-    if(bluePowerUp.body.y >= game.world.height+150){
+    if (bluePowerUp.body.y >= game.world.height + 150) {
       bluePowerUp.body.y = sheildRespawnBase;
       bluePowerUp.body.x = spriteRandomiser();
     }
@@ -315,15 +324,15 @@ var playState = {
     // remove comments to return block
     // game.physics.arcade.overlap(block, car, this.wall, this.checkWallRespawnTime, this);
     //
-     // game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
+    // game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
 
 
-},
-// ---------------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------------
-// END UPDATE
-// ---------------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------------
+  },
+  // ---------------------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------------------------------------
+  // END UPDATE
+  // ---------------------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------------------------------------
 
   drawHud: function() {
     // console.log("drawHud()  called");
@@ -357,8 +366,8 @@ var playState = {
           break;
         case "swipe":
           swipe.play();
-        break;
-        // default:
+          break;
+          // default:
 
       }
       // rev.play();
@@ -372,30 +381,30 @@ var playState = {
   spawnHole: function() {
     hole = game.add.sprite(50, 50, 'hole');
   },
-  moveTiles: function(d){
-    score += d ;
+  moveTiles: function(d) {
+    score += d;
 
     // var adjustedRate = tileRate * d * friction;
     adjustedRate = tileRate * d;
     // scoreText.setText(displayText + score + si);
-    scoreText.setText( score );
-    hexgrid.tilePosition.y += adjustedRate ;
+    scoreText.setText(score);
+    hexgrid.tilePosition.y += adjustedRate;
     holesGroup.y += adjustedRate;
     powerGroup.y += adjustedRate;
-    stepGroup.y += adjustedRate  ;
-  deadGroup.y += adjustedRate  ;//meh
+    stepGroup.y += adjustedRate;
+    deadGroup.y += adjustedRate; //meh
     //if()
     updateTrackBounds(d);
   },
-  moveWheels: function(d){
-    if(outFramNo < 9 && outFramNo >=0){
-    outRig1.frame +=d;
-    outRig2.frame +=d;
-    outRig3.frame +=d;
-    outRig4.frame +=d;
-  }else{
-    outFramNo = 0
-  }
+  moveWheels: function(d) {
+    if (outFramNo < 9 && outFramNo >= 0) {
+      outRig1.frame += d;
+      outRig2.frame += d;
+      outRig3.frame += d;
+      outRig4.frame += d;
+    } else {
+      outFramNo = 0
+    }
     // var adjustedRate = tileRate * d * friction;
     // var adjustedRate = tileRate * d;
     // scoreText.setText(displayText + score + si);
@@ -406,7 +415,7 @@ var playState = {
     // remove comments to return block
     // blockGroup.y += adjustedRate  ;
   },
-  mainTick: function(){
+  mainTick: function() {
     console.log("mainTick");
     game.time.events.add(1000, this.mainTick, this);
     // game.time.events.add(true, this.mainTick, this);
@@ -415,28 +424,32 @@ var playState = {
     //this.heat();
     // this.moveTiles(1);
   },
-  heat: function(){
+  heat: function() {
 
-    if( currentTemp < trackMeltingPoint){
+    if (currentTemp < trackMeltingPoint) {
       // introduce a little entropy
-      var ent2 = (currentTemp * Math.random().toFixed())/ tempEffectX;
-      var ent3 = (currentTemp * Math.random().toFixed())/ tempEffectY;
+      var ent1 = (currentTemp * Math.random().toFixed()) / tempEffectR;
+      var ent2 = (currentTemp * Math.random().toFixed()) / tempEffectX;
+      var ent3 = (currentTemp * Math.random().toFixed()) / tempEffectY;
       ent2 *= (1 - sheildScale);
       ent3 *= (1 - sheildScale);
       // car.x += tempBoox ?  ent2 * -1 :  ent2;
-      car.body.velocity.x += tempBoox ?  ent2 * -1 :  ent2;
+      car.body.velocity.x += tempBoox ? ent2 * -1 : ent2;
       tempBoox = !tempBoox;
       //
+      car.angle +=  tempBooR ? ent1 * -1 : ent1;
+      tempBooR = !tempBooR;
+      //
       // car.y += tempBooy ?  ent3 * -1 :  ent3;
-      car.body.velocity.y += tempBooy ?  ent3 * -1 :  ent3;
+      car.body.velocity.y += tempBooy ? ent3 * -1 : ent3;
       tempBooy = !tempBooy;
       // New Temp conditions
-      var lastTemp =0;
-      var lasti=0;
-      for(i=0 ; i<= noOfBreaks;  i++){
+      var lastTemp = 0;
+      var lasti = 0;
+      for (i = 0; i <= noOfBreaks; i++) {
         // console.log("tempBreaks[i]= "+tempBreaks[i]);
-        if(currentTemp >= tempBreaks[i]){
-          lasti=i;
+        if (currentTemp >= tempBreaks[i]) {
+          lasti = i;
         }
       }
       var frameH = this.getRandomInt(lasti);
@@ -444,66 +457,67 @@ var playState = {
       //
       //update the frame to a random frame check to see if this is our durrent frame add 1 if so
       //TODO this seems to output the occasional unexplainable frame no. ?
-      hexgrid.frame =  hexgrid.frame === frameH ? frameH + 1: frameH;
+      hexgrid.frame = hexgrid.frame === frameH ? frameH + 1 : frameH;
       // console.log("2 hexgrid.frame: frameH = "+hexgrid.frame+" "+frameH);
 
 
       // console.log("cur frame = "+hexgrid.frame);
       // console.log("random int 3 = "+ this.getRandomInt(3));
-    } else{
+    } else {
       // gameOver();
-      if(!phaseShift){
+      if (!phaseShift) {
         this.meltingPoint();
-         phaseShift = true;
-         gameLive = false;
+        phaseShift = true;
+        gameLive = false;
       }
 
     }
   },
-  messageUpdate: function(){
-    if (currentTemp>= mess1Thesh && !mesFlag1){
-      mesFlag1= true;
+  messageUpdate: function() {
+    if (currentTemp >= mess1Thesh && !mesFlag1) {
+      mesFlag1 = true;
       textScroller(0);
     }
-    if (currentTemp>= mess2Thesh && !mesFlag2){
-      mesFlag2= true;
+    if (currentTemp >= mess2Thesh && !mesFlag2) {
+      mesFlag2 = true;
       textScroller(1);
     }
-    if (currentTemp+scaleDiff>= meltingPointOfLead && !mesFlag3){
-      mesFlag3= true;
+    if (currentTemp + scaleDiff >= meltingPointOfLead && !mesFlag3) {
+      mesFlag3 = true;
       textScroller(2);
     }
   },
-  sheildUpdate: function(){
+  sheildUpdate: function() {
     // sheildCenterX = (heatSheild.width/2);
     // sheildCenterY = (heatSheild.width/2);
     // heatSheild.x = (car.x + 75 ) - sheildCenterX;
     // heatSheild.y = (car.y + 75 ) - sheildCenterY;
     //
-    if(sheildScale > 0){
+    if (sheildScale > 0) {
       sheildScale -= sheildDeminishRate;
       // heatSheild.scale.setTo(sheildScale, sheildScale);
       heatSheildMeter.scale.setTo(sheildScale, 1);
       //
-      if(sheildScale < 0.75 && outBool1){
+      if (sheildScale < 0.75 && outBool1) {
         outBool1 = false;
         velocityRandomiser(outRig1);
       }
-      if(sheildScale < 0.5 && outBool2){
+      if (sheildScale < 0.5 && outBool2) {
         outBool2 = false;
         velocityRandomiser(outRig2);
       }
-      if(sheildScale < 0.25 && outBool3){
+      if (sheildScale < 0.25 && outBool3) {
         outBool3 = false;
         velocityRandomiser(outRig3);
       }
-      if(sheildScale < 0.05 && outBool4){
+      if (sheildScale < 0.05 && outBool4) {
         outBool4 = false;
         velocityRandomiser(outRig4);
       }
-      if(outBool1){
-        outRig1.x = car.x - 40;
-        outRig1.y = car.y + 50;
+      if (outBool1) {
+        //left
+        outRig1.x = (car.x - (car.width / 2) ) - 50;// ok so after changing teh car to use an anchor position of 0.5 0.5 i have adjusted the outriggers accordingly, but its abit  tar ball :)
+        outRig1.y = (car.y - (car.height / 2) )  + 50;
       }
       // else {
       //   outRig1.body.velocity.x=velocityRandomiser();
@@ -511,38 +525,41 @@ var playState = {
       // }
 
       //
-      if(outBool2){
-      outRig2.x = car.x +60;
-      outRig2.y = car.y - 60;
-    }
-    // else{
-    //   outRig2.body.velocity.x=velocityRandomiser();
-    //   outRig2.body.velocity.y=velocityRandomiser();
-    // }
+      if (outBool2) {
+        //top
+        outRig2.x = (car.x - (car.width / 2) ) + 58;
+        outRig2.y = (car.y - (car.height / 2) ) -55;
+      }
+      // else{
+      //   outRig2.body.velocity.x=velocityRandomiser();
+      //   outRig2.body.velocity.y=velocityRandomiser();
+      // }
       //
-      if(outBool3){
-      outRig3.x = car.x +150;
-      outRig3.y = car.y+50;
-    }
-    // else{
-    //   outRig3.body.velocity.x=velocityRandomiser();
-    //   outRig3.body.velocity.y=velocityRandomiser();
-    // }
+      if (outBool3) {
+        //right
+        outRig3.x = (car.x - (car.width / 2) ) + 160;
+        outRig3.y = (car.y - (car.height / 2) ) + 50;
+      }
+      // else{
+      //   outRig3.body.velocity.x=velocityRandomiser();
+      //   outRig3.body.velocity.y=velocityRandomiser();
+      // }
       //
-      if(outBool4){
-      outRig4.x = car.x + 60;
-      outRig4.y = car.y + 150;
-    }
-    // else{
-    //   outRig4.body.velocity.x=velocityRandomiser();
-    //   outRig4.body.velocity.y=velocityRandomiser();
-    // }
+      if (outBool4) {
+        //bottom
+        outRig4.x = (car.x - (car.width / 2) ) + 58;
+        outRig4.y = (car.y - (car.height / 2) ) + 170;
+      }
+      // else{
+      //   outRig4.body.velocity.x=velocityRandomiser();
+      //   outRig4.body.velocity.y=velocityRandomiser();
+      // }
       //
     }
 
 
   },
-  sheildUp: function(){
+  sheildUp: function() {
     sheildScale = 1;
     car.body.velocity.x = 0;
     car.body.velocity.y = 0;
@@ -552,79 +569,79 @@ var playState = {
     outBool3 = true;
     outBool4 = true;
     //
-    outRig1.body.velocity.x=0;
-    outRig1.body.velocity.y=0;
-    outRig2.body.velocity.x=0;
-    outRig2.body.velocity.y=0;
-    outRig3.body.velocity.x=0;
-    outRig3.body.velocity.y=0;
-    outRig4.body.velocity.x=0;
-    outRig4.body.velocity.y=0;
+    outRig1.body.velocity.x = 0;
+    outRig1.body.velocity.y = 0;
+    outRig2.body.velocity.x = 0;
+    outRig2.body.velocity.y = 0;
+    outRig3.body.velocity.x = 0;
+    outRig3.body.velocity.y = 0;
+    outRig4.body.velocity.x = 0;
+    outRig4.body.velocity.y = 0;
   },
-  movePowerUp: function(){
+  movePowerUp: function() {
     bluePowerUp.y = sheildRespawnBase;
     bluePowerUp.body.x = spriteRandomiser();
   },
   gameTick: function() {
-    if(!phaseShift){
-       clockText.setText(currentTemp +scaleDiff);
-       currentTemp += tempIncrement;
-       gameTime += 1;
+    if (!phaseShift) {
+      clockText.setText(currentTemp + scaleDiff);
+      currentTemp += tempIncrement;
+      gameTime += 1;
 
-     // console.log("gameTick before heat added car.body.x= "+car.body.x);
-     //this.heat(currentTemp);
-     // console.log("gameTick after heat added car.body.x= "+car.body.x);
-   }
+      // console.log("gameTick before heat added car.body.x= "+car.body.x);
+      //this.heat(currentTemp);
+      // console.log("gameTick after heat added car.body.x= "+car.body.x);
+    }
   },
-  secondTick: function(){
+  secondTick: function() {
     //This is our 12 frame per second timer
     game.time.events.add(Phaser.Timer.SECOND * 0.12, this.secondTick, this);
     // console.log("secondTick");
     this.heat();
     this.messageUpdate();
     // uncomment this to return the heatcheild - also set its alpha back to  0.5
-     this.sheildUpdate();
+    this.sheildUpdate();
   },
-  secondHeat:function(){
+  secondHeat: function() {
     // console.log("secondHeat");
-     car.body.y += currentTemp;
+    car.body.y += currentTemp;
   },
-  toggle:function(){
-    scaleToggle.frame = tempScaleName === siK ? 1 : 0 ;
+  toggle: function() {
+    scaleToggle.frame = tempScaleName === siK ? 1 : 0;
     tempScaleName = tempScaleName === siK ? siC : siK;
     siText.setText(tempScaleName);
     scaleDiff = tempScaleName === siK ? 0 : -273;
     // console.log("tempScaleName = "+tempScaleName);
     // console.log("toggle");
   },
-   meltingPoint: function(){
+  meltingPoint: function() {
     // Paticles
     // mp = true;
-      console.log("meltingPoint");
+    console.log("meltingPoint");
 
-      // emitter = game.add.emitter(game.world.centerX, 0, 400);
-      emitter.width = game.world.width;
-      // emitter.angle = 30; // uncomment to set an angle for the rain.
-      emitter.makeParticles('matrix');
-      // emitter.minParticleScale = 0.1;
-      emitter.maxParticleScale = 2;
-      emitter.setYSpeed(100, 300);
-      emitter.setXSpeed(-10, 10);
-      emitter.minRotation = -50;
-      emitter.maxRotation = 50;
-      emitter.start(false, 1600, 5, 0);
-      game.time.events.add(Phaser.Timer.SECOND * 5, gameOver, this);
-      //
-      mainTheme.stop();
-      gameOverChime.play();
-      //
-      var t =currentTemp +scaleDiff;
-      endmessage1.setText(endMessage1);
-      endmessage2.setText(endMessage2a+t+endMessage2b+tempScaleName+endMessage2c);
+    // emitter = game.add.emitter(game.world.centerX, 0, 400);
+    emitter.width = game.world.width;
+    // emitter.angle = 30; // uncomment to set an angle for the rain.
+    emitter.makeParticles('matrix');
+    // emitter.minParticleScale = 0.1;
+    emitter.maxParticleScale = 2;
+    emitter.setYSpeed(100, 300);
+    emitter.setXSpeed(-10, 10);
+    emitter.minRotation = -50;
+    emitter.maxRotation = 50;
+    emitter.start(false, 1600, 5, 0);
+    game.time.events.add(Phaser.Timer.SECOND * 5, gameOver, this);
+    //
+    mainTheme.stop();
+    gameOverChime.play();
+    //
+    var t = currentTemp + scaleDiff;
+    endmessage1.setText(endMessage1);
+    endmessage2.setText(endMessage2a + t + endMessage2b + tempScaleName + endMessage2c);
 
 
   },
-  outOfLivesDelay: function(){
+  outOfLivesDelay: function() {
     // console.log("outOfLivesDelay");
     mainTheme.stop();
     gameOverChime.play();
@@ -633,24 +650,31 @@ var playState = {
     endmessage2.setText(endMessage3);
     game.time.events.add(Phaser.Timer.SECOND * 5, gameOver, this);
   },
-   wall: function(){
+  wall: function() {
     console.log("wall");
-    car.body.velocity.x += drift;// smooth
+    car.body.velocity.x += drift; // smooth
   },
-  checkWallRespawnTime: function(){
+  checkWallRespawnTime: function() {
     console.log("checkWallRespawnTime");
   },
-// staircaseCheck: function(){
-//     for (i=0; i<12; i += 1){
-//
-//
-//       if(rightStaircase[i].body.y >= 500 ){
-//         console.log("rightStaircase[i].y ="+rightStaircase[i].y);
-//         rightStaircase[i].body.y = -50;
-//
-//       }
-//     }
-//   }
+  creeToggle: function() {
+    console.log("creeToggle called");
+    cree = true;
+    // game.time.events.add(Phaser.Timer.SECOND * creeTime, ct, this);
+    console.log("creeTime = ", creeTime);
+    game.time.events.add(Phaser.Timer.SECOND * creeTime, noCree => cree = false, this);// for soem reason this wont accept the var
+  }
+  // staircaseCheck: function(){
+  //     for (i=0; i<12; i += 1){
+  //
+  //
+  //       if(rightStaircase[i].body.y >= 500 ){
+  //         console.log("rightStaircase[i].y ="+rightStaircase[i].y);
+  //         rightStaircase[i].body.y = -50;
+  //
+  //       }
+  //     }
+  //   }
 
 }; //end of playstate
 // ---------------------------------------------------------------------------------------------------------------
@@ -660,78 +684,98 @@ var playState = {
 // ---------------------------------------------------------------------------------------------------------------
 
 function crash(coH, coC) {
-  console.log("crash(): cree= "+cree);
-  if(!cree){
-
-
-  if(holeFull===false){
-    holeFull=true;
-    //create a car in the space of crash TODO adjust this so that it is in the right place.
-    if(carType==1){
-      var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
-    }else if(carType==2){
-      var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
+  console.log("crash(): cree= " + cree);
+  if (!cree) {
+    if (holeFull === false) {
+      holeFull = true;
+      //create a car in the space of crash TODO adjust this so that it is in the right place.
+      if (carType == 1) {
+        var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
+      } else if (carType == 2) {
+        var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
+      }
+      crash.animations.add('crash', [8, 9], 6, true);
+      crash.animations.play('crash', true);
+      //reset the car in spawn mode
+      loseLife("hole");
+      if (gameLive) {
+        spawnCar(false);
+      } else {
+        car.alpha = 0;
+      }
     }
-
-    crash.animations.add('crash', [8, 9], 6, true);
-    crash.animations.play('crash', true);
-    //reset the car in spawn mode
-
-
-    loseLife("hole");
-    if(gameLive){
-      spawnCar(false);
-    }else{
-      car.alpha = 0;
-    }
+    //  sheildScale = 0;// add this back in to lose heatsheild on crash
+  } else {
+    console.log("Cree = true");
   }
-//  sheildScale = 0;// add this back in to lose heatsheild on crash
-}else{
-  console.log("Cree = true");
-}
 }
 //
 function secCall() {
   //
 }
+
 function drop(coH, coC) {
-  console.log("drop(): cree= "+cree);
-  if(!cree){
-    // cree = true;
-  console.log("coH.x  = "+coH.x);
-  console.log("stepGroup.height = "+stepGroup.height);
-  if(stepFull===false){
-    stepFull=true;
-    // create a car in the space of crash TODO adjust this so that it is in the right place.
-    if(carType==1){
-      var fall= deadGroup.create(coH.x, coH.y, 'tubefall');
-    }else if(carType==2){
-      var fall = deadGroup.create(coH.x, coH.y, 'buckycar');
-    }
+  console.log("drop(): cree= " + cree);
+  if (!cree) {
+    // if (holeFull === false) {
+      //holeFull = true;
+      //create a car in the space of crash TODO adjust this so that it is in the right place.
+      if (carType == 1) {
+        var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
+      } else if (carType == 2) {
+        var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
+      }
+      crash.animations.add('crash', [8, 9], 6, true);
+      crash.animations.play('crash', true);
+      //reset the car in spawn mode
+      loseLife("hole");
+      if (gameLive) {
+        spawnCar(false);
+      } else {
+        car.alpha = 0;
+      }
+   // }
+    //  sheildScale = 0;// add this back in to lose heatsheild on crash
+  } else {
+    console.log("Cree = true");
+  }
 
-    fall.animations.add('crash', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], 20, false);
-    fall.animations.play('crash', true);
-    //reset the car in spawn mode
-
-
-    loseLife("drop");
-    if(gameLive){
-      spawnCar(false);
-      // stepFull = false;
-    }else{
-      car.alpha = 0;
-    }
-   }
-//  sheildScale = 0;// add this back in to lose heatsheild on crash
-}else{
-  console.log("Cree = true");
-}
+  // if (!cree) {
+  //   // cree = true;
+  //   console.log("coH.x  = " + coH.x);
+  //   console.log("stepGroup.height = " + stepGroup.height);
+  //   if (stepFull === false) {
+  //     stepFull = true;
+  //     // create a car in the space of crash TODO adjust this so that it is in the right place.
+  //     if (carType == 1) {
+  //       var fall = deadGroup.create(coH.x, coH.y, 'tubefall');
+  //     } else if (carType == 2) {
+  //       var fall = deadGroup.create(coH.x, coH.y, 'buckycar');
+  //     }
+  //
+  //     fall.animations.add('crash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 20, false);
+  //     fall.animations.play('crash', true);
+  //     //reset the car in spawn mode
+  //
+  //
+  //     loseLife("drop");
+  //     if (gameLive) {
+  //       spawnCar(false);
+  //       // stepFull = false;
+  //     } else {
+  //       car.alpha = 0;
+  //     }
+  //   }
+  //   //  sheildScale = 0;// add this back in to lose heatsheild on crash
+  // } else {
+  //   console.log("Cree = true");
+  // }
 }
 
 function spawnCar(start) {
-//lets make sure we dont inherit some movement
-  car.body.velocity.x=0;
-  car.body.velocity.y=0;
+  //lets make sure we dont inherit some movement
+  car.body.velocity.x = 0;
+  car.body.velocity.y = 0;
   //
   car.body.x = game.world.width / 2 - 125;
   car.body.y = carStartY;
@@ -742,15 +786,12 @@ function spawnCar(start) {
     y: 1
   }, 2000, Phaser.Easing.Bounce.Out, true);
   stepFull = false;
-  if(!start){
-  creeToggle();
-}
+  if (!start) {
+    playState.creeToggle();
+  }
 }
 
 function loseLife(cause) {
-  // console.log("loseLife");
-
-
   if (lives === 3) {
     heart3.alpha = 0;
     lives = 2;
@@ -764,29 +805,20 @@ function loseLife(cause) {
     lives = 0;
     playState.outOfLivesDelay();
     gameLive = false;
-    // console.log("GAME OVER! you LOSE");
-    // game.state.start('gameover');
-
-    // if(!phaseShift){
-    //   console.log("was ist los?");
-      // meltingPoint();
-      // gameOver();
-
-    //   phaseShift = true;
-    // }
   }
   timeOfDeath = game.time.time;
   // console.log("timeOfDeath= " + timeOfDeath);
-  if(cause==="hole"){
+  if (cause === "hole") {
     holeDeath.play();
     //TODO trigger game over chime only iflives === 0 and the cause o death sound has completed.
-  }else if(cause==="drop"){
+  } else if (cause === "drop") {
     fallFx.play();
   }
 
   return lives;
 }
-function gameOver(){
+
+function gameOver() {
 
   game.state.start('gameover');
 }
@@ -814,225 +846,226 @@ function spriteRandomiser() {
   }
   return n;
 }
+
 function velocityRandomiser(sprite) {
 
-  var a =  playState.getRandomInt(10);
-  var b =  playState.getRandomInt(10);
+  var a = playState.getRandomInt(10);
+  var b = playState.getRandomInt(10);
   var n = playState.getRandomInt(800);
   var m = playState.getRandomInt(800);
 
-  if(a <= 5){
-     n *= -1 ;
+  if (a <= 5) {
+    n *= -1;
   }
-  if(b <= 5){
-     m *= -1 ;
+  if (b <= 5) {
+    m *= -1;
   }
-  sprite.body.velocity.x=n;
-  sprite.body.velocity.y=m;
+  sprite.body.velocity.x = n;
+  sprite.body.velocity.y = m;
 
 }
-function textScroller(messNo){
-   // scrollingText.setText(text);
-   // messageIndex++;
-   messageIndex = messNo;
 
-   if (messageIndex < scrollingMessages.length)
-   {
-       currMessage = '';
-       game.time.events.repeat(180, scrollingMessages[messageIndex].length + 1, updateLine, this);
-   }
+function textScroller(messNo) {
+  // scrollingText.setText(text);
+  // messageIndex++;
+  messageIndex = messNo;
+
+  if (messageIndex < scrollingMessages.length) {
+    currMessage = '';
+    game.time.events.repeat(180, scrollingMessages[messageIndex].length + 1, updateLine, this);
+  }
 
 }
+
 function updateLine() {
-    var chunk;
+  var chunk;
+  if (currMessage.length >= maxChars) {
+    chunk = currMessage.length - maxChars;
+  } else {
+    chunk = 0;
+  }
+  // console.log("currMessage.lenght ="+currMessage.length );
+  // console.log("chunk ="+chunk);
 
-    if(currMessage.length >= maxChars){
-      chunk = currMessage.length - maxChars;
-    }else{
-      chunk = 0;
-    }
-    // console.log("currMessage.lenght ="+currMessage.length );
-    // console.log("chunk ="+chunk);
-
-    if (currMessage.length < scrollingMessages[messageIndex].length)
-    {
-        currMessage = scrollingMessages[messageIndex].substr(chunk, currMessage.length + 1);
-        // text.text = line;
-        // text.setText(line);
-        scrollingText.setText(currMessage);
-    }
-    // else
-    // {
-    //     //  Wait 2 seconds then start a new line
-    //     game.time.events.add(Phaser.Timer.SECOND * 2, textScroller, this);
-    // }
+  if (currMessage.length < scrollingMessages[messageIndex].length) {
+    currMessage = scrollingMessages[messageIndex].substr(chunk, currMessage.length + 1);
+    // text.text = line;
+    // text.setText(line);
+    scrollingText.setText(currMessage);
+  }
+  // else
+  // {
+  //     //  Wait 2 seconds then start a new line
+  //     game.time.events.add(Phaser.Timer.SECOND * 2, textScroller, this);
+  // }
 
 }
-function createSteps(){
+
+function createSteps() {
   // create a set of step graffics
-  for (i=0; i< stepLimit; i++){
+  for (i = 0; i < stepLimit; i++) {
     // step = stepGroup.create(-290 +i , i*5, 'step');
-    rightStaircase[i] = stepGroup.create(780, (i*stepTileH)-stepTileH,'half-graphene');
+    rightStaircase[i] = stepGroup.create(rightStepStart, (i * stepTileH) - stepTileH, 'half-graphene');
     // rightStaircase[i] = game.add.tileSprite(750, (i*stepTileH)-stepTileH,  300, 50,'silver');
     rightStaircase[i].body.immovable = true;
 
-    leftStaircase[i] = stepGroup.create(-295, (i*stepTileH)-stepTileH,'half-grapheneL');
+    leftStaircase[i] = stepGroup.create(leftStepStart, (i * stepTileH) - stepTileH, 'half-grapheneL');
     leftStaircase[i].body.immovable = true;
     // rightStaircase[i].alpha =0.5;
     // stepBools[i]=true;
   }
-
 }
-function staircaseCheck(){
 
-
-if (score > distCheck){
-  // console.log("score = "+score+" : dist= "+distCheck);
-  distCheck++;
-  for (i=0; i < stepLimit ; i++){
-    if(rightStaircase[i].body.y >= bottomOtheWorld){
-      //
-      rightStaircase[i].body.y =  rightStaircase[i].body.y-(stepLimit * stepTileH);
-      rightStaircase[i].body.x = rightStepPath(i);
-      // console.log("bottom o the world");
-
-    }
-    if(leftStaircase[i].body.y >= bottomOtheWorld){
-      //
-      leftStaircase[i].body.y =  leftStaircase[i].body.y-(stepLimit * stepTileH);
-      leftStaircase[i].body.x = leftStepPath(i);
-      // console.log("bottom o the world");
-
+function staircaseCheck() {
+  if (score > distCheck) {
+    // console.log("score = "+score+" : dist= "+distCheck);
+    distCheck++;
+    for (i = 0; i < stepLimit; i++) {
+      if (rightStaircase[i].body.y >= bottomOtheWorld) {
+        //
+        rightStaircase[i].body.y = rightStaircase[i].body.y - (stepLimit * stepTileH);
+        rightStaircase[i].body.x = rightStepPath(i);
+        // console.log("bottom o the world");
+      }
+      if (leftStaircase[i].body.y >= bottomOtheWorld) {
+        //
+        leftStaircase[i].body.y = leftStaircase[i].body.y - (stepLimit * stepTileH);
+        leftStaircase[i].body.x = leftStepPath(i);
+        // console.log("bottom o the world");
+      }
     }
   }
 }
 
+function rightStepPath(n) {
 
-}
-
-function rightStepPath(n){
-
-  if(n === rightStaircase.length -1 ){
+  if (n === rightStaircase.length - 1) {
     // console.log("last");
     var lastStepX = rightStaircase[0].body.x;
-  }else {
+  } else {
     // console.log("not last");
-    var lastStepX = rightStaircase[n+1].body.x;
+    var lastStepX = rightStaircase[n + 1].body.x;
     // console.log("lastStepX  = "+lastStepX+ " and i = "+i);
   }
   var pinger = lastStepX;
   //
-  if(rightZig){
-    console.log("rightZig");
-    if( lastStepX  >= rightInnerBound ){
+  if (rightZig) {
+    // console.log("rightZig");
+    if (lastStepX >= rightInnerBound) {
       // console.log(" x >= rightInnerBound");
       pinger -= attackRate;
-    }else {
+    } else {
       rightZig = false;
     }
-  }else if(rightZag){
-    console.log("rightZag");
-    if(lastStepX <= rightOuterBound){
+  } else if (rightZag) {
+    // console.log("rightZag");
+    if (lastStepX <= rightOuterBound) {
       // console.log("x <= rightOuterBound");
       pinger += attackRate;
-    }else{
+    } else {
       rightZag = false;
     }
   }
   //
-if(!rightZig && !rightZag){
-  // console.log("!rightZig && !rightZag");
-  rightCurrRest++;
-   if (restSteps >= rightCurrRest) {
-     // console.log("restSteps >= rightCurrRest");
-    if(lastStepX <= rightInnerBound){
-      // console.log("x <= rightInnerBoun");
-      rightZag = true;
-      rightCurrRest = 0;
-    }else if (lastStepX >= rightOuterBound) {
-      // console.log("x >= rightOuterBound");
-      rightZig = true;
-      rightCurrRest = 0;
+  if (!rightZig && !rightZag) {
+    // console.log("!rightZig && !rightZag");
+    rightCurrRest++;
+    if (restSteps >= rightCurrRest) {
+      // console.log("restSteps >= rightCurrRest");
+      if (lastStepX <= rightInnerBound) {
+        // console.log("x <= rightInnerBoun");
+        rightZag = true;
+        rightCurrRest = 0;
+      } else if (lastStepX >= rightOuterBound) {
+        // console.log("x >= rightOuterBound");
+        rightZig = true;
+        rightCurrRest = 0;
+      }
     }
   }
-}
-// console.log("pinger = "+pinger);
-return pinger;
+  return pinger;
 }
 //
+function leftStepPath(n) {
 
-function leftStepPath(n){
-
-  if(n === leftStaircase.length -1 ){
+  if (n === leftStaircase.length - 1) {
     // console.log("last");
     var lastStepX = leftStaircase[0].body.x;
-  }else {
+  } else {
     // console.log("not last");
-    var lastStepX = leftStaircase[n+1].body.x;
+    var lastStepX = leftStaircase[n + 1].body.x;
     // console.log("lastStepX  = "+lastStepX+ " and i = "+i);
   }
   var pinger = lastStepX;
   //
-  if(leftZig){
+  if (leftZig) {
     console.log("leftZig");
-    if( lastStepX  >= leftInnerBound ){
+    if (lastStepX >= leftInnerBound) {
       // console.log(" x >= rightInnerBound");
       pinger -= attackRate;
-    }else {
+    } else {
       leftZig = false;
     }
-  }else if(leftZag){
+  } else if (leftZag) {
     console.log("leftZag");
-    if(lastStepX <= leftOuterBound){
+    if (lastStepX <= leftOuterBound) {
       // console.log("x <= rightOuterBound");
       pinger += attackRate;
-    }else{
+    } else {
       leftZag = false;
     }
   }
   //
-if(!leftZig && !leftZag){
-  // console.log("!rightZig && !rightZag");
-  leftCurrRest++;
-   if (restSteps >= leftCurrRest) {
-     // console.log("restSteps >= rightCurrRest");
-    if(lastStepX <= leftInnerBound){
-      // console.log("x <= rightInnerBoun");
-      leftZag = true;
-      rightCurrRest = 0;
-    }else if (lastStepX >= leftOuterBound) {
-      // console.log("x >= rightOuterBound");
-      leftZig = true;
-      leftCurrRest = 0;
+  if (!leftZig && !leftZag) {
+    // console.log("!rightZig && !rightZag");
+    leftCurrRest++;
+    if (restSteps >= leftCurrRest) {
+      // console.log("restSteps >= rightCurrRest");
+      if (lastStepX <= leftInnerBound) {
+        // console.log("x <= rightInnerBoun");
+        leftZag = true;
+        rightCurrRest = 0;
+      } else if (lastStepX >= leftOuterBound) {
+        // console.log("x >= rightOuterBound");
+        leftZig = true;
+        leftCurrRest = 0;
+      }
     }
   }
+  // console.log("pinger = "+pinger);
+  return pinger;
 }
-// console.log("pinger = "+pinger);
-return pinger;
-}
 
 
 
-function updateTrackBounds(n){
-  if(rightInnerBound > rightInnerBoundLimit){
+function updateTrackBounds(n) {
+  n = n / 5;
+  if (rightInnerBound > rightInnerBoundLimit) {
     rightInnerBound -= n;
     // rightOuterBound -= n;
   }
-  if(rightOuterBound > rightOuterBoundLimit){
+  if (rightOuterBound > rightOuterBoundLimit) {
     // rightInnerBound -= n;
     rightOuterBound -= n;
   }
 
-  if(leftInnerBound > leftInnerBoundLimit){
+  if (leftInnerBound > leftInnerBoundLimit) {
     leftInnerBound -= n;
     // leftOuterBound += n;
   }
-  if(leftOuterBound < leftOuterBoundLimit){
+  if (leftOuterBound < leftOuterBoundLimit) {
     // leftInnerBound -= n;
     leftOuterBound += n;
   }
 }
-function creeToggle(){
-  cree = true;
-  game.time.events.add(Phaser.Timer.SECOND * creeTime, noCree => cree=false, this);
-}
+
+// function creeToggle() {
+//   console.log("creeToggle called");
+//   cree = true;
+//   playState.game.time.events.add(Phaser.Timer.SECOND * creeTime, ct, this);
+//     // game.time.events.add(Phaser.Timer.SECOND * creeTime, noCree => {cree = false, console.log("creeToggle Set to ", cree);}, this);
+// }
+// function ct(){
+//   cree = false;
+//   console.log("ct : cree : ", cree);
+// }

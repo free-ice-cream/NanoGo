@@ -190,6 +190,7 @@ function gameReset(){
   gameLive= true;
   phaseShift= false;
   drift = driftBase;
+  distCheck = 0;
   // carType=1;
   // trackselection=1;
 }

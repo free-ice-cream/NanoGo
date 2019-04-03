@@ -1,5 +1,5 @@
 
-var gameBuild = "build 2.7"; //
+var gameBuild = "build 2.8"; //
 var testing = false;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;
@@ -198,7 +198,8 @@ console.log("testing = "+testing);
    var spaceKey; //a var for the spacebar
    var carGrav = 200;//300;// teh "amount" of gravity // SWITCHED OFF!!
    var carBounce = 0.3;// the bounce factor when teh car lands at teh start
-   var tileRate = 16 ;//the rate at which the background moves
+   var tileRate = 24 ;//the rate at which the background moves
+   var carAccelRate = 50;
    //
    var rev;
    var mainTheme;
@@ -318,10 +319,12 @@ var tempEffect1 =  15; // how small an effect temp is on the car !!the smaller t
 var tempEffect2 =  30; // how small an effect temp is on the car
 var tempEffectY = tempEffect1 ;//a var to store the effec on y as it changes form car to car
 var tempEffectX = tempEffect1 ;//
+var tempEffectR = 100;// the amount temp affects rotaton
 var tempBoox = true; //a toggle to get pos and ned vals in the temp changes for x
 var tempBooy = true; //a toggle to get pos and ned vals in the temp changes for y
+var tempBooR = true;// the same but for rotaion
 var tempIncrement = 10;// how much he temp goes up per secon
-var miniNudge = 5;// how much the player can effect velocity.
+var miniNudge = 10;// was 5  how much the player can effect velocity.
 //
 var carXpos;
 var carYpos;// vars to hold teh position so we dont manupulate it directly with the functions
@@ -396,6 +399,7 @@ var rightInnerBoundLimit = 600;// limit x position for the steps
 var rightInnerBound = 750;
 var rightOuterBound = 795;// limit x position for the steps
 var rightOuterBoundLimit= 700;
+var rightStepStart = 780;
 //
 var leftZig = true;//going left
 var leftZag = false;// going right
@@ -404,8 +408,10 @@ var leftInnerBoundLimit = -300;//
 var leftInnerBound = -200;
 //
 var leftOuterBound = -100;// limit x position for the steps
-var leftOuterBoundLimit = 0;
- var restSteps = 20;// how long to wait at teh top or bottom
+var leftOuterBoundLimit = -5;
+//
+var leftStepStart = -150;
+var restSteps = 20;// how long to wait at teh top or bottom
 var rightCurrRest = 0;
 var leftCurrRest = 0;
 var attackRate = 6; // the rate at shich teh stepps will change
