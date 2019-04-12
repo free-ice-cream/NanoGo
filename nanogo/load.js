@@ -44,12 +44,16 @@ var loadState = {
     game.load.spritesheet('meterK','assets/rising-scale.png', 90, 40);
     //
     game.load.spritesheet('tubecar','assets/nanotube-racer-spritesheet-150-150-9f_v6.png', 150,150);
+    game.load.spritesheet('tubecar-test','assets/tube-edgetest.png', 150,150);
+    //
     game.load.spritesheet('buckycar','assets/buckyball-racer-spritesheet_v3.png', 150,150);
     game.load.spritesheet('tiny-toggle','assets/tiny-toggle-2.png', 69,61);
     // play screen
     game.load.spritesheet('car1', 'assets/bucky-tilesprite_v1.png', 250, 250);
     game.load.spritesheet('car', 'assets/car7-spritesheet-v3.png', 150, 150);
     game.load.spritesheet('hole','assets/holes100px.png', 100,100);
+    game.load.spritesheet('hole-test','assets/holes-edgetest.png', 100,100);//TODO swap back
+    //
     game.load.spritesheet('blue-power-up','assets/blue-power-up.png', 30,30);
     game.load.spritesheet('outrigger','assets/outrigger_v2.png', 30, 30);
     //

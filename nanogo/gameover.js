@@ -177,20 +177,23 @@ endlich.loopFull();
   }
 
 };
+//
 //end of gameover state
+//
 function gameReset(){
-  score = 0;
-  // gameTime=gameDuration;
-  homeTime=false;
-  lives = livesBase;
-  holeFull=false;
-  currentTemp = startTemp;
-  // console.log("currentTemp at reset is "+currentTemp);
-  endlich.stop();
-  gameLive= true;
-  phaseShift= false;
-  drift = driftBase;
-  distCheck = 0;
-  // carType=1;
-  // trackselection=1;
+  score = 0; //reset the score
+  homeTime = false;
+  lives = livesBase; // reset the lives to full
+  holeFull = false; // make sure the holes are empty
+  currentTemp = startTemp;// reset teh tempereature
+  endlich.stop();// stop the end music
+  gameLive = true;// set teh game state to !live
+  phaseShift = false;//reset the boling point effects
+  drift = driftBase;// reset the amount the car skids by : nb this
+  distCheck = 0; // reset teh distance traveles checking var to 0
+  outBool1 = false;// make sure we dont have any outriggers
+  outBool2 = false;
+  outBool3 = false;
+  outBool4 = false;
+  sheildScale = 0 ;// reset the heatsheild to 0
 }

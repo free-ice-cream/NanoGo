@@ -93,7 +93,9 @@ var optionsState4 = {
   },
 
   starthover: function(){
-    startSeq.animations.play('start-hover', true);
+    if(!countDown){
+      startSeq.animations.play('start-hover', true);
+    }
   },
   startnohover: function(){
     if(!countDown){
@@ -131,8 +133,8 @@ var optionsState4 = {
     // }
   },
   backsel: function(){
-    console.log("next");
-    game.state.start('play');
+    // console.log("next");
+    game.state.start('options3');
     // game.state.start('options3');
     // if(trackselection== 1){
       //nextbut.animations.play('no-hover', true);

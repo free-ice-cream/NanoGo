@@ -9,7 +9,7 @@ var menuState = {
     startSeq.events.onInputOver.add(this.starthover,this);
     startSeq.events.onInputOut.add(this.startnohover,this);
     //
-    howBut.inputEnabled=true;
+    howBut.inputEnabled = true;
     howBut.events.onInputDown.add(this.howButDown, this);
     howBut.events.onInputOver.add(this.howButOver, this);
     howBut.events.onInputOut.add(this.howButOut, this);
@@ -26,7 +26,7 @@ var menuState = {
     flip.onComplete.add(this.start, this);
 
    console.log('menuState');
-   
+
   },
   start: function(){
     console.log('pop- start ');
@@ -36,12 +36,16 @@ var menuState = {
   },
   startListening: function(){
     console.log('pop - startListening');
+
     startSeq.animations.play('countdown', true);
     countDown=true;
+
   },
 
   starthover: function(){
+    if(!countDown){
     startSeq.animations.play('start-hover', true);
+  }
   },
   startnohover: function(){
     if(!countDown){

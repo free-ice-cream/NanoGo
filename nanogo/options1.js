@@ -18,8 +18,17 @@ var topbanner = game.add.sprite(0,0, 'greenheadbg');
   oTo13 = this.add.text(30, 260, oto13, first18greenc);
   oTo14 = this.add.text(30, 450, oto14, first18greenc);
   //
-  bassLoop = game.add.audio('bass-loop');
-  bassLoop.loopFull(0.8);
+
+  // console.log("bassLoop", bassLoop);
+  // if(bassLoop === "undefined"){
+  //   console.log("undefined bass");
+  // }
+  if(!options1Audio){
+    bassLoop = game.add.audio('bass-loop');
+    bassLoop.loopFull(0.8);
+    options1Audio = true;
+  }
+  // console.log("bassLoop", bassLoop);
 },
 update:function(){
 

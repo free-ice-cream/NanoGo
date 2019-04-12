@@ -40,7 +40,12 @@ var playState = {
     //Holes
     holesGroup = game.add.group();
     holesGroup.enableBody = true;
-    hole = holesGroup.create(50, 50, 'hole');
+    if(testing){
+        hole = holesGroup.create(50, 50, 'hole-test');
+    }else{
+        hole = holesGroup.create(50, 50, 'hole');
+    }
+
     hole.body.x = holeX[currHole];
     //
     //Power Ups
@@ -89,7 +94,12 @@ var playState = {
       car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'buckycar'); //CAR START POS
       // console.log("how many?");
     } else if (carType === 1) {
-      car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar'); //CAR START POS
+      if(testing){
+car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //CAR START POS
+      }else{
+        car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar'); //CAR START POS
+      }
+
       // console.log("how many?");
     }
     //
@@ -211,7 +221,7 @@ var playState = {
     // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
     game.physics.arcade.collide(car, powerGroup);
-    game.physics.arcade.collide(car, stepGroup);
+    game.physics.arcade.collide(car, stepGroup);//TODO Maybe swap this to be an overlap
     //
     //detect hole collision
     game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
@@ -231,7 +241,7 @@ var playState = {
         if (!leftTog) {
           //    car.body.x -= drift; //clicky
           // car.body.velocity.x -= drift;// smooth
-               car.body.velocity.x -= miniNudge; // have some inpact on velocity too
+          car.body.velocity.x -= miniNudge; // have some inpact on velocity too
           // car.body.drag.x=800;
           // carXpos -= drift;
           this.playFx("swipe");
@@ -249,7 +259,7 @@ var playState = {
         if (!rightTog) {
           //    car.body.x += drift; //clicky
           // car.body.velocity.x += drift;//smooth
-              car.body.velocity.x += miniNudge; //
+          car.body.velocity.x += miniNudge; //
 
           // car.body.drag.x=800;
           // carXpos+= drift;
@@ -275,20 +285,13 @@ var playState = {
           this.playFx("rev");
           if (car.body.y > 250) {
             // car.body.velocity.y -= carAccelRate ;//drift;//TODO Remove me
-            console.log("car.body.y > 250 ie we shoud go");
             if (car.angle >= 0) {
-              // car.body.velocity.y -= carAccelRate ;
-              console.log("car angle  > 0 = ", car.angle);
               let adj = Math.cos(car.angle * (Math.PI / 180)) * carAccelRate;
-              console.log("adj = ", adj);
               car.body.velocity.y -= adj;
               let opp = Math.sin(car.angle * (Math.PI / 180)) * adj;
-              console.log("opp = ", opp);
               car.body.velocity.x += opp;
               trackRate = adj / carAccelRate; // we'll use this to mod the tracks rate of movement too.
             } else {
-              // car.body.velocity.y -= carAccelRate ;
-              console.log("car angle  < 0 = ", car.angle);
               let adj = Math.cos(car.angle * (Math.PI / 180)) * carAccelRate;
               car.body.velocity.y -= adj;
               let opp = (Math.sin(car.angle * (Math.PI / 180)) * adj);
@@ -348,14 +351,7 @@ var playState = {
     }
     //
     staircaseCheck();
-    // if(step.body.y >= 500){
-    //   step.body.y = -50;
-    // }
-    // remove comments to return block
-    // game.physics.arcade.overlap(block, car, this.wall, this.checkWallRespawnTime, this);
-    //
-    // game.time.events.repeat(Phaser.Timer.SECOND * 1, 99, this.secondHeat, this);
-
+    // this.zombieCheck();
 
   },
   // ---------------------------------------------------------------------------------------------------------------
@@ -408,9 +404,9 @@ var playState = {
   getRandomInt: function(max) {
     return Math.floor(Math.random() * Math.floor(max)); // TODO: checkto see if thisis still used
   },
-  spawnHole: function() {
-    hole = game.add.sprite(50, 50, 'hole');
-  },
+  // spawnHole: function() {
+  //   hole = game.add.sprite(50, 50, 'hole');
+  // },
   moveTiles: function(d) {
     score += d;
 
@@ -446,7 +442,7 @@ var playState = {
     // blockGroup.y += adjustedRate  ;
   },
   mainTick: function() {
-    console.log("mainTick");
+    // console.log("mainTick");
     game.time.events.add(1000, this.mainTick, this);
     // game.time.events.add(true, this.mainTick, this);
     this.gameTick();
@@ -467,7 +463,7 @@ var playState = {
       car.body.velocity.x += tempBoox ? ent2 * -1 : ent2;
       tempBoox = !tempBoox;
       //
-      if (car.angle > -80 && car.angle < 80) {// set the bounds of the rotation
+      if (car.angle > -80 && car.angle < 80) { // set the bounds of the rotation
         car.angle += tempBooR ? ent1 * -1 : ent1;
       }
       tempBooR = !tempBooR;
@@ -695,6 +691,25 @@ var playState = {
     // game.time.events.add(Phaser.Timer.SECOND * creeTime, ct, this);
     console.log("creeTime = ", creeTime);
     game.time.events.add(Phaser.Timer.SECOND * creeTime, noCree => cree = false, this); // for soem reason this wont accept the var
+  },
+  zombieCheck: function() {
+    for (let i = 0; i < zombies.length; i++) {
+      if (zombies.length != 0) {
+        console.log("xombies.lenght = ", zombies.length);
+        console.log("deadGroup.y   = ", deadGroup.y  );
+          // console.log("zombies[i].height  = ", zombies[i].height );
+
+        if (deadGroup.y > bottomOtheWorld) {
+          zombies[i].destroy();
+          zombies.splice(0, 1)
+          // console.log("zombies.length ", zombies.length);
+        }
+      }
+      if (zombies.length === 0) {
+        deadGroup.y = 0;
+      }
+    }
+
   }
   // staircaseCheck: function(){
   //     for (i=0; i<12; i += 1){
@@ -716,16 +731,36 @@ var playState = {
 // ---------------------------------------------------------------------------------------------------------------
 
 function crash(coH, coC) {
-  console.log("crash(): cree= " + cree);
+  // console.log("crash(): cree= " + cree);
+  this.zombieCheck();
   if (!cree) {
     if (holeFull === false) {
       holeFull = true;
       //create a car in the space of crash TODO adjust this so that it is in the right place.
-      if (carType == 1) {
-        var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
-      } else if (carType == 2) {
-        var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
-      }
+      // if (carType == 1) {
+        // var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
+        // console.log("coH.x= ", coH.x);
+        // console.log("coH.y= ", coH.y);
+        // console.log("car.x= ", car.x);
+        // console.log("car.y= ", car.y);
+        // console.log("car.body.x= ", car.body.x);
+        // console.log("car.body.y= ", car.body.y);
+        // var crash = holesGroup.create(car.x, coH.y, 'tubecar');
+        deadGroup.y = 0;
+        var crash = deadGroup.create(car.x - (car.width/2), car.y - (car.height/2), cars[carType]);
+        // var crash = deadGroup.create(car.x - (car.width/2), car.y - (car.height/2), 'tubecar');
+        let zl = zombies.length;
+        zombies[zl] = crash;
+        // crash.angle = car.angle;
+        zombies[zl].angle = car.angle;
+      // }
+      // else if (carType == 2) {
+      //   // var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
+      //   var crash = holesGroup.create(car.body.x, car.body.y, 'buckycar');
+      // }
+
+
+
       crash.animations.add('crash', [8, 9], 6, true);
       crash.animations.play('crash', true);
       //reset the car in spawn mode
@@ -748,15 +783,24 @@ function secCall() {
 
 function drop(coH, coC) {
   console.log("drop(): cree= " + cree);
+  this.zombieCheck();
   if (!cree) {
     // if (holeFull === false) {
     //holeFull = true;
     //create a car in the space of crash TODO adjust this so that it is in the right place.
-    if (carType == 1) {
-      var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
-    } else if (carType == 2) {
-      var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
-    }
+    // if (carType == 1) {
+    //   var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
+    // } else if (carType == 2) {
+    //   var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
+    // }
+    //
+    deadGroup.y = 0;
+    var crash = deadGroup.create(car.x - (car.width/2), car.y - (car.height/2), cars[carType]);
+    let zl = zombies.length;
+    zombies[zl] = crash;
+    zombies[zl].angle = car.angle;
+    //
+
     crash.animations.add('crash', [8, 9], 6, true);
     crash.animations.play('crash', true);
     //reset the car in spawn mode
@@ -808,7 +852,7 @@ function spawnCar(start) {
   //lets make sure we dont inherit some movement
   car.body.velocity.x = 0;
   car.body.velocity.y = 0;
-  car.angle = 0 ;
+  car.angle = 0;
   //
   car.body.x = game.world.width / 2 - 125;
   car.body.y = carStartY;
@@ -1032,7 +1076,7 @@ function leftStepPath(n) {
   var pinger = lastStepX;
   //
   if (leftZig) {
-    console.log("leftZig");
+    // console.log("leftZig");
     if (lastStepX >= leftInnerBound) {
       // console.log(" x >= rightInnerBound");
       pinger -= attackRate;
@@ -1040,7 +1084,7 @@ function leftStepPath(n) {
       leftZig = false;
     }
   } else if (leftZag) {
-    console.log("leftZag");
+    // console.log("leftZag");
     if (lastStepX <= leftOuterBound) {
       // console.log("x <= rightOuterBound");
       pinger += attackRate;

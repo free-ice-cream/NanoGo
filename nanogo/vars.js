@@ -1,6 +1,6 @@
 
-var gameBuild = "build 2.9"; //
-var testing = false;//  a bool used to switch between testing and production mode
+var gameBuild = "build 3.0"; //
+var testing = true;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;
     var hole;//this will be the baddie
@@ -131,7 +131,7 @@ console.log("testing = "+testing);
    var scrollingMessage0 = "";
    var scrollingMessage1 = " This is the message window, ....                               ";
    // 200
-    var mess2Thesh = 200;
+   var mess2Thesh = 200;
    var scrollingMessage2 = " Things are really getting hot in here. Your racer is starting to move eratically due to the heat....                               ";
    // 327
    var scrollingMessage3 = " its over 327ºC hot enough for lead to melt...                         ";
@@ -154,8 +154,6 @@ console.log("testing = "+testing);
    var nTimesThisTime;
    var finishDayTime;
    //
-
-
    var countDown;
    var gameTime = 0;
    // var gameStartTime=0;
@@ -265,7 +263,6 @@ var leftTog = false;
 var rightTog = false;
 //
 var trackselection = 1;// we will use this to set the track
-
 //
 // Lets try creating vars for our functions here
 var  starLayout;//play.js
@@ -419,3 +416,9 @@ var leftCurrRest = 0;
 var attackRate = 6; // the rate at shich teh stepps will change
 var cree = false;
 var creeTime = 4;// how long have you got invincibility for after respawn
+//
+var zombies = [];
+var options1Audio = false; // is the options audio set
+var startStarted = false; //has the start button beeb pressed
+
+var cars =["",'tubecar','buckycar'];
