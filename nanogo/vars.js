@@ -1,5 +1,5 @@
 
-var gameBuild = "build 3.1"; //
+var gameBuild = "build 3.1.1"; //
 var testing = false;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;

@@ -454,6 +454,7 @@ var playState = {
     holesGroup.y += adjustedRate;
     powerGroup.y += adjustedRate;
     stepGroup.y += adjustedRate;
+    leftStepGroup.y += adjustedRate;
     deadGroup.y += adjustedRate; //meh
     //if()
     updateTrackBounds(d);
