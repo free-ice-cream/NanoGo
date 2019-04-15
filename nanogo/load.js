@@ -51,7 +51,8 @@ var loadState = {
     // play screen
     game.load.spritesheet('car1', 'assets/bucky-tilesprite_v1.png', 250, 250);
     game.load.spritesheet('car', 'assets/car7-spritesheet-v3.png', 150, 150);
-    game.load.spritesheet('hole','assets/holes100px.png', 100,100);
+    // game.load.spritesheet('hole','assets/holes100px.png', 100,100);
+    game.load.spritesheet('hole','assets/hole_fizz_500_500@0.2x.png', 100,100);
     game.load.spritesheet('hole-test','assets/holes-edgetest.png', 100,100);//TODO swap back
     //
     game.load.spritesheet('blue-power-up','assets/blue-power-up.png', 30,30);

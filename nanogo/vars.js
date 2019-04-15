@@ -1,9 +1,17 @@
 
-var gameBuild = "build 3.0"; //
-var testing = true;//  a bool used to switch between testing and production mode
+var gameBuild = "build 3.1"; //
+var testing = false;//  a bool used to switch between testing and production mode
 console.log("testing = "+testing);
     ///var hexgrid;
     var hole;//this will be the baddie
+    var holeArray = [];// a place to keep holes
+
+    if(testing){
+         var holeSheet = 'hole-test';
+    }else{
+        var holeSheet = 'hole';
+    }
+
     //swap in and out the url string for the different enviroments
     //
     // var ficurl = '/nanogotest/nanogo';
@@ -279,7 +287,7 @@ var cold = 2;
 // some values to feed in to our random position function to set up holes
 var holeMaxX = 500;
 var holeMinX = 30;
-var holeYoff = 100;
+var holeYoff = 100;// we will use this as an updatable y start pos
 //
 var holeHolder;
 // var hole;
@@ -293,7 +301,7 @@ var holeX = [100, 200, 300, 400, 500 ];
 var currHole = 0;
 var stuck = false;// have we hit a hole or not
 var holeYstart = -20;
-var livesBase = 3;
+var livesBase = 3;// DONT TWEAK THIS HERE  weird things happen :)
 var lives = livesBase;
 var timeOfDeath;
 var safeSpawnTime = 3000;

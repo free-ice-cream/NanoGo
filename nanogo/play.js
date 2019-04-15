@@ -40,13 +40,15 @@ var playState = {
     //Holes
     holesGroup = game.add.group();
     holesGroup.enableBody = true;
-    if(testing){
-        hole = holesGroup.create(50, 50, 'hole-test');
-    }else{
-        hole = holesGroup.create(50, 50, 'hole');
-    }
+    //  HOLE REMOVED
+    // if(testing){
+    //     hole = holesGroup.create(0, -50, 'hole-test');
+    // }else{
+    //     hole = holesGroup.create(0, -50, 'hole');
+    // }
 
-    hole.body.x = holeX[currHole];
+    // hole.body.x = holeX[currHole]; //    //  HOLE REMOVED
+    this.setHole();
     //
     //Power Ups
     powerGroup = game.add.group();
@@ -56,27 +58,15 @@ var playState = {
     //Steps
     stepGroup = game.add.group();
     stepGroup.enableBody = true;
+    leftStepGroup = game.add.group();
+    leftStepGroup.enableBody = true;
     createSteps();
     //
     deadGroup = game.add.group();
     // powerGroup.enableBody = true;
     // deadCar= powerGroup.create(-200, -200, 'blue-power-up');
     // bluePowerUp.body.immovable = true;
-    //Steps
 
-    // step = stepGroup.create(-290, 0, 'step');
-
-
-    // remove comments to return block
-    //blocks - these will be the step shifts
-    // blockGroup = game.add.group();
-    // blockGroup.enableBody = true;
-    // block = blockGroup.create(0, 0, 'block');
-    // block.body.x = 0;
-    // block.body.immovable = true;
-    //
-    //and the heatsheild
-    // heatSheild= game.add.sprite(0,0,'heatsheild');
     heatSheildMeter = game.add.sprite(690, 50, 'heatsheildmeter');
     // heatSheild.alpha = 0.5;
     heatSheildMeter.alpha = 0.7;
@@ -94,9 +84,9 @@ var playState = {
       car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'buckycar'); //CAR START POS
       // console.log("how many?");
     } else if (carType === 1) {
-      if(testing){
-car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //CAR START POS
-      }else{
+      if (testing) {
+        car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //CAR START POS
+      } else {
         car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar'); //CAR START POS
       }
 
@@ -122,17 +112,16 @@ car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //C
     this.setLives();
     game.physics.arcade.enable(car);
     car.body.bounce.y = carBounce;
-    car.body.gravity.y = carGrav; // CURR SWITCHED OFF
+    car.body.gravity.y = carGrav; //
     car.body.collideWorldBounds = true;
     car.anchor.setTo(0.5, 0.5);
     // car.anchor.setTo(0.25, 0.25);
     //
-    game.physics.arcade.enable(hole);
+    // game.physics.arcade.enable(hole);//  //  HOLE REMOVED
     game.physics.arcade.enable(bluePowerUp);
-    // remove comments to return block
-    // game.physics.arcade.enable(block);
-
+    //
     //lets add some AUDIO
+    //
     rev = game.add.audio('rev');
     mainTheme = game.add.audio('theme');
     holeDeath = game.add.audio('death');
@@ -154,7 +143,8 @@ car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //C
     car.animations.add('stop', [0], 20, true);
     car.animations.add('crash', [9, 10, 11], 60, true);
     car.animations.add('spawn', [0, 12], 12, true);
-    hole.animations.add('fizz', [0, 1, 2, 3, 4], 20, true);
+
+    // hole.animations.add('fizz', [0, 1, 2, 3, 4], 20, true);  //  HOLE REMOVED
     bluePowerUp.animations.add('freeze', [0, 1, 2, 3, 4, 5], 20, true);
     // outRigger.animations.add("rotate",[0,1,2,3,4,5,6,7,8,9],20,true);
     //
@@ -168,7 +158,9 @@ car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //C
     endmessage2 = this.add.text(130, 250, "", thin28white);
     //
     platforms.alpha = 1;
-    hole.animations.play('fizz', true);
+
+    // hole.animations.add('fizz', [0, 1, 2, 3, 4], 20, true);  //  HOLE REMOVED
+    // hole.animations.play('fizz', true);   //  HOLE REMOVED
     bluePowerUp.animations.play('freeze', true);
     //
     scaleToggle = game.add.sprite(699, 512, 'tiny-toggle');
@@ -221,14 +213,17 @@ car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //C
     // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
     game.physics.arcade.collide(car, powerGroup);
-    game.physics.arcade.collide(car, stepGroup);//TODO Maybe swap this to be an overlap
+     // game.physics.arcade.collide(car, stepGroup);//TODO :: to collide or not to collide ???
     //
     //detect hole collision
-    game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
+
+
+    game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this); //  HOLE REMOVED
     game.physics.arcade.overlap(bluePowerUp, car, this.sheildUp, this.movePowerUp, this);
     //try this first
     // game.physics.arcade.overlap(stepGroup, car, crash, secCall, this);
     game.physics.arcade.overlap(stepGroup, car, drop, secCall, this);
+    game.physics.arcade.overlap(leftStepGroup, car, leftDrop, secCall, this);
     // remove comments to return block
     // game.physics.arcade.collide(car, block);
 
@@ -334,24 +329,27 @@ car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //C
       // }
     } // end phaseShift
     //} // end stuck
-    if (hole.body.y >= game.world.height) {
-      holeFull = false;
-      hole.body.y = holeYstart;
-      hole.body.x = spriteRandomiser();
-      currHole++;
-      if (currHole == 5) {
 
-        currHole = 0;
-      }
+    // if (hole.body.y >= game.world.height) {  //  HOLE REMOVED
+    //   holeFull = false;
+    //   hole.body.y = holeYstart;
+    //   hole.body.x = spriteXRandomiser();
+    //   currHole++;
+    //   if (currHole == 5) {
+    //
+    //     currHole = 0;
+    //   }
+    //
+    // }  //  HOLE REMOVED
 
-    }
     if (bluePowerUp.body.y >= game.world.height + 150) {
       bluePowerUp.body.y = sheildRespawnBase;
-      bluePowerUp.body.x = spriteRandomiser();
+      bluePowerUp.body.x = spriteXRandomiser();
     }
     //
     staircaseCheck();
     // this.zombieCheck();
+    this.checkHole();
 
   },
   // ---------------------------------------------------------------------------------------------------------------
@@ -379,10 +377,48 @@ car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //C
     heart3 = game.add.sprite(game.world.width - 120, 20, 'heart');
   },
 
-  holeLayout: function() {
-    //TODO  maybe refactore so teh hole spawn is inteh hole spawn functiona :)
+  setHole: function() {
+    console.log("set Hole");
+    holesGroup.y = 0;
+    hole = holesGroup.create(spriteXRandomiser(), spriteYRandomiser(), holeSheet);
+    holeArray.push(hole);
+    //
+    holeFull = false;
+
+
+    game.physics.arcade.enable(hole);
+    hole.animations.add('fizz', [0, 1, 2, 3, 4], 20, true); //  HOLE REMOVED
+    hole.animations.play('fizz', true); //  HOLE REMOVED
+    // game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);  //  HOLE REMOVED
+
+
+    // hole.body.y = holeYstart;
+    // hole.body.x = spriteXRandomiser();
+    // currHole++;
+    // if (currHole == 5) {
+    //
+    //   currHole = 0;
+    // }
 
   },
+  checkHole: function() {
+
+    // console.log("holeArray.length", holeArray.length);
+    for (let i = 0; i < holeArray.length; i++) {
+      // console.log("once through? i = ", i);
+      if (holesGroup.y > bottomOtheWorld + (holeYoff * -1)) {
+        holeArray[i].destroy();
+        holeArray.splice(i, 1);
+        this.setHole();
+
+      }
+    }
+    // console.log("holeArray[i]", holeArray[i]);
+    // console.log("holesGroup.y= ",holesGroup.y);
+    // console.log("holesGroup.height= ",holesGroup.height);
+
+  },
+
   playFx: function(clip) {
     if (!homeTime) {
 
@@ -608,7 +644,7 @@ car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //C
   },
   movePowerUp: function() {
     bluePowerUp.y = sheildRespawnBase;
-    bluePowerUp.body.x = spriteRandomiser();
+    bluePowerUp.body.x = spriteXRandomiser();
   },
   gameTick: function() {
     if (!phaseShift) {
@@ -696,14 +732,22 @@ car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //C
     for (let i = 0; i < zombies.length; i++) {
       if (zombies.length != 0) {
         console.log("xombies.lenght = ", zombies.length);
-        console.log("deadGroup.y   = ", deadGroup.y  );
-          // console.log("zombies[i].height  = ", zombies[i].height );
+        console.log("deadGroup.y   = ", deadGroup.y);
+        // console.log("zombies[i].height  = ", zombies[i].height );
 
-        if (deadGroup.y > bottomOtheWorld) {
-          zombies[i].destroy();
+        // if (deadGroup.y > bottomOtheWorld) {
+        //   console.log("BRAAIINNSS!!!");
+        //   zombies[i].destroy();
+        //   zombies.splice(0, 1)
+        //   // console.log("zombies.length ", zombies.length);
+        // }
+        if (zombies[0].worldPosition.y > bottomOtheWorld) {
+          console.log("BRAAIINNSS!!!");
+          zombies[0].destroy();
           zombies.splice(0, 1)
           // console.log("zombies.length ", zombies.length);
         }
+
       }
       if (zombies.length === 0) {
         deadGroup.y = 0;
@@ -736,33 +780,39 @@ function crash(coH, coC) {
   if (!cree) {
     if (holeFull === false) {
       holeFull = true;
-      //create a car in the space of crash TODO adjust this so that it is in the right place.
-      // if (carType == 1) {
-        // var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
-        // console.log("coH.x= ", coH.x);
-        // console.log("coH.y= ", coH.y);
-        // console.log("car.x= ", car.x);
-        // console.log("car.y= ", car.y);
-        // console.log("car.body.x= ", car.body.x);
-        // console.log("car.body.y= ", car.body.y);
-        // var crash = holesGroup.create(car.x, coH.y, 'tubecar');
-        deadGroup.y = 0;
-        var crash = deadGroup.create(car.x - (car.width/2), car.y - (car.height/2), cars[carType]);
-        // var crash = deadGroup.create(car.x - (car.width/2), car.y - (car.height/2), 'tubecar');
-        let zl = zombies.length;
-        zombies[zl] = crash;
-        // crash.angle = car.angle;
+
+      deadGroup.y = 0;
+
+      // console.log("hole.x, hole.y = ", hole.x, hole.y);
+      // console.log("hole.body.x  = ", hole.body.x);
+      // console.log("holesGroup.x  = ", holesGroup.x);
+      // console.log("holesGroup.body.x  = ", holesGroup.body.x);
+      let cx = hole.body.x;
+      let cy = (holesGroup.y - (holeYoff * -1));
+      // console.log("cx = ", cx);
+      // console.log("cy = ", cy);
+
+      // var crash = deadGroup.create(cx, cy, cars[carType]);
+
+      // var crash = deadGroup.create(car.x - (car.width/2), car.y - (car.height/2), cars[carType]);
+      // var crash = deadGroup.create(car.x - (car.width/2), car.y - (car.height/2), 'tubecar');
+      let zl = zombies.length;
+      // if(zl===0){
+      //   deadGroup.y = 0;
+      // }
+
+      // zombies[zl] = crash;
+      if(gameLive){
+        zombies[zl] = deadGroup.create(cx, cy, cars[carType]);
         zombies[zl].angle = car.angle;
-      // }
-      // else if (carType == 2) {
-      //   // var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
-      //   var crash = holesGroup.create(car.body.x, car.body.y, 'buckycar');
-      // }
+        zombies[zl].animations.add('crash', [8, 9], 6, true);
+        zombies[zl].animations.play('crash', true);
+
+      }
 
 
-
-      crash.animations.add('crash', [8, 9], 6, true);
-      crash.animations.play('crash', true);
+      // crash.animations.add('crash', [8, 9], 6, true);
+      // crash.animations.play('crash', true);
       //reset the car in spawn mode
       loseLife("hole");
       if (gameLive) {
@@ -782,70 +832,68 @@ function secCall() {
 }
 
 function drop(coH, coC) {
-  console.log("drop(): cree= " + cree);
   this.zombieCheck();
   if (!cree) {
-    // if (holeFull === false) {
-    //holeFull = true;
-    //create a car in the space of crash TODO adjust this so that it is in the right place.
-    // if (carType == 1) {
-    //   var crash = holesGroup.create(coH.x, coH.y, 'tubecar');
-    // } else if (carType == 2) {
-    //   var crash = holesGroup.create(coH.x, coH.y, 'buckycar');
-    // }
-    //
+    let cx = hole.body.x;
+    let cy = (holesGroup.y - (holeYoff * -1));
     deadGroup.y = 0;
-    var crash = deadGroup.create(car.x - (car.width/2), car.y - (car.height/2), cars[carType]);
-    let zl = zombies.length;
-    zombies[zl] = crash;
-    zombies[zl].angle = car.angle;
-    //
+     let zl = zombies.length;
+    // let leftOrRight = (car.x)? ent2 * -1 : ent2;
 
-    crash.animations.add('crash', [8, 9], 6, true);
-    crash.animations.play('crash', true);
-    //reset the car in spawn mode
+    if(gameLive){
+      // zombies[zl] = deadGroup.create(cx, cy, cars[carType]);
+      zombies[zl] = deadGroup.create(coC.worldPosition.x - (car.width / 2) , car.y- (car.height/2), cars[carType]);
+      zombies[zl].angle = car.angle;
+      zombies[zl].animations.add('crash', [8, 9], 6, true);
+      zombies[zl].animations.play('crash', true);
+
+    }
     loseLife("hole");
     if (gameLive) {
+      console.log("spawncar ");
       spawnCar(false);
     } else {
       car.alpha = 0;
     }
     // }
-    //  sheildScale = 0;// add this back in to lose heatsheild on crash
+    sheildScale = 0; // remove this to lose heatsheild on crash
   } else {
     console.log("Cree = true");
   }
 
-  // if (!cree) {
-  //   // cree = true;
-  //   console.log("coH.x  = " + coH.x);
-  //   console.log("stepGroup.height = " + stepGroup.height);
-  //   if (stepFull === false) {
-  //     stepFull = true;
-  //     // create a car in the space of crash TODO adjust this so that it is in the right place.
-  //     if (carType == 1) {
-  //       var fall = deadGroup.create(coH.x, coH.y, 'tubefall');
-  //     } else if (carType == 2) {
-  //       var fall = deadGroup.create(coH.x, coH.y, 'buckycar');
-  //     }
-  //
-  //     fall.animations.add('crash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 20, false);
-  //     fall.animations.play('crash', true);
-  //     //reset the car in spawn mode
-  //
-  //
-  //     loseLife("drop");
-  //     if (gameLive) {
-  //       spawnCar(false);
-  //       // stepFull = false;
-  //     } else {
-  //       car.alpha = 0;
-  //     }
-  //   }
-  //   //  sheildScale = 0;// add this back in to lose heatsheild on crash
-  // } else {
-  //   console.log("Cree = true");
-  // }
+
+}
+//
+function leftDrop(coH, coC) {
+  this.zombieCheck();
+  if (!cree) {
+    let cx = hole.body.x;
+    let cy = (holesGroup.y - (holeYoff * -1));
+    deadGroup.y = 0;
+     let zl = zombies.length;
+    // let leftOrRight = (car.x)? ent2 * -1 : ent2;
+    if(gameLive){
+      // zombies[zl] = deadGroup.create(cx, cy, cars[carType]);
+      zombies[zl] = deadGroup.create(coC.worldPosition.x + coC.width - (car.width / 2), car.y - (car.height/2), cars[carType]);
+      zombies[zl].angle = car.angle;
+      zombies[zl].animations.add('crash', [8, 9], 6, true);
+      zombies[zl].animations.play('crash', true);
+
+    }
+    loseLife("hole");
+    if (gameLive) {
+      console.log("spawncar ");
+      spawnCar(false);
+    } else {
+      car.alpha = 0;
+    }
+    // }
+    sheildScale = 0; // remove this to lose heatsheild on crash
+  } else {
+    console.log("Cree = true");
+  }
+
+
 }
 
 function spawnCar(start) {
@@ -882,6 +930,7 @@ function loseLife(cause) {
     lives = 0;
     playState.outOfLivesDelay();
     gameLive = false;
+    console.log("gameLive = ", gameLive);
   }
   timeOfDeath = game.time.time;
   // console.log("timeOfDeath= " + timeOfDeath);
@@ -914,7 +963,7 @@ function checkRespawnTime() {
   }
 }
 
-function spriteRandomiser() {
+function spriteXRandomiser() {
   var pad = 40;
   var x = game.world.width - pad;
   var n = Math.floor(Math.random() * Math.floor(x));
@@ -922,6 +971,17 @@ function spriteRandomiser() {
     n = pad;
   }
   return n;
+}
+
+function spriteYRandomiser() {
+  var pad = 100;
+  var y = game.world.height * 2;
+  var n = Math.floor(Math.random() * Math.floor(y));
+  if (n < pad) {
+    n = pad;
+  }
+  holeYoff = n * -1;
+  return holeYoff;
 }
 
 function velocityRandomiser(sprite) {
@@ -986,7 +1046,7 @@ function createSteps() {
     // rightStaircase[i] = game.add.tileSprite(750, (i*stepTileH)-stepTileH,  300, 50,'silver');
     rightStaircase[i].body.immovable = true;
 
-    leftStaircase[i] = stepGroup.create(leftStepStart, (i * stepTileH) - stepTileH, 'half-grapheneL');
+    leftStaircase[i] = leftStepGroup.create(leftStepStart, (i * stepTileH) - stepTileH, 'half-grapheneL');
     leftStaircase[i].body.immovable = true;
     // rightStaircase[i].alpha =0.5;
     // stepBools[i]=true;
