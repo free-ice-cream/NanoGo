@@ -101,11 +101,15 @@ var playState = {
     //
     //add the new hud
     //
-    hudback = game.add.sprite(0, 491, 'instrument_back');
-    scrollingText = this.add.text(0, 0, scollingTextCopy1, scrollingGreen);
-    scrollingText.setTextBounds(12, 540, 368, 57);
-    newHud = game.add.sprite(0, 491, 'instrument');
+    // hudback = game.add.sprite(0, 491, 'instrument_back');
+    // scrollingText = this.add.text(0, 0, scollingTextCopy1, scrollingGreen);
+    // scrollingText.setTextBounds(12, 540, 368, 57);
+    // newHud = game.add.sprite(0, 491, 'instrument');
     // newHud.alpha = 0.1;
+    //
+    // NEW NEW HUD :)
+    thermLevels = game.add.group();
+    var frame = thermLevels.create(thermX, thermY, 'therm-frame');
     //
     //Set some properties
     //
@@ -150,12 +154,20 @@ var playState = {
     //
     //TEXT
     //
-    scoreText = this.add.text(410, game.world.height - hudOffset + 40, scoreText, screen18green);
-    clockText = this.add.text(521, game.world.height - hudOffset + 40, currentTemp, screen18green); // now the temperature
-    siText = this.add.text(580, game.world.height - hudOffset + 40, tempScaleName, screen18green);
-    siNm = this.add.text(460, game.world.height - hudOffset + 40, si, screen18green);
+    scoreText = this.add.text(698, game.world.height - hudOffset +23, scoreText, screen18green);
+    distLabel = this.add.text(560, game.world.height - hudOffset + 50, distanceLabel, screen18white);
+
+    clockText = this.add.text(20, game.world.height - hudOffset + 51, currentTemp, screen18green); // now the temperature
+    thermLabel = this.add.text(130, game.world.height - hudOffset , thermalLabel, screen18white);
+
+    tempLabel = this.add.text(18, game.world.height - hudOffset , temperatureLabel, screen18white);
+
+    siText = this.add.text(77, game.world.height - hudOffset + 51, tempScaleName, screen18green);
+    siNm = this.add.text(761, game.world.height - hudOffset + 23, si, screen18green);
     endmessage1 = this.add.text(200, 150, "", main56);
     endmessage2 = this.add.text(130, 250, "", thin28white);
+
+
     //
     platforms.alpha = 1;
 
@@ -163,10 +175,10 @@ var playState = {
     // hole.animations.play('fizz', true);   //  HOLE REMOVED
     bluePowerUp.animations.play('freeze', true);
     //
-    scaleToggle = game.add.sprite(699, 512, 'tiny-toggle');
-    //
-    scaleToggle.inputEnabled = true;
-    scaleToggle.events.onInputDown.add(this.toggle, this);
+    // scaleToggle = game.add.sprite(699, 512, 'tiny-toggle');
+    // //
+    // scaleToggle.inputEnabled = true;
+    // scaleToggle.events.onInputDown.add(this.toggle, this);
 
     this.mainTick();
     this.secondTick();
@@ -184,7 +196,7 @@ var playState = {
     //
     if (testing) {
       // trackMeltingPoint = 5000;
-      // tempIncrement = 100;
+       tempIncrement = 27;
       audioLive = false;
       // creeTime = 200000; // can be used to create invulnerable after the first hit
     }
@@ -256,7 +268,7 @@ var playState = {
           // car.body.velocity.x += drift;//smooth
           car.body.velocity.x += miniNudge; //
 
-          // car.body.drag.x=800;
+           car.body.drag.x=carDragRate; //TODO is this fun? ??
           // carXpos+= drift;
           this.playFx("swipe");
           //
@@ -494,7 +506,7 @@ var playState = {
       var ent1 = (currentTemp * Math.random().toFixed()) / tempEffectR;
       var ent2 = (currentTemp * Math.random().toFixed()) / tempEffectX;
       var ent3 = (currentTemp * Math.random().toFixed()) / tempEffectY;
-      ent2 *= (1 - sheildScale);
+      ent2 *= (1 - sheildScale);// lets enable teh heatshiled vaar to have an effect
       ent3 *= (1 - sheildScale);
       // car.x += tempBoox ?  ent2 * -1 :  ent2;
       car.body.velocity.x += tempBoox ? ent2 * -1 : ent2;
@@ -663,6 +675,7 @@ var playState = {
     game.time.events.add(Phaser.Timer.SECOND * 0.12, this.secondTick, this);
     // console.log("secondTick");
     this.heat();
+    this.thermomiter();
     this.messageUpdate();
     // uncomment this to return the heatcheild - also set its alpha back to  0.5
     this.sheildUpdate();
@@ -715,10 +728,6 @@ var playState = {
     endmessage2.setText(endMessage3);
     game.time.events.add(Phaser.Timer.SECOND * 5, gameOver, this);
   },
-  wall: function() {
-    console.log("wall");
-    car.body.velocity.x += drift; // smooth
-  },
   checkWallRespawnTime: function() {
     console.log("checkWallRespawnTime");
   },
@@ -755,18 +764,22 @@ var playState = {
       }
     }
 
+  },
+  thermomiter: function(){
+    let tbs = thermBars.length;
+    let bc = barCounter.length;
+    let unit = trackMeltingPoint/ tbs;
+    let cu =  Math.round(currentTemp/ unit) ;
+console.log("unit = ", unit);
+console.log("cu = ", cu);
+    if(cu > bc){
+      let newStripe = thermLevels.create(5 + thermX + (thermOffset * cu), 4+ thermY, thermBars[cu])
+      barCounter.push(thermBars[cu]);
+    }
+    //
+
   }
-  // staircaseCheck: function(){
-  //     for (i=0; i<12; i += 1){
-  //
-  //
-  //       if(rightStaircase[i].body.y >= 500 ){
-  //         console.log("rightStaircase[i].y ="+rightStaircase[i].y);
-  //         rightStaircase[i].body.y = -50;
-  //
-  //       }
-  //     }
-  //   }
+
 
 }; //end of playstate
 // ---------------------------------------------------------------------------------------------------------------
@@ -902,6 +915,8 @@ function spawnCar(start) {
   car.body.velocity.x = 0;
   car.body.velocity.y = 0;
   car.angle = 0;
+  sheildScale =0.1;
+  playState.sheildUpdate();
   //
   car.body.x = game.world.width / 2 - 125;
   car.body.y = carStartY;
@@ -1029,7 +1044,7 @@ function updateLine() {
     currMessage = scrollingMessages[messageIndex].substr(chunk, currMessage.length + 1);
     // text.text = line;
     // text.setText(line);
-    scrollingText.setText(currMessage);
+    // scrollingText.setText(currMessage);
   }
   // else
   // {
