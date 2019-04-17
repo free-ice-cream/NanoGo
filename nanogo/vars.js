@@ -1,4 +1,4 @@
-var gameBuild = "build 3.3"; //
+var gameBuild = "build 3.3.1"; //
 var testing = false; //  a bool used to switch between testing and production mode
 console.log("testing = " + testing);
 ///var hexgrid;
@@ -209,8 +209,8 @@ var goSet = false; // a toggle to know when the g o bg is drawn
 var gsSet = false; // a toggle to knwowhen the g start is drawn
 //
 var spaceKey; //a var for the spacebar
-var carGrav = 200; //300;// teh "amount" of gravity // SWITCHED OFF!!
-var carBounce = 0.3; // the bounce factor when teh car lands at teh start
+var carGrav = 400; //300;// teh "amount" of gravity // SWITCHED OFF!!
+var carBounce = 0.1; // the bounce factor when teh car lands at teh start
 var tileRate = 24; //the rate at which the background moves
 var carAccelRate = 80; // base 50
 var carDragRate = 50; //
