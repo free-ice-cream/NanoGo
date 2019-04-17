@@ -8,7 +8,7 @@ var topbanner = game.add.sprite(0,0, 'greenheadbg');
 //Buttons
 track1 = game.add.sprite(2,74, 'track1');
 // howBut = game.add.sprite(360,288, 'tutbut');
-track1.inputEnabled=true;
+track1.inputEnabled = true;
 track1.events.onInputDown.add(this.track1sel, this);
 track1.events.onInputOver.add(this.t1hover,this);
 track1.events.onInputOut.add(this.t1out,this);
@@ -109,6 +109,7 @@ t2out: function(){
 },
 trackSet:function(){
   if(trackselection==1){
+    console.log("trackselection==1");
     track2.animations.play('no-hover', true);
     track1.animations.play('1active', true);
     oTo32.setStyle( main28green);
@@ -118,6 +119,7 @@ trackSet:function(){
     oTo35.setStyle(  main18grey);
 
   }else if(trackselection==2){
+    console.log("trackselection==2");
     track1.animations.play('no-hover', true);
     track2.animations.play('2active', true);
     oTo32.setStyle( main28grey);
@@ -129,40 +131,23 @@ trackSet:function(){
 
 },
 nexthover: function(){
-  // if(trackselection==1){
     nextbut.animations.play('hover', true);
-  // }
 },
 nextout: function(){
-  // if(trackselection== 1){
     nextbut.animations.play('no-hover', true);
-  // }
 },
 nextsel: function(){
   console.log("next");
-  // game.state.start('play');
   game.state.start('options4');
-  // if(trackselection== 1){
-    //nextbut.animations.play('no-hover', true);
-  // }
 },
 backhover: function(){
-  // if(trackselection==1){
     backbut.animations.play('hover', true);
-  // }
 },
 backout: function(){
-  // if(trackselection== 1){
     backbut.animations.play('no-hover', true);
-  // }
 },
 backsel: function(){
-  // console.log("next");
-  // game.state.start('play');
   game.state.start('options2');
-  // if(trackselection== 1){
-    //nextbut.animations.play('no-hover', true);
-  // }
 }
 
 }

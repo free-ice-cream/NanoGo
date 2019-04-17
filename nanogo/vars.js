@@ -1,4 +1,4 @@
-var gameBuild = "build 3.2"; //
+var gameBuild = "build 3.3"; //
 var testing = false; //  a bool used to switch between testing and production mode
 console.log("testing = " + testing);
 ///var hexgrid;
@@ -75,8 +75,8 @@ var oTo35;
 var oto31 = "Step 3: Click to select a race track.";
 var oto32 = "Track 1";
 var oto33 = "Track 2";
-var oto34 = "This track is made from Graphene. Graphene is just one super thin crystal of carbon. With a melting point of 4800 ºk you will have a tough time getting to the end of this track";
-var oto35 = "This track is made from Silver. There will not me much time, silver melts at just  1234.93 ºK";
+var oto35 = "This track is made from Graphene. Graphene is just one super thin crystal of carbon. With a melting point of 4800 ºk you will have a tough time getting to the end of this track";
+var oto34 = "This track is made from Silver. There will not me much time, silver melts at just  1234.93 ºK";
 //option page 4 text objects and STRINGS
 var oTo41;
 var oTo42;
@@ -128,14 +128,16 @@ var goto3 = "To help that sink in, you can use this button to set up a calendar 
 //
 //var endText7 = "jjjjjjjjj"
 //gplay page TEXT
-var scollingTextCopy1 = "Welcome Nano racer! messages about the enviroment will display here...                 ";
+var scollingTextCopy1 = "Welcome Nano racer! messages about the envirom  will display here...                 ";
 var si = "nM "; //
 var distLabel;//an object for it
 var distanceLabel = "Disance Traveled";
 var thermLabel;//object
 var thermalLabel = "Vibration from heat";
 var tempLabel;//object
-var temperatureLabel = "Temp";
+var tempLabel2;//object
+var temperatureLabel = "Temperature";
+var temperatureLabel2 = "of the Track";
 //
 // SCROLLING TEXT BOX VARS AND STRINGS
 //
@@ -501,17 +503,17 @@ var tempScaleName = "k"; // a vr to store the name of tehtemp scale we are using
 var siK = "k"; // the si unit for kelvin
 var siC = "c"; // the si unit for celcius
 var currentTemp = startTemp;
-var blooBleeb = 0; // a test var to see if this heat () problem is general
+
 var entropy = 0; //set this here maybe ?
-var tempEffect1 = 15; // how small an effect temp is on the car !!the smaller the number the larger the effect
-var tempEffect2 = 30; // how small an effect temp is on the car
+var tempEffect1 = 40; // how small an effect temp is on the car !!the smaller the number the larger the effect
+var tempEffect2 = 80; // how small an effect temp is on the car
 var tempEffectY = tempEffect1; //a var to store the effec on y as it changes form car to car
 var tempEffectX = tempEffect1; //
 var tempEffectR = 100; // the amount temp affects rotaton
 var tempBoox = true; //a toggle to get pos and ned vals in the temp changes for x
 var tempBooy = true; //a toggle to get pos and ned vals in the temp changes for y
 var tempBooR = true; // the same but for rotaion
-var tempIncrement = 3; // was 10 : how much he temp goes up per secon
+var tempIncrement = 9; // was 10 : how much he temp goes up per secon
 var miniNudge = 10; // was 5  how much the player can effect velocity.
 //
 var carXpos;
@@ -611,7 +613,7 @@ var options1Audio = false; // is the options audio set
 var startStarted = false; //has the start button beeb pressed
 
 var cars = ["", 'tubecar', 'buckycar'];
-var thermX = 90; // the base position for the bew therm hud
+var thermX = 210; // the base position for the bew therm hud
 var thermY = 550;
 var thermOffset= 6;// the offset between each bar on the thermomiter
 var thermBars = [
@@ -662,3 +664,7 @@ var thermBars = [
   "stripe45",
 ];
 var barCounter = [];
+var freezeSet = false;// is the bottom bar blue
+//
+var trackArr = ["",'silver','graphene'];
+var trackMeltingPointArr = ["", meltingPointOfSilver, meltingPointOfGraphene];

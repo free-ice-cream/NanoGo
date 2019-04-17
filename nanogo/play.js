@@ -4,21 +4,26 @@ var playState = {
     //set up the graffic assets
     //set the background hexgrid
     // set the track and mode
-    if (trackselection === 1) {
-      // the next line creates  the tilesprite bg
-      hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'graphene');
-      friction = cold;
-      drift *= friction;
-      //TODO check the use if friction
-      trackMeltingPoint = meltingPointOfGraphene;
-    } else if (trackselection === 2) {
-      hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'silver');
-      friction = cold;
-      drift *= friction;
-      trackMeltingPoint = meltingPointOfSilver;
-    } else {
-      console.log("CRASH - no track");
-    }
+    // if (trackselection === 1) {
+    //   // the next line creates  the tilesprite bg
+    //   hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'graphene');
+    //   friction = cold;
+    //   drift *= friction;
+    //   //TODO check the use if friction
+    //   trackMeltingPoint = meltingPointOfGraphene;
+    // } else if (trackselection === 2) {
+    //   hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'silver');
+    //   friction = cold;
+    //   drift *= friction;
+    //   trackMeltingPoint = meltingPointOfSilver;
+    // } else {
+    //   console.log("CRASH - no track");
+    // }
+    hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, trackArr[trackselection]);
+    friction = cold;
+    drift *= friction;
+    trackMeltingPoint = trackMeltingPointArr[trackselection];
+
     hexgrid.animations.add("cool", [0, 1, 3], 2, true);
     hexgrid.animations.add("warm", [0, 1, 2, 3, 4], 4, true);
     hexgrid.animations.add("hot", [4, 5, 6, 7, 8, 9, 10], 12, true);
@@ -68,6 +73,8 @@ var playState = {
     // bluePowerUp.body.immovable = true;
 
     heatSheildMeter = game.add.sprite(690, 50, 'heatsheildmeter');
+    freezeMeter = game.add.sprite(thermX, thermY, 'freeze');
+    freezeMeter.alpha = 0;
     // heatSheild.alpha = 0.5;
     heatSheildMeter.alpha = 0.7;
     heatSheildMeter.scale.setTo(0, 1);
@@ -154,16 +161,17 @@ var playState = {
     //
     //TEXT
     //
-    scoreText = this.add.text(698, game.world.height - hudOffset +23, scoreText, screen18green);
-    distLabel = this.add.text(560, game.world.height - hudOffset + 50, distanceLabel, screen18white);
+    scoreText = this.add.text(698, game.world.height - hudOffset + 51, scoreText, screen18green);
+    distLabel = this.add.text(560, game.world.height - hudOffset , distanceLabel, screen18white);
 
     clockText = this.add.text(20, game.world.height - hudOffset + 51, currentTemp, screen18green); // now the temperature
-    thermLabel = this.add.text(130, game.world.height - hudOffset , thermalLabel, screen18white);
+    thermLabel = this.add.text(thermX +50, game.world.height - hudOffset , thermalLabel, screen18white);
 
     tempLabel = this.add.text(18, game.world.height - hudOffset , temperatureLabel, screen18white);
+    tempLabel2 = this.add.text(18, game.world.height - hudOffset +20 , temperatureLabel2, screen18white);
 
     siText = this.add.text(77, game.world.height - hudOffset + 51, tempScaleName, screen18green);
-    siNm = this.add.text(761, game.world.height - hudOffset + 23, si, screen18green);
+    siNm = this.add.text(761, game.world.height - hudOffset + 51, si, screen18green);
     endmessage1 = this.add.text(200, 150, "", main56);
     endmessage2 = this.add.text(130, 250, "", thin28white);
 
@@ -224,7 +232,7 @@ var playState = {
     }
     // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
-    game.physics.arcade.collide(car, powerGroup);
+    // game.physics.arcade.collide(car, powerGroup);
      // game.physics.arcade.collide(car, stepGroup);//TODO :: to collide or not to collide ???
     //
     //detect hole collision
@@ -506,6 +514,7 @@ var playState = {
       var ent1 = (currentTemp * Math.random().toFixed()) / tempEffectR;
       var ent2 = (currentTemp * Math.random().toFixed()) / tempEffectX;
       var ent3 = (currentTemp * Math.random().toFixed()) / tempEffectY;
+      ent1 *= (1 - sheildScale);
       ent2 *= (1 - sheildScale);// lets enable teh heatshiled vaar to have an effect
       ent3 *= (1 - sheildScale);
       // car.x += tempBoox ?  ent2 * -1 :  ent2;
@@ -578,18 +587,22 @@ var playState = {
       if (sheildScale < 0.75 && outBool1) {
         outBool1 = false;
         velocityRandomiser(outRig1);
+        freezeMeter.alpha = 0.6;
       }
       if (sheildScale < 0.5 && outBool2) {
         outBool2 = false;
         velocityRandomiser(outRig2);
+        freezeMeter.alpha = 0.5;
       }
       if (sheildScale < 0.25 && outBool3) {
         outBool3 = false;
         velocityRandomiser(outRig3);
+        freezeMeter.alpha = 0.3;
       }
       if (sheildScale < 0.05 && outBool4) {
         outBool4 = false;
         velocityRandomiser(outRig4);
+        freezeMeter.alpha = 0;
       }
       if (outBool1) {
         //left
@@ -638,6 +651,7 @@ var playState = {
   },
   sheildUp: function() {
     sheildScale = 1;
+    freezeMeter.alpha = 0.8;
     car.body.velocity.x = 0;
     car.body.velocity.y = 0;
     powerUpBlips.play();
@@ -818,6 +832,7 @@ function crash(coH, coC) {
       // zombies[zl] = crash;
       if(gameLive){
         zombies[zl] = deadGroup.create(cx, cy, cars[carType]);
+        // zombies[zl] = deadGroup.create(car.worldPosition.x, car.worldPosition.y, cars[carType]); // TODo Why is thi snot righ ??
         zombies[zl].angle = car.angle;
         zombies[zl].animations.add('crash', [8, 9], 6, true);
         zombies[zl].animations.play('crash', true);
@@ -915,7 +930,7 @@ function spawnCar(start) {
   car.body.velocity.x = 0;
   car.body.velocity.y = 0;
   car.angle = 0;
-  sheildScale =0.1;
+  sheildScale =0.001;
   playState.sheildUpdate();
   //
   car.body.x = game.world.width / 2 - 125;

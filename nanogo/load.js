@@ -34,6 +34,7 @@ var loadState = {
     // THERMOMETER PARTS
     //
     game.load.image('therm-frame', ficurl+'assets/therm-frame.png');
+    game.load.image('freeze', ficurl+'assets/freeze.png');
     game.load.image('stripe1', ficurl+'assets/stripe 1.png');
     game.load.image('stripe2', ficurl+'assets/stripe 2.png');
     game.load.image('stripe3', ficurl+'assets/stripe 3.png');
@@ -89,8 +90,8 @@ var loadState = {
     game.load.spritesheet('startSeq','assets/startspritesheet_v4.png', 306,310);
     game.load.spritesheet('restart','assets/restart-spritesheet_v1.png', 200,192);
     game.load.spritesheet('alarm','assets/alarm-button_v1.png', 201,192);
-    game.load.spritesheet('track1','assets/track1sprite-v2.png', 160,157);
-    game.load.spritesheet('track2','assets/track2sprite-v2.png', 160,157);
+    game.load.spritesheet('track1','assets/track2sprite-v2.png', 160,157);
+    game.load.spritesheet('track2','assets/track1sprite-v2.png', 160,157);
     game.load.spritesheet('tracknext','assets/tracknext-v1.png', 122,119);
     game.load.spritesheet('optionsback','assets/backbut_v1.png', 122,119);
     game.load.spritesheet('meterK','assets/rising-scale.png', 90, 40);
