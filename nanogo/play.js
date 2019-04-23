@@ -161,14 +161,14 @@ var playState = {
     //
     //TEXT
     //
-    scoreText = this.add.text(698, game.world.height - hudOffset + 51, scoreText, screen18green);
-    distLabel = this.add.text(560, game.world.height - hudOffset , distanceLabel, screen18white);
+    scoreText = this.add.text(698, game.world.height - hudOffset + 51, score, screen18green);
+    distLabel = this.add.text(560, game.world.height - hudOffset, distanceLabel, screen18white);
 
     clockText = this.add.text(20, game.world.height - hudOffset + 51, currentTemp, screen18green); // now the temperature
-    thermLabel = this.add.text(thermX +50, game.world.height - hudOffset , thermalLabel, screen18white);
+    thermLabel = this.add.text(thermX + 50, game.world.height - hudOffset, thermalLabel, screen18white);
 
-    tempLabel = this.add.text(18, game.world.height - hudOffset , temperatureLabel, screen18white);
-    tempLabel2 = this.add.text(18, game.world.height - hudOffset +20 , temperatureLabel2, screen18white);
+    tempLabel = this.add.text(18, game.world.height - hudOffset, temperatureLabel, screen18white);
+    tempLabel2 = this.add.text(18, game.world.height - hudOffset + 20, temperatureLabel2, screen18white);
 
     siText = this.add.text(77, game.world.height - hudOffset + 51, tempScaleName, screen18green);
     siNm = this.add.text(761, game.world.height - hudOffset + 51, si, screen18green);
@@ -204,7 +204,7 @@ var playState = {
     //
     if (testing) {
       // trackMeltingPoint = 5000;
-       tempIncrement = 27;
+      tempIncrement = 27;
       audioLive = false;
       // creeTime = 200000; // can be used to create invulnerable after the first hit
     }
@@ -233,8 +233,12 @@ var playState = {
     // game.emitter.setYSpeed(currentTemp);
     game.physics.arcade.collide(car, platforms);
     // game.physics.arcade.collide(car, powerGroup);
-     // game.physics.arcade.collide(car, stepGroup);//TODO :: to collide or not to collide ???
     //
+    if (hitTheWall) {
+      game.physics.arcade.collide(car, stepGroup); //TODO :: to collide or not to collide ???
+      game.physics.arcade.collide(car, leftStepGroup);
+    }
+
     //detect hole collision
 
 
@@ -259,6 +263,7 @@ var playState = {
           car.body.velocity.x -= miniNudge; // have some inpact on velocity too
           // car.body.drag.x=800;
           // carXpos -= drift;
+
           this.playFx("swipe");
           //
           if (car.angle >= -80) {
@@ -276,7 +281,7 @@ var playState = {
           // car.body.velocity.x += drift;//smooth
           car.body.velocity.x += miniNudge; //
 
-           car.body.drag.x=carDragRate; //TODO is this fun? ??
+          car.body.drag.x = carDragRate; //TODO is this fun? ??
           // carXpos+= drift;
           this.playFx("swipe");
           //
@@ -440,7 +445,7 @@ var playState = {
   },
 
   playFx: function(clip) {
-    if (!homeTime) {
+    if (!homeTime && audioLive) {
 
       switch (clip) {
         case "rev":
@@ -450,6 +455,22 @@ var playState = {
           swipe.play();
           break;
           // default:
+        case "gameOverChime":
+          gameOverChime.play();
+          break;
+        case "holeDeath":
+          holeDeath.play();
+          break;
+        case "fallFx ":
+          fallFx.play();
+          break;
+        case "mainTheme":
+          //mainTheme.play();
+          console.log("maintheme");
+          break;
+        case "powerUpBlips":
+          powerUpBlips.play();
+          break;
 
       }
       // rev.play();
@@ -515,7 +536,7 @@ var playState = {
       var ent2 = (currentTemp * Math.random().toFixed()) / tempEffectX;
       var ent3 = (currentTemp * Math.random().toFixed()) / tempEffectY;
       ent1 *= (1 - sheildScale);
-      ent2 *= (1 - sheildScale);// lets enable teh heatshiled vaar to have an effect
+      ent2 *= (1 - sheildScale); // lets enable teh heatshiled vaar to have an effect
       ent3 *= (1 - sheildScale);
       // car.x += tempBoox ?  ent2 * -1 :  ent2;
       car.body.velocity.x += tempBoox ? ent2 * -1 : ent2;
@@ -654,7 +675,9 @@ var playState = {
     freezeMeter.alpha = 0.8;
     car.body.velocity.x = 0;
     car.body.velocity.y = 0;
-    powerUpBlips.play();
+    // powerUpBlips.play();
+    this.playFx("powerUpBlips");
+
     outBool1 = true;
     outBool2 = true;
     outBool3 = true;
@@ -725,7 +748,8 @@ var playState = {
     game.time.events.add(Phaser.Timer.SECOND * 5, gameOver, this);
     //
     mainTheme.stop();
-    gameOverChime.play();
+    // gameOverChime.play();
+    this.playFx("gameOverChime");
     //
     var t = currentTemp + scaleDiff;
     endmessage1.setText(endMessage1);
@@ -736,7 +760,8 @@ var playState = {
   outOfLivesDelay: function() {
     // console.log("outOfLivesDelay");
     mainTheme.stop();
-    gameOverChime.play();
+    // gameOverChime.play();
+    this.playFx("gameOverChime");
     // gameLive =  false;
     endmessage1.setText(endMessage1);
     endmessage2.setText(endMessage3);
@@ -779,15 +804,15 @@ var playState = {
     }
 
   },
-  thermomiter: function(){
+  thermomiter: function() {
     let tbs = thermBars.length;
     let bc = barCounter.length;
-    let unit = trackMeltingPoint/ tbs;
-    let cu =  Math.round(currentTemp/ unit) ;
-console.log("unit = ", unit);
-console.log("cu = ", cu);
-    if(cu > bc){
-      let newStripe = thermLevels.create(5 + thermX + (thermOffset * cu), 4+ thermY, thermBars[cu])
+    let unit = trackMeltingPoint / tbs;
+    let cu = Math.round(currentTemp / unit);
+    // console.log("unit = ", unit);
+    // console.log("cu = ", cu);
+    if (cu > bc) {
+      let newStripe = thermLevels.create(5 + thermX + (thermOffset * cu), 4 + thermY, thermBars[cu])
       barCounter.push(thermBars[cu]);
     }
     //
@@ -830,7 +855,7 @@ function crash(coH, coC) {
       // }
 
       // zombies[zl] = crash;
-      if(gameLive){
+      if (gameLive) {
         zombies[zl] = deadGroup.create(cx, cy, cars[carType]);
         // zombies[zl] = deadGroup.create(car.worldPosition.x, car.worldPosition.y, cars[carType]); // TODo Why is thi snot righ ??
         zombies[zl].angle = car.angle;
@@ -866,12 +891,12 @@ function drop(coH, coC) {
     let cx = hole.body.x;
     let cy = (holesGroup.y - (holeYoff * -1));
     deadGroup.y = 0;
-     let zl = zombies.length;
+    let zl = zombies.length;
     // let leftOrRight = (car.x)? ent2 * -1 : ent2;
 
-    if(gameLive){
+    if (gameLive) {
       // zombies[zl] = deadGroup.create(cx, cy, cars[carType]);
-      zombies[zl] = deadGroup.create(coC.worldPosition.x - (car.width / 2) , car.y- (car.height/2), cars[carType]);
+      zombies[zl] = deadGroup.create(coC.worldPosition.x - (car.width / 2), car.y - (car.height / 2), cars[carType]);
       zombies[zl].angle = car.angle;
       zombies[zl].animations.add('crash', [8, 9], 6, true);
       zombies[zl].animations.play('crash', true);
@@ -899,11 +924,11 @@ function leftDrop(coH, coC) {
     let cx = hole.body.x;
     let cy = (holesGroup.y - (holeYoff * -1));
     deadGroup.y = 0;
-     let zl = zombies.length;
+    let zl = zombies.length;
     // let leftOrRight = (car.x)? ent2 * -1 : ent2;
-    if(gameLive){
+    if (gameLive) {
       // zombies[zl] = deadGroup.create(cx, cy, cars[carType]);
-      zombies[zl] = deadGroup.create(coC.worldPosition.x + coC.width - (car.width / 2), car.y - (car.height/2), cars[carType]);
+      zombies[zl] = deadGroup.create(coC.worldPosition.x + coC.width - (car.width / 2), car.y - (car.height / 2), cars[carType]);
       zombies[zl].angle = car.angle;
       zombies[zl].animations.add('crash', [8, 9], 6, true);
       zombies[zl].animations.play('crash', true);
@@ -930,7 +955,7 @@ function spawnCar(start) {
   car.body.velocity.x = 0;
   car.body.velocity.y = 0;
   car.angle = 0;
-  sheildScale =0.001;
+  sheildScale = 0.001;
   playState.sheildUpdate();
   //
   car.body.x = game.world.width / 2 - 125;
@@ -966,10 +991,12 @@ function loseLife(cause) {
   timeOfDeath = game.time.time;
   // console.log("timeOfDeath= " + timeOfDeath);
   if (cause === "hole") {
-    holeDeath.play();
+    // holeDeath.play();
+    playState.playFx("holeDeath"); //gameOverChime , holeDeath
     //TODO trigger game over chime only iflives === 0 and the cause o death sound has completed.
   } else if (cause === "drop") {
-    fallFx.play();
+    // fallFx.play();
+    playState.playFx("holeDeath"); //gameOverChime , holeDeath, fallFx
   }
 
   return lives;

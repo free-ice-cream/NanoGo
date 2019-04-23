@@ -196,4 +196,5 @@ function gameReset(){
   outBool3 = false;
   outBool4 = false;
   sheildScale = 0 ;// reset the heatsheild to 0
+  barCounter = [];
 }

@@ -1,5 +1,6 @@
-var gameBuild = "build 3.3.1"; //
+var gameBuild = "build 3.4"; //
 var testing = false; //  a bool used to switch between testing and production mode
+var hitTheWall =  true; // if true the car will collide with the steps
 console.log("testing = " + testing);
 ///var hexgrid;
 var hole; //this will be the baddie
@@ -44,12 +45,24 @@ var oTo12;
 var oTo13;
 var oTo14;
 var oTo15;
+var oTo16;
+var oTo17;
+var oTo18;
+
 //
+// var oto11 = "Step 1: Basics";
+// var oto12 = "This is nano Go where you try out as a nano Racer.  That is, this is a simulated race game where you try and drive a race car that is just a few nanometers(nm) long. The nano go race tracks are just 1mm long but there are 1,000,000nm  in 1mm and we will be racing at the speed of 1nm per tap. ";
+// var oto13 = "But don’t worry, this is just a trial, a test to see if you have got what it takes to be a nano racer. In this game you will travel as far as you can in 30 seconds. We will then do the maths to see how long it would take you, at your rate of travel, to finish the 1mm race track.";
+// var oto14 = "Now let’s choose a Nano Racer and a track to race on.";
+// var oto15 = "";
 var oto11 = "Step 1: Basics";
-var oto12 = "This is nano Go where you try out as a nano Racer.  That is, this is a simulated race game where you try and drive a race car that is just a few nanometers(nm) long. The nano go race tracks are just 1mm long but there are 1,000,000nm  in 1mm and we will be racing at the speed of 1nm per tap. ";
-var oto13 = "But don’t worry, this is just a trial, a test to see if you have got what it takes to be a nano racer. In this game you will travel as far as you can in 30 seconds. We will then do the maths to see how long it would take you, at your rate of travel, to finish the 1mm race track.";
-var oto14 = "Now let’s choose a Nano Racer and a track to race on.";
-var oto15 = "";
+var oto12 = "Try your hand at Nano Racing! Everything here is at the nano-scale.";
+var oto13 = "The Nano race track is 1mm long.";
+var oto14 = "Your Nano Racer is a few nanometers (nm) long.";
+var oto15 = "It travels at the speed of 1nm per key tap.";
+var oto16 = "...And there are one million nanometers in one millimeter.";
+var oto17 = "How long would it take you- you with the fast fingers- to travel 1mm?";
+var oto18 = "Next let’s choose a Racer and a Track.";
 
 // OPTIONS PAGE 2 THE CAR
 var oTo21;
@@ -58,7 +71,7 @@ var oTo23;
 var oTo24;
 var oTo25;
 //stringd
-var oto21 = "Step 2: Click to select a Nanoracer.";
+var oto21 = "Step 2: Click to select a Nano racer.";
 var oto22 = "Nano Racer 1";
 var oto23 = "Nano Racer 2";
 var oto24 = "This nano racer is made from two carbon nanotubes. These are tiny cylinders made of carbon connected in a hexagonal pattern. This racer moves well in straight lines but is not so good in the curves.";
@@ -76,7 +89,7 @@ var oto31 = "Step 3: Click to select a race track.";
 var oto32 = "Track 1";
 var oto33 = "Track 2";
 var oto35 = "This track is made from Graphene. Graphene is just one super thin crystal of carbon. With a melting point of 4800 ºk you will have a tough time getting to the end of this track";
-var oto34 = "This track is made from Silver. There will not me much time, silver melts at just  1234.93 ºK";
+var oto34 = "This track is made from Silver. There will not be much time, silver melts at just 1234.93 ºK";
 //option page 4 text objects and STRINGS
 var oTo41;
 var oTo42;
@@ -322,7 +335,7 @@ var first18greenc = {
   fill: 'green',
   align: 'left',
   wordWrap: true,
-  wordWrapWidth: 750
+  wordWrapWidth: 780
 };
 var main28grey = {
   font: ' 28pt ChintzyCPUBRK',
@@ -339,7 +352,7 @@ var main18green = {
   wordWrapWidth: 600
 };
 var main18greenc = {
-  font: ' 17pt Consolas',
+  font: ' 16pt Consolas',
   fill: 'green',
   align: 'left',
   wordWrap: true,
@@ -353,14 +366,14 @@ var main18grey = {
   wordWrapWidth: 600
 };
 var main18greyc = {
-  font: ' 17pt Consolas',
+  font: ' 16pt Consolas',
   fill: 'grey',
   align: 'left',
   wordWrap: true,
   wordWrapWidth: 600
 };
 var main18bluec = {
-  font: ' 17pt Consolas',
+  font: ' 16pt Consolas',
   fill: '#1E3CDC',
   align: 'left',
   wordWrap: true,
@@ -395,7 +408,7 @@ var collumOne = {
   wordWrapWidth: 350
 }; // endscreen collumn 1
 var collumTwo = {
-  font: ' 17pt Consolas',
+  font: ' 16pt Consolas',
   fill: '#1E3CDC',
   align: 'left',
   wordWrap: true,
@@ -409,7 +422,7 @@ var main28blue = {
   wordWrapWidth: 650
 };
 var main18blue = {
-  font: ' 17pt Consolas',
+  font: ' 16pt Consolas',
   fill: '#1E3CDC',
   align: 'left',
   wordWrap: true,
@@ -423,14 +436,14 @@ var main28red = {
   wordWrapWidth: 650
 };
 var main18red = {
-  font: ' 17pt Consolas',
+  font: ' 16pt Consolas',
   fill: '#AA232A',
   align: 'left',
   wordWrap: true,
   wordWrapWidth: 600
 };
 var main18reds = {
-  font: ' 17pt Consolas',
+  font: ' 16pt Consolas',
   fill: '#AA232A',
   align: 'left',
   wordWrap: true,

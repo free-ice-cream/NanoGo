@@ -14,9 +14,13 @@ var topbanner = game.add.sprite(0,0, 'greenheadbg');
   var nexthov0 = nextbut.animations.add('no-hover', [ 0], 1, false);
   //
   oTo11 = this.add.text(5, 8, oto11, main28white);
-  oTo12 = this.add.text(30, 82, oto12, first18greenc);
-  oTo13 = this.add.text(30, 260, oto13, first18greenc);
-  oTo14 = this.add.text(30, 450, oto14, first18greenc);
+  oTo12 = this.add.text(30, 100, oto12, first18greenc);
+  oTo13 = this.add.text(30, 180, oto13, first18greenc);
+  oTo14 = this.add.text(30, 230, oto14, first18greenc);
+  oTo15 = this.add.text(30, 280, oto15, first18greenc);
+  oTo16 = this.add.text(30, 330, oto16, first18greenc);
+  oTo17 = this.add.text(30, 380, oto17, first18greenc);
+  oTo18 = this.add.text(30, 530, oto18, first18greenc);
   //
 
   // console.log("bassLoop", bassLoop);

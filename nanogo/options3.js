@@ -39,8 +39,8 @@ backbut.events.onInputOut.add(this.backout,this);
   oTo31 = this.add.text(5, 8, oto31, main28white);
   oTo32 = this.add.text(190, 83, oto32, main28green);
   oTo33 = this.add.text(190, 267, oto33, main28grey);
-  oTo34 = this.add.text(200, 134, oto34, main18green);
-  oTo35 = this.add.text(200, 323, oto35, main18grey);
+  oTo34 = this.add.text(200, 134, oto34, main18greenc);
+  oTo35 = this.add.text(200, 323, oto35, main18greyc);
   //
 
 //ANIMATIONS
@@ -71,8 +71,8 @@ track1sel: function(){
   oTo32.setStyle( main28green);
   oTo33.setStyle( main28grey);
   //
-  oTo34.setStyle(  main18green);
-  oTo35.setStyle(  main18grey);
+  oTo34.setStyle(  main18greenc);
+  oTo35.setStyle(  main18greyc);
 
 },
 t1hover: function(){
@@ -94,8 +94,8 @@ track2sel: function(){
   oTo32.setStyle( main28grey);
   oTo33.setStyle( main28green);
   //
-  oTo34.setStyle(  main18grey);
-  oTo35.setStyle(  main18green);
+  oTo34.setStyle(  main18greyc);
+  oTo35.setStyle(  main18greenc);
 },
 t2hover: function(){
   if(trackselection==1){
@@ -115,8 +115,8 @@ trackSet:function(){
     oTo32.setStyle( main28green);
     oTo33.setStyle( main28grey);
     //
-    oTo34.setStyle(  main18green);
-    oTo35.setStyle(  main18grey);
+    oTo34.setStyle(  main18greenc);
+    oTo35.setStyle(  main18greyc);
 
   }else if(trackselection==2){
     console.log("trackselection==2");
@@ -125,8 +125,8 @@ trackSet:function(){
     oTo32.setStyle( main28grey);
     oTo33.setStyle( main28green);
     //
-    oTo34.setStyle(  main18grey);
-    oTo35.setStyle(  main18green);
+    oTo34.setStyle(  main18greyc);
+    oTo35.setStyle(  main18greenc);
   }
 
 },
