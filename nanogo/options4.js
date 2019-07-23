@@ -6,11 +6,11 @@ var optionsState4 = {
     // images
     //
     var topbanner = game.add.sprite(0,0, 'greenheadbg');
-    var hole = game.add.sprite(48,194,'hole');
-    var powerUp = game.add.sprite(60,278,'blue-power-up');
+    var hole = game.add.sprite(83,160,'hole');
+    var powerUp = game.add.sprite(115,288,'blue-power-up');
     // var powerUp = game.add.sprite(60,278,'meterK');
-    var meter = game.add.sprite(32,88,'meterK');
-    var edges = game.add.sprite(32,395,'drop-loop');
+    var meter = game.add.sprite(55,70,'meterK');
+    var edges = game.add.sprite(32,380,'drop-loop');
     //
     hole.scale.setTo(0.6,0.6);
     edges.scale.setTo(0.5,0.5);
@@ -29,19 +29,20 @@ var optionsState4 = {
     // TEXT
     //
     oTo41 = this.add.text(5, 8, oto41, main28white);
-    oTo42 = this.add.text(170, 77, oto42, main28blue);
-    oTo43 = this.add.text(190, 117, oto43, main18blue);
-    oTo44 = this.add.text(170, 200, oto44, main28red);
-    oTo45 = this.add.text(190, 243, oto45, main18red);
-    oTo46 = this.add.text(170, 273, oto46, main28blue);
-    oTo47 = this.add.text(190, 315, oto47, main18blue);
-    oTo48 = this.add.text(170, 395, oto48, main28red); //add when we have them  :)
-    oTo49 = this.add.text(190, 438, oto49, main18reds);
+    oTo42 = this.add.text(170, 70, oto42, main28blue);
+    oTo43 = this.add.text(190, 110, oto43, main18blue);
+    oTo44 = this.add.text(170, 186, oto44, main28red);
+    oTo45 = this.add.text(190, 231, oto45, main18red);
+    oTo46 = this.add.text(170, 285, oto46, main28blue);
+    oTo47 = this.add.text(190, 328, oto47, main18blue);
+    oTo48 = this.add.text(170, 408, oto48, main28red); //add when we have them  :)
+    oTo49 = this.add.text(190, 451, oto49, main18reds);
 
 
 
     // nextbut = game.add.sprite(660,473, 'tracknext');
-    backbut = game.add.sprite(14,473, 'optionsback');
+    backbut = game.add.sprite(backx,backy, 'optionsback');
+    backbut.scale.setTo(0.85, 0.85);
     // howBut = game.add.sprite(360,288, 'tutbut');
     // nextbut.inputEnabled=true;
     // nextbut.events.onInputDown.add(this.nextsel, this);
@@ -72,7 +73,37 @@ var optionsState4 = {
     var backhov1 = backbut.animations.add('hover', [ 1], 1, false);
     var backhov0 = backbut.animations.add('no-hover', [ 0], 1, false);
     //
-
+    //
+    //all audio butt stuff
+    // audioControl = game.add.sprite(100,100, 'soundcontrol');
+    volback = game.add.sprite(vbx, vby, 'volback');
+    volplus = game.add.sprite(pbx, pby, 'volplus');
+    volminus = game.add.sprite(mbx, mby, 'volminus');
+    //
+    var audplus0 = volplus.animations.add('vp-rest', [0], 1, false);
+    var audplus1 = volplus.animations.add('vp-hov', [1], 1, false);
+    var audplus2 = volplus.animations.add('vp-down', [2], 1, false);
+    var audplus3 = volplus.animations.add('vp-max', [3], 1, false);
+    //
+    var audmin = volminus.animations.add('vm-rest', [0], 1, false);
+    var audmin1 = volminus.animations.add('vm-hov', [1], 1, false);
+    var audmin2 = volminus.animations.add('vm-down', [2], 1, false);
+    var audmin3 = volminus.animations.add('vm-min', [3], 1, false);
+    //
+    // var audioon = audioControl.animations.add('audioOn', [ 0], 1, false);
+    // var audiooff = audioControl.animations.add('audioOff', [ 1], 1, false);
+    volplus.inputEnabled = true;
+    volminus.inputEnabled = true;
+    //
+    volplus.events.onInputDown.add(this.plusPlus, this);
+    volplus.events.onInputOver.add(this.plusOver, this);
+    volplus.events.onInputOut.add(this.plusOut, this);
+    //
+    volminus.events.onInputDown.add(this.minusPlus, this);
+    volminus.events.onInputOver.add(this.minusOver, this);
+    volminus.events.onInputOut.add(this.minusOut, this);
+    //
+    // audio end
 
 
     //
@@ -139,7 +170,36 @@ var optionsState4 = {
     // if(trackselection== 1){
       //nextbut.animations.play('no-hover', true);
     // }
+  },
+  //audio functions
+  plusPlus: function() {
+    if (gameLiveVol<= 0.9) {
+      gameLiveVol += 0.1;
+      bassLoop.volume = gameLiveVol;
+      volplus.animations.play('vp-down', true)
+    }
+  },
+  plusOver: function() {
+    volplus.animations.play('vp-hov', true)
+  },
+  plusOut: function() {
+    volplus.animations.play('vp-rest', true)
+  },
+  minusPlus: function() {
+
+    if (gameLiveVol >= 0.1) {
+      gameLiveVol -= 0.1;
+      bassLoop.volume = gameLiveVol;
+      volminus.animations.play('vm-down', true)
+    }
+  },
+  minusOver: function() {
+    volminus.animations.play('vm-hov', true)
+  },
+  minusOut: function() {
+    volminus.animations.play('vm-rest', true)
   }
+  //end audio functions
 
 
 }

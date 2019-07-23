@@ -4,10 +4,15 @@ var menuState = {
     logo = game.add.sprite(173,57, 'logo');
     startSeq = game.add.sprite(102,208, 'startSeq');
     howBut = game.add.sprite(360,288, 'tutbut');
+    // audioControl = game.add.sprite(100,100, 'soundcontrol');
+
     startSeq.inputEnabled=true;
     startSeq.events.onInputDown.add(this.startListening, this);
     startSeq.events.onInputOver.add(this.starthover,this);
     startSeq.events.onInputOut.add(this.startnohover,this);
+    //
+    // audioControl.inputEnabled = true;
+    // audioControl.events.onInputDown.add(this.audioToggle, this);
     //
     howBut.inputEnabled = true;
     howBut.events.onInputDown.add(this.howButDown, this);
@@ -23,6 +28,18 @@ var menuState = {
     var hov3 = howBut.animations.add('tut-hover', [ 1], 1, false);
 
     var flip = startSeq.animations.add('countdown', [ 2, 3, 4], 1, false);
+
+
+
+//all audio butt stuff
+    // audioControl = game.add.sprite(100,100, 'soundcontrol');
+    // var audioon = audioControl.animations.add('audioOn', [ 0], 1, false);
+    // var audiooff = audioControl.animations.add('audioOff', [ 1], 1, false);
+    // audioControl.inputEnabled = true;
+    // audioControl.events.onInputDown.add(this.audioToggle, this);
+    //
+
+//
     flip.onComplete.add(this.start, this);
 
    console.log('menuState');
@@ -67,6 +84,11 @@ var menuState = {
         howBut.animations.play('tut-no-hover',true)
 
   },
+  audioToggle:function(){
+
+    audioLive = !audioLive;
+
+  }
 
 };
 function quickSet(){

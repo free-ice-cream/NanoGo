@@ -105,8 +105,8 @@ var oto41 = "Stage 4. What to look out for!"; // page title
 var oto42 = "Heat !"; //obj title 1
 var oto43 = "Watch out, as the heat rises the increasing speed of the molecules will start to knock your racer about the track.";
 var oto44 = "Holes !";
-var oto45 = "if you hit one of these you will lose a life.";
-var oto46 = "Power ups !!";
+var oto45 = "Your racer will get stuck (chemically bonded) if you hit these and you'll lose a life";
+var oto46 = "Power ups !! ( Cool Offs )";
 var oto47 = "Tired of being pushed about by the heat? This power up will temporarily increase your traction to the track with a sticky outrigger molecule. ";
 var oto48 = "Step Fractures !";
 var oto49 = "This is where the material of the race track itself changes in height. If you fall off an edge you will lose a life.";
@@ -144,7 +144,9 @@ var goto3 = "To help that sink in, you can use this button to set up a calendar 
 var scollingTextCopy1 = "Welcome Nano racer! messages about the envirom  will display here...                 ";
 var si = "nM "; //
 var distLabel;//an object for it
-var distanceLabel = "Disance Traveled";
+var distLabel2;//an object for it
+var distanceLabel = "Disance";
+var distanceLabel2 = "Traveled";
 var thermLabel;//object
 var thermalLabel = "Vibration from heat";
 var tempLabel;//object
@@ -626,7 +628,7 @@ var options1Audio = false; // is the options audio set
 var startStarted = false; //has the start button beeb pressed
 
 var cars = ["", 'tubecar', 'buckycar'];
-var thermX = 210; // the base position for the bew therm hud
+var thermX = 290; // the base position for the bew therm hud
 var thermY = 550;
 var thermOffset= 6;// the offset between each bar on the thermomiter
 var thermBars = [
@@ -681,3 +683,29 @@ var freezeSet = false;// is the bottom bar blue
 //
 var trackArr = ["",'silver','graphene'];
 var trackMeltingPointArr = ["", meltingPointOfSilver, meltingPointOfGraphene];
+//
+var basex = -3;
+var basey = 500;
+//
+var vbx = 0 + basex ;// volume button background position
+var vby = 0 + basey ;
+//
+var pbx = 42 + basex ;// plus button position
+var pby = 10 + basey ;
+//
+var mbx = 28 + basex ; // minus button position
+var mby = 60 + basey ;
+//
+var playOffset = 0;
+//
+var gameLiveVol = 1.0;
+//
+var backx = 60;
+var backy = 446;
+//
+//should have done this earlier :)
+var cars = ["blah","tubecar", "buckycar"];
+//
+var raceLimit = 1000; // how long is the race
+//
+var trackScaleIncrement = 560 / raceLimit; // about the length of the race scale

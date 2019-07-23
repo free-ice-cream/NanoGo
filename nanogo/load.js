@@ -27,6 +27,9 @@ var loadState = {
     // game.load.image('instrument', ficurl+'assets/instrument_v3.png');
     // game.load.image('instrument_back', ficurl+'assets/instrument_back.png');
     game.load.image('heatsheildmeter', ficurl+'assets/heatsheildmeter_v1.png');
+    //
+    game.load.image('racegauge', ficurl+'assets/racegauge2.png');
+    game.load.image('finishline', ficurl+'assets/finishline.png');
     // game.load.image('heatsheild', ficurl+'assets/heatsheild_v2.png');
     // game.load.image('step', ficurl+'assets/step_v1.png');
     //
@@ -95,6 +98,10 @@ var loadState = {
     game.load.spritesheet('tracknext','assets/tracknext-v1.png', 122,119);
     game.load.spritesheet('optionsback','assets/backbut_v1.png', 122,119);
     game.load.spritesheet('meterK','assets/rising-scale.png', 90, 40);
+    game.load.spritesheet('soundcontrol','assets/sound-control.png', 100,100);
+    game.load.spritesheet('volback', 'assets/volume-back.png', 100,100);
+    game.load.spritesheet('volplus','assets/vol-plus.png', 30,30);
+    game.load.spritesheet('volminus','assets/vol-minus.png', 30,30);
     //
     game.load.spritesheet('tubecar','assets/nanotube-racer-spritesheet-150-150-9f_v6.png', 150,150);
     game.load.spritesheet('tubecar-test','assets/tube-edgetest.png', 150,150);

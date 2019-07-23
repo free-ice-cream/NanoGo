@@ -29,6 +29,8 @@ var playState = {
     hexgrid.animations.add("hot", [4, 5, 6, 7, 8, 9, 10], 12, true);
     hexgrid.animations.play("cool");
     //
+    finishline = game.add.sprite(0, -100, "finishline");
+
     //Set teh drift (lateral speed ) based on car selection
     if (carType === 1) {
       drift /= 2;
@@ -87,18 +89,20 @@ var playState = {
     outRig4 = outRiggers.create(-200, -200, 'outrigger');
 
     //Create teh car
-    if (carType === 2) {
-      car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'buckycar'); //CAR START POS
-      // console.log("how many?");
-    } else if (carType === 1) {
-      if (testing) {
-        car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //CAR START POS
-      } else {
-        car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar'); //CAR START POS
-      }
 
-      // console.log("how many?");
-    }
+    car = game.add.sprite(game.world.width / 2 - 25, carStartY, cars[carType]); //CAR START POS
+    // if (carType === 2) {
+    //   car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'buckycar'); //CAR START POS
+    //   // console.log("how many?");
+    // } else if (carType === 1) {
+    //   if (testing) {
+    //     car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar-test'); //CAR START POS
+    //   } else {
+    //     car = game.add.sprite(game.world.width / 2 - 25, carStartY, 'tubecar'); //CAR START POS
+    //   }
+    //
+    //   // console.log("how many?");
+    // }
     //
     var smlLogo = game.add.sprite(10, 10, 'logo');
     smlLogo.scale.setTo(0.5, 0.5);
@@ -140,7 +144,9 @@ var playState = {
     swipe = game.add.audio('swipe');
     powerUpBlips = game.add.audio('power-up-blips');
     fallFx = game.add.audio('fall-sfx');
+    mainTheme.volume =  gameLiveVol;
     mainTheme.loopFull(0.8);
+    mainTheme.volume =  gameLiveVol;
     //
     // Get keyboard input
     //
@@ -161,17 +167,19 @@ var playState = {
     //
     //TEXT
     //
-    scoreText = this.add.text(698, game.world.height - hudOffset + 51, score, screen18green);
-    distLabel = this.add.text(560, game.world.height - hudOffset, distanceLabel, screen18white);
+    scoreText = this.add.text(650, game.world.height - hudOffset + 51, score, screen18green);
+    distLabel = this.add.text(650, game.world.height - hudOffset , distanceLabel, screen18white);
+    distLabel2 = this.add.text(630, game.world.height - hudOffset + 25, distanceLabel2, screen18white);
+    siNm = this.add.text(718, game.world.height - hudOffset + 51, si, screen18green);// nM
 
-    clockText = this.add.text(20, game.world.height - hudOffset + 51, currentTemp, screen18green); // now the temperature
-    thermLabel = this.add.text(thermX + 50, game.world.height - hudOffset, thermalLabel, screen18white);
 
-    tempLabel = this.add.text(18, game.world.height - hudOffset, temperatureLabel, screen18white);
-    tempLabel2 = this.add.text(18, game.world.height - hudOffset + 20, temperatureLabel2, screen18white);
+    thermLabel = this.add.text(thermX + 60, game.world.height - hudOffset, thermalLabel, screen18white);//vibration from heat
 
-    siText = this.add.text(77, game.world.height - hudOffset + 51, tempScaleName, screen18green);
-    siNm = this.add.text(761, game.world.height - hudOffset + 51, si, screen18green);
+    tempLabel = this.add.text(98, game.world.height - hudOffset, temperatureLabel, screen18white);
+    tempLabel2 = this.add.text(98, game.world.height - hudOffset + 20, temperatureLabel2, screen18white);
+    clockText = this.add.text(98, game.world.height - hudOffset + 51, currentTemp, screen18green); // now the temperature
+    siText = this.add.text(180, game.world.height - hudOffset + 51, tempScaleName, screen18green);//k
+
     endmessage1 = this.add.text(200, 150, "", main56);
     endmessage2 = this.add.text(130, 250, "", thin28white);
 
@@ -217,6 +225,40 @@ var playState = {
     // pole = d.getTime();
 
     // pole2 = d2.getTime();
+
+    //
+    //all audio butt stuff
+    // audioControl = game.add.sprite(100,100, 'soundcontrol');
+    volback = game.add.sprite(vbx, vby+playOffset, 'volback');
+    volplus = game.add.sprite(pbx, pby+playOffset, 'volplus');
+    volminus = game.add.sprite(mbx, mby+playOffset, 'volminus');
+    //
+    var audplus0 = volplus.animations.add('vp-rest', [0], 1, false);
+    var audplus1 = volplus.animations.add('vp-hov', [1], 1, false);
+    var audplus2 = volplus.animations.add('vp-down', [2], 1, false);
+    var audplus3 = volplus.animations.add('vp-max', [3], 1, false);
+    //
+    var audmin = volminus.animations.add('vm-rest', [0], 1, false);
+    var audmin1 = volminus.animations.add('vm-hov', [1], 1, false);
+    var audmin2 = volminus.animations.add('vm-down', [2], 1, false);
+    var audmin3 = volminus.animations.add('vm-min', [3], 1, false);
+    //
+    // var audioon = audioControl.animations.add('audioOn', [ 0], 1, false);
+    // var audiooff = audioControl.animations.add('audioOff', [ 1], 1, false);
+    volplus.inputEnabled = true;
+    volminus.inputEnabled = true;
+    //
+    volplus.events.onInputDown.add(this.plusPlus, this);
+    volplus.events.onInputOver.add(this.plusOver, this);
+    volplus.events.onInputOut.add(this.plusOut, this);
+    //
+    volminus.events.onInputDown.add(this.minusPlus, this);
+    volminus.events.onInputOver.add(this.minusOver, this);
+    volminus.events.onInputOut.add(this.minusOut, this);
+    //
+    racegauge= game.add.sprite(game.world.width - 40, 0, 'racegauge');
+    placeMarker= game.add.sprite(game.world.width - 43, game.world.height-65, cars[carType]);
+    placeMarker.scale.setTo(0.3,0.3);
 
   },
   // ---------------------------------------------------------------------------------------------------------------
@@ -302,6 +344,7 @@ var playState = {
         if (!upTog) {
           this.moveTiles(1);
           this.moveWheels(1);
+          this.moveLittleScale();
           this.playFx("rev");
           if (car.body.y > 250) {
             // car.body.velocity.y -= carAccelRate ;//drift;//TODO Remove me
@@ -327,6 +370,9 @@ var playState = {
             car.frame = frameNo;
           }
           upTog = true;
+          if(score >raceLimit){
+            this.crossTheline();
+          }
         }
 
       } else {
@@ -397,9 +443,9 @@ var playState = {
   },
   setLives: function() {
 
-    heart1 = game.add.sprite(game.world.width - 50, 20, 'heart');
-    heart2 = game.add.sprite(game.world.width - 85, 20, 'heart');
-    heart3 = game.add.sprite(game.world.width - 120, 20, 'heart');
+    heart1 = game.add.sprite(game.world.width - 80, 20, 'heart');
+    heart2 = game.add.sprite(game.world.width - 115, 20, 'heart');
+    heart3 = game.add.sprite(game.world.width - 150, 20, 'heart');
   },
 
   setHole: function() {
@@ -446,6 +492,12 @@ var playState = {
 
   playFx: function(clip) {
     if (!homeTime && audioLive) {
+      rev.volume= gameLiveVol;
+      swipe.volume= gameLiveVol;
+      gameOverChime.volume= gameLiveVol;
+      holeDeath.volume= gameLiveVol;
+      fallFx.volume= gameLiveVol;
+      powerUpBlips.volume= gameLiveVol;
 
       switch (clip) {
         case "rev":
@@ -485,8 +537,9 @@ var playState = {
   //   hole = game.add.sprite(50, 50, 'hole');
   // },
   moveTiles: function(d) {
-    score += d;
-
+    // if(score < raceLimit){
+      score += d;
+    // }
     // var adjustedRate = tileRate * d * friction;
     adjustedRate = (tileRate * d) * trackRate;
     // scoreText.setText(displayText + score + si);
@@ -497,6 +550,10 @@ var playState = {
     stepGroup.y += adjustedRate;
     leftStepGroup.y += adjustedRate;
     deadGroup.y += adjustedRate; //meh
+    if(score > raceLimit-15){
+      // console.log("win");
+      finishline.y += adjustedRate;
+    }
     //if()
     updateTrackBounds(d);
   },
@@ -817,7 +874,68 @@ var playState = {
     }
     //
 
+  },
+  //audio functions
+  plusPlus: function() {
+    console.log("bassLoop.volume ", bassLoop.volume);
+    if (gameLiveVol <= 0.9) {
+      gameLiveVol += 0.1;
+      mainTheme.volume = gameLiveVol;
+      volplus.animations.play('vp-down', true)
+    }
+  },
+  plusOver: function() {
+    volplus.animations.play('vp-hov', true)
+  },
+  plusOut: function() {
+    volplus.animations.play('vp-rest', true)
+  },
+  minusPlus: function() {
+    if (gameLiveVol >= 0.1) {
+      gameLiveVol -= 0.1;
+      mainTheme.volume = gameLiveVol;
+      volminus.animations.play('vm-down', true)
+    }
+  },
+  minusOver: function() {
+    volminus.animations.play('vm-hov', true)
+  },
+  minusOut: function() {
+    volminus.animations.play('vm-rest', true)
+  },
+  crossTheline: function() {
+    // Paticles
+    // mp = true;
+    console.log("cross the line");
+
+    // emitter = game.add.emitter(game.world.centerX, 0, 400);
+    emitter.width = game.world.width;
+    // emitter.angle = 30; // uncomment to set an angle for the rain.
+    emitter.makeParticles('matrix');
+    // emitter.minParticleScale = 0.1;
+    emitter.maxParticleScale = 2;
+    emitter.setYSpeed(100, 300);
+    emitter.setXSpeed(-10, 10);
+    emitter.minRotation = -50;
+    emitter.maxRotation = 50;
+    emitter.start(false, 1600, 5, 0);
+    game.time.events.add(Phaser.Timer.SECOND * 5, gameOver, this);
+    //
+    mainTheme.stop();
+    // gameOverChime.play();
+    this.playFx("gameOverChime");
+    //
+    var t = currentTemp + scaleDiff;
+    // endmessage1.setText(endMessage1);
+    // endmessage2.setText(endMessage2a + t + endMessage2b + tempScaleName + endMessage2c);
+    endmessage1.setText("Congratulations");
+    endmessage2.setText("You've completed a lap in "+ gameTime+" s");
+
+  },
+  moveLittleScale: function(){
+    placeMarker.y -= trackScaleIncrement ;
   }
+  //end audio functions
 
 
 }; //end of playstate
