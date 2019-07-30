@@ -75,7 +75,7 @@ var playState = {
     // bluePowerUp.body.immovable = true;
 
     heatSheildMeter = game.add.sprite(690, 50, 'heatsheildmeter');
-    freezeMeter = game.add.sprite(thermX, thermY, 'freeze');
+    freezeMeter = game.add.sprite(thermX, thermY-425, 'freeze');
     freezeMeter.alpha = 0;
     // heatSheild.alpha = 0.5;
     heatSheildMeter.alpha = 0.7;
@@ -120,7 +120,8 @@ var playState = {
     //
     // NEW NEW HUD :)
     thermLevels = game.add.group();
-    var frame = thermLevels.create(thermX, thermY, 'therm-frame');
+    // var frame = thermLevels.create(thermX, thermY, 'therm-frame');
+
     //
     //Set some properties
     //
@@ -145,7 +146,7 @@ var playState = {
     powerUpBlips = game.add.audio('power-up-blips');
     fallFx = game.add.audio('fall-sfx');
     mainTheme.volume =  gameLiveVol;
-    mainTheme.loopFull(0.8);
+    mainTheme.loopFull(0.5);
     mainTheme.volume =  gameLiveVol;
     //
     // Get keyboard input
@@ -167,22 +168,40 @@ var playState = {
     //
     //TEXT
     //
-    scoreText = this.add.text(650, game.world.height - hudOffset + 51, score, screen18green);
-    distLabel = this.add.text(650, game.world.height - hudOffset , distanceLabel, screen18white);
-    distLabel2 = this.add.text(630, game.world.height - hudOffset + 25, distanceLabel2, screen18white);
-    siNm = this.add.text(718, game.world.height - hudOffset + 51, si, screen18green);// nM
+
+    //
+    //
+    //           HUD BELOW
+    //
+    //
+    //
+    racegauge= game.add.sprite(game.world.width - 50, 0, 'racegauge');
+    placeMarker= game.add.sprite(game.world.width - 48, game.world.height-70, cars[carType]);
+    placeMarker.scale.setTo(0.3,0.3);
+
+    //
+    scoreText = this.add.text(752, game.world.height - hudOffset + 60, score, score14green);
+    // distLabel = this.add.text(650, game.world.height - hudOffset , distanceLabel, screen18white);
+    // distLabel2 = this.add.text(630, game.world.height - hudOffset + 25, distanceLabel2, screen18white);
+    // siNm = this.add.text(718, game.world.height - hudOffset + 51, si, screen18green);// nM
 
 
-    thermLabel = this.add.text(thermX + 60, game.world.height - hudOffset, thermalLabel, screen18white);//vibration from heat
+    // thermLabel = this.add.text(thermX + 60, game.world.height - hudOffset, thermalLabel, screen18white);//vibration from heat
 
-    tempLabel = this.add.text(98, game.world.height - hudOffset, temperatureLabel, screen18white);
-    tempLabel2 = this.add.text(98, game.world.height - hudOffset + 20, temperatureLabel2, screen18white);
-    clockText = this.add.text(98, game.world.height - hudOffset + 51, currentTemp, screen18green); // now the temperature
-    siText = this.add.text(180, game.world.height - hudOffset + 51, tempScaleName, screen18green);//k
+    tempLabel = this.add.text(thermX, game.world.height - 75, temperatureLabel, screen18white);
+    tempLabel2 = this.add.text(thermX, game.world.height - 55, temperatureLabel2, screen18white);
+    clockText = this.add.text(thermX, game.world.height -  25, currentTemp, score14green); // now the temperature
+    siText = this.add.text(thermX+65, game.world.height - 25, tempScaleName, score14green);//k
+    //
+    meltL1 = this.add.text(thermX,game.world.height -555, meltLabel1,screen18white);
+    meltL2 = this.add.text(thermX,game.world.height -535, meltLabel2,screen18white);
 
     endmessage1 = this.add.text(200, 150, "", main56);
     endmessage2 = this.add.text(130, 250, "", thin28white);
-
+    //
+    lapLabel = this.add.text(game.world.width -50, 0, lap, lapWhite);
+    //
+    var frame = thermLevels.create(thermX, thermY -425, 'therm-frame');
 
     //
     platforms.alpha = 1;
@@ -229,36 +248,51 @@ var playState = {
     //
     //all audio butt stuff
     // audioControl = game.add.sprite(100,100, 'soundcontrol');
-    volback = game.add.sprite(vbx, vby+playOffset, 'volback');
-    volplus = game.add.sprite(pbx, pby+playOffset, 'volplus');
-    volminus = game.add.sprite(mbx, mby+playOffset, 'volminus');
+    // volback = game.add.sprite(vbx, vby+playOffset, 'volback');
+    // volplus = game.add.sprite(pbx, pby+playOffset, 'volplus');
+    // volminus = game.add.sprite(mbx, mby+playOffset, 'volminus');
+    speakerbut = game.add.sprite(game.world.width - 200, 15, 'speakerbut');
+
     //
-    var audplus0 = volplus.animations.add('vp-rest', [0], 1, false);
-    var audplus1 = volplus.animations.add('vp-hov', [1], 1, false);
-    var audplus2 = volplus.animations.add('vp-down', [2], 1, false);
-    var audplus3 = volplus.animations.add('vp-max', [3], 1, false);
+    // var audplus0 = volplus.animations.add('vp-rest', [0], 1, false);
+    // var audplus1 = volplus.animations.add('vp-hov', [1], 1, false);
+    // var audplus2 = volplus.animations.add('vp-down', [2], 1, false);
+    // var audplus3 = volplus.animations.add('vp-max', [3], 1, false);
+    // //
+    // var audmin = volminus.animations.add('vm-rest', [0], 1, false);
+    // var audmin1 = volminus.animations.add('vm-hov', [1], 1, false);
+    // var audmin2 = volminus.animations.add('vm-down', [2], 1, false);
+    // var audmin3 = volminus.animations.add('vm-min', [3], 1, false);
     //
-    var audmin = volminus.animations.add('vm-rest', [0], 1, false);
-    var audmin1 = volminus.animations.add('vm-hov', [1], 1, false);
-    var audmin2 = volminus.animations.add('vm-down', [2], 1, false);
-    var audmin3 = volminus.animations.add('vm-min', [3], 1, false);
+    var speakerOn = speakerbut.animations.add('sp-on', [0], 1, false);
+    var speakerOff= speakerbut.animations.add('sp-off', [1], 1, false);
+
     //
     // var audioon = audioControl.animations.add('audioOn', [ 0], 1, false);
     // var audiooff = audioControl.animations.add('audioOff', [ 1], 1, false);
-    volplus.inputEnabled = true;
-    volminus.inputEnabled = true;
+    // volplus.inputEnabled = true;
+    // volminus.inputEnabled = true;
+    speakerbut.inputEnabled = true;
     //
-    volplus.events.onInputDown.add(this.plusPlus, this);
-    volplus.events.onInputOver.add(this.plusOver, this);
-    volplus.events.onInputOut.add(this.plusOut, this);
+    // volplus.events.onInputDown.add(this.plusPlus, this);
+    // volplus.events.onInputOver.add(this.plusOver, this);
+    // volplus.events.onInputOut.add(this.plusOut, this);
+    // //
+    // volminus.events.onInputDown.add(this.minusPlus, this);
+    // volminus.events.onInputOver.add(this.minusOver, this);
+    // volminus.events.onInputOut.add(this.minusOut, this);
     //
-    volminus.events.onInputDown.add(this.minusPlus, this);
-    volminus.events.onInputOver.add(this.minusOver, this);
-    volminus.events.onInputOut.add(this.minusOut, this);
+    speakerbut.events.onInputDown.add(this.speakerButContol, this);
     //
-    racegauge= game.add.sprite(game.world.width - 40, 0, 'racegauge');
-    placeMarker= game.add.sprite(game.world.width - 43, game.world.height-65, cars[carType]);
-    placeMarker.scale.setTo(0.3,0.3);
+    if(audioLive){
+      speakerbut.animations.play('sp-on');
+    }else{
+      speakerbut.animations.play('sp-off');
+    }
+    //
+    // racegauge= game.add.sprite(game.world.width - 50, 0, 'racegauge');
+    // placeMarker= game.add.sprite(game.world.width - 48, game.world.height-70, cars[carType]);
+    // placeMarker.scale.setTo(0.3,0.3);
 
   },
   // ---------------------------------------------------------------------------------------------------------------
@@ -869,40 +903,53 @@ var playState = {
     // console.log("unit = ", unit);
     // console.log("cu = ", cu);
     if (cu > bc) {
-      let newStripe = thermLevels.create(5 + thermX + (thermOffset * cu), 4 + thermY, thermBars[cu])
+      // let newStripe = thermLevels.create(5 + thermX + (thermOffset * cu), 4 + thermY, thermBars[cu])
+      let newStripe = thermLevels.create( thermX + 4, thermY  - (thermOffset * cu), thermBars[cu]);
       barCounter.push(thermBars[cu]);
     }
     //
 
   },
   //audio functions
-  plusPlus: function() {
-    console.log("bassLoop.volume ", bassLoop.volume);
-    if (gameLiveVol <= 0.9) {
-      gameLiveVol += 0.1;
-      mainTheme.volume = gameLiveVol;
-      volplus.animations.play('vp-down', true)
+  // plusPlus: function() {
+  //   console.log("bassLoop.volume ", bassLoop.volume);
+  //   if (gameLiveVol <= 0.9) {
+  //     gameLiveVol += 0.1;
+  //     mainTheme.volume = gameLiveVol;
+  //     volplus.animations.play('vp-down', true)
+  //   }
+  // },
+  // plusOver: function() {
+  //   volplus.animations.play('vp-hov', true)
+  // },
+  // plusOut: function() {
+  //   volplus.animations.play('vp-rest', true)
+  // },
+  // minusPlus: function() {
+  //   if (gameLiveVol >= 0.1) {
+  //     gameLiveVol -= 0.1;
+  //     mainTheme.volume = gameLiveVol;
+  //     volminus.animations.play('vm-down', true)
+  //   }
+  // },
+  // minusOver: function() {
+  //   volminus.animations.play('vm-hov', true)
+  // },
+  // minusOut: function() {
+  //   volminus.animations.play('vm-rest', true)
+  // },
+  speakerButContol: function() {
+    if(audioLive){
+      speakerbut.animations.play('sp-off', true);
+      audioLive = false;
+      // mainTheme.stop();
+    }else{
+      speakerbut.animations.play('sp-on', true);
+      audioLive = true;
+      mainTheme.loopFull(.5);
     }
-  },
-  plusOver: function() {
-    volplus.animations.play('vp-hov', true)
-  },
-  plusOut: function() {
-    volplus.animations.play('vp-rest', true)
-  },
-  minusPlus: function() {
-    if (gameLiveVol >= 0.1) {
-      gameLiveVol -= 0.1;
-      mainTheme.volume = gameLiveVol;
-      volminus.animations.play('vm-down', true)
-    }
-  },
-  minusOver: function() {
-    volminus.animations.play('vm-hov', true)
-  },
-  minusOut: function() {
-    volminus.animations.play('vm-rest', true)
-  },
+
+    },
   crossTheline: function() {
     // Paticles
     // mp = true;

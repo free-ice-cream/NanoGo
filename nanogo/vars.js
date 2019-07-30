@@ -151,8 +151,14 @@ var thermLabel;//object
 var thermalLabel = "Vibration from heat";
 var tempLabel;//object
 var tempLabel2;//object
-var temperatureLabel = "Temperature";
-var temperatureLabel2 = "of the Track";
+var temperatureLabel = "Track";
+var temperatureLabel2 = "temp";
+//
+var meltL1;
+var meltL2;
+var meltLabel1 = "Melting";
+var meltLabel2 = "point";
+var lap = "Lap";
 //
 // SCROLLING TEXT BOX VARS AND STRINGS
 //
@@ -388,8 +394,22 @@ var screen18green = {
   wordWrap: true,
   wordWrapWidth: 600
 };
+var score14green = {
+  font: ' 14pt ChintzyCPUBRK',
+  fill: '#3BFC34',
+  align: 'left',
+  wordWrap: true,
+  wordWrapWidth: 600
+};
 var screen18white = {
   font: ' 21pt ChintzyCPUBRK',
+  fill: '#fff',
+  align: 'right',
+  wordWrap: true,
+  wordWrapWidth: 600
+};
+var lapWhite = {
+  font: ' 14pt ChintzyCPUBRK',
   fill: '#fff',
   align: 'right',
   wordWrap: true,
@@ -528,7 +548,7 @@ var tempEffectR = 100; // the amount temp affects rotaton
 var tempBoox = true; //a toggle to get pos and ned vals in the temp changes for x
 var tempBooy = true; //a toggle to get pos and ned vals in the temp changes for y
 var tempBooR = true; // the same but for rotaion
-var tempIncrement = 9; // was 10 : how much he temp goes up per secon
+var tempIncrement = 6;//9; // was 10 : how much he temp goes up per secon
 var miniNudge = 10; // was 5  how much the player can effect velocity.
 //
 var carXpos;
@@ -628,10 +648,11 @@ var options1Audio = false; // is the options audio set
 var startStarted = false; //has the start button beeb pressed
 
 var cars = ["", 'tubecar', 'buckycar'];
-var thermX = 290; // the base position for the bew therm hud
-var thermY = 550;
-var thermOffset= 6;// the offset between each bar on the thermomiter
+var thermX = 10;//290; // the base position for the bew therm hud
+var thermY = 520;
+var thermOffset= 9;// the offset between each bar on the thermomiter
 var thermBars = [
+  "stripe0",
   "stripe1",
   "stripe2",
   "stripe3",
@@ -677,6 +698,8 @@ var thermBars = [
   "stripe43",
   "stripe44",
   "stripe45",
+  "stripe46",
+  "stripe47"
 ];
 var barCounter = [];
 var freezeSet = false;// is the bottom bar blue
@@ -698,7 +721,7 @@ var mby = 60 + basey ;
 //
 var playOffset = 0;
 //
-var gameLiveVol = 1.0;
+var gameLiveVol = 0.5;
 //
 var backx = 60;
 var backy = 446;

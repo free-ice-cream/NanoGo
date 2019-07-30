@@ -28,7 +28,7 @@ var loadState = {
     // game.load.image('instrument_back', ficurl+'assets/instrument_back.png');
     game.load.image('heatsheildmeter', ficurl+'assets/heatsheildmeter_v1.png');
     //
-    game.load.image('racegauge', ficurl+'assets/racegauge2.png');
+    game.load.image('racegauge', ficurl+'assets/racegauge-v5.png');
     game.load.image('finishline', ficurl+'assets/finishline.png');
     // game.load.image('heatsheild', ficurl+'assets/heatsheild_v2.png');
     // game.load.image('step', ficurl+'assets/step_v1.png');
@@ -36,8 +36,9 @@ var loadState = {
     //
     // THERMOMETER PARTS
     //
-    game.load.image('therm-frame', ficurl+'assets/therm-frame.png');
-    game.load.image('freeze', ficurl+'assets/freeze.png');
+    game.load.image('therm-frame', ficurl+'assets/therm-frame-2.png');
+    game.load.image('freeze', ficurl+'assets/freeze-frame.png');
+    game.load.image('stripe0', ficurl+'assets/stripe 0.png');
     game.load.image('stripe1', ficurl+'assets/stripe 1.png');
     game.load.image('stripe2', ficurl+'assets/stripe 2.png');
     game.load.image('stripe3', ficurl+'assets/stripe 3.png');
@@ -78,11 +79,13 @@ var loadState = {
     game.load.image('stripe38', ficurl+'assets/stripe 38.png');
     game.load.image('stripe39', ficurl+'assets/stripe 39.png');
     game.load.image('stripe40', ficurl+'assets/stripe 40.png');
-    game.load.image('stripe41', ficurl+'assets/stripe 41.png')
+    game.load.image('stripe41', ficurl+'assets/stripe 41.png');
     game.load.image('stripe42', ficurl+'assets/stripe 42.png');
     game.load.image('stripe43', ficurl+'assets/stripe 43.png');
     game.load.image('stripe44', ficurl+'assets/stripe 44.png');
-    game.load.image('stripe45', ficurl+'assets/stripe 45.png');;
+    game.load.image('stripe45', ficurl+'assets/stripe 45.png');
+    game.load.image('stripe46', ficurl+'assets/stripe 46.png');
+    game.load.image('stripe47', ficurl+'assets/stripe 47.png');
 
 
 
@@ -102,6 +105,7 @@ var loadState = {
     game.load.spritesheet('volback', 'assets/volume-back.png', 100,100);
     game.load.spritesheet('volplus','assets/vol-plus.png', 30,30);
     game.load.spritesheet('volminus','assets/vol-minus.png', 30,30);
+    game.load.spritesheet('speakerbut','assets/soundonoff.png', 35,35);
     //
     game.load.spritesheet('tubecar','assets/nanotube-racer-spritesheet-150-150-9f_v6.png', 150,150);
     game.load.spritesheet('tubecar-test','assets/tube-edgetest.png', 150,150);

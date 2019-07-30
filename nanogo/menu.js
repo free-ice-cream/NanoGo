@@ -39,8 +39,20 @@ var menuState = {
     // audioControl.events.onInputDown.add(this.audioToggle, this);
     //
 
+// speaker but
+mainTheme = game.add.audio('theme');
+speakerbut = game.add.sprite(game.world.width - 50, 15, 'speakerbut');
+var speakerOn = speakerbut.animations.add('sp-on', [0], 1, false);
+var speakerOff= speakerbut.animations.add('sp-off', [1], 1, false);
+speakerbut.inputEnabled = true;
+speakerbut.events.onInputDown.add(this.speakerButContol, this);
+if(audioLive){
+  speakerbut.animations.play('sp-on');
+}else{
+  speakerbut.animations.play('sp-off');
+}
 //
-    flip.onComplete.add(this.start, this);
+  flip.onComplete.add(this.start, this);
 
    console.log('menuState');
 
@@ -88,7 +100,18 @@ var menuState = {
 
     audioLive = !audioLive;
 
-  }
+  },speakerButContol: function() {
+    if(audioLive){
+      speakerbut.animations.play('sp-off', true);
+      audioLive = false;
+      mainTheme.stop();
+    }else{
+      speakerbut.animations.play('sp-on', true);
+      audioLive = true;
+      mainTheme.loopFull(.5);
+    }
+
+    }
 
 };
 function quickSet(){

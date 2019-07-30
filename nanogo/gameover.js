@@ -24,39 +24,59 @@ var gameover = {
     this.gameOver();
     mainTheme.stop();
     endlich = game.add.audio('endlich');
-    endlich.loopFull();
-    endlich.volume = gameLiveVol;
+    if(audioLive){
+
+      endlich.loopFull();
+      endlich.volume = gameLiveVol;
+
+    }
+
+
     //
 
     //all audio butt stuff
+
+
+    // speaker but
+
+    speakerbut = game.add.sprite(game.world.width - 50, 15, 'speakerbut');
+    var speakerOn = speakerbut.animations.add('sp-on', [0], 1, false);
+    var speakerOff= speakerbut.animations.add('sp-off', [1], 1, false);
+    speakerbut.inputEnabled = true;
+    speakerbut.events.onInputDown.add(this.speakerButContol, this);
+    if(audioLive){
+      speakerbut.animations.play('sp-on');
+    }else{
+      speakerbut.animations.play('sp-off');
+    }
     // audioControl = game.add.sprite(100,100, 'soundcontrol');
-    volback = game.add.sprite(vbx, vby, 'volback');
-    volplus = game.add.sprite(pbx, pby, 'volplus');
-    volminus = game.add.sprite(mbx, mby, 'volminus');
-    //
-    var audplus0 = volplus.animations.add('vp-rest', [0], 1, false);
-    var audplus1 = volplus.animations.add('vp-hov', [1], 1, false);
-    var audplus2 = volplus.animations.add('vp-down', [2], 1, false);
-    var audplus3 = volplus.animations.add('vp-max', [3], 1, false);
-    //
-    var audmin = volminus.animations.add('vm-rest', [0], 1, false);
-    var audmin1 = volminus.animations.add('vm-hov', [1], 1, false);
-    var audmin2 = volminus.animations.add('vm-down', [2], 1, false);
-    var audmin3 = volminus.animations.add('vm-min', [3], 1, false);
+    // volback = game.add.sprite(vbx, vby, 'volback');
+    // volplus = game.add.sprite(pbx, pby, 'volplus');
+    // volminus = game.add.sprite(mbx, mby, 'volminus');
+    // //
+    // var audplus0 = volplus.animations.add('vp-rest', [0], 1, false);
+    // var audplus1 = volplus.animations.add('vp-hov', [1], 1, false);
+    // var audplus2 = volplus.animations.add('vp-down', [2], 1, false);
+    // var audplus3 = volplus.animations.add('vp-max', [3], 1, false);
+    // //
+    // var audmin = volminus.animations.add('vm-rest', [0], 1, false);
+    // var audmin1 = volminus.animations.add('vm-hov', [1], 1, false);
+    // var audmin2 = volminus.animations.add('vm-down', [2], 1, false);
+    // var audmin3 = volminus.animations.add('vm-min', [3], 1, false);
     //
     // var audioon = audioControl.animations.add('audioOn', [ 0], 1, false);
     // var audiooff = audioControl.animations.add('audioOff', [ 1], 1, false);
-    volplus.inputEnabled = true;
-    volminus.inputEnabled = true;
-    //
-    volplus.events.onInputDown.add(this.plusPlus, this);
-    volplus.events.onInputOver.add(this.plusOver, this);
-    volplus.events.onInputOut.add(this.plusOut, this);
-    //
-    volminus.events.onInputDown.add(this.minusPlus, this);
-    volminus.events.onInputOver.add(this.minusOver, this);
-    volminus.events.onInputOut.add(this.minusOut, this);
-    //
+    // volplus.inputEnabled = true;
+    // volminus.inputEnabled = true;
+    // //
+    // volplus.events.onInputDown.add(this.plusPlus, this);
+    // volplus.events.onInputOver.add(this.plusOver, this);
+    // volplus.events.onInputOut.add(this.plusOut, this);
+    // //
+    // volminus.events.onInputDown.add(this.minusPlus, this);
+    // volminus.events.onInputOver.add(this.minusOver, this);
+    // volminus.events.onInputOut.add(this.minusOut, this);
+    // //
 
   },
   // ---------------------------------------------------------------------------------------------------------------
@@ -209,33 +229,45 @@ var gameover = {
   },
   //
   //audio functions
-  plusPlus: function() {
-    console.log("bassLoop.volume ", bassLoop.volume);
-    if (gameLiveVol <= 0.9) {
-      gameLiveVol += 0.1;
-      mainTheme.volume = gameLiveVol;
-      volplus.animations.play('vp-down', true)
+  // plusPlus: function() {
+  //   console.log("bassLoop.volume ", bassLoop.volume);
+  //   if (gameLiveVol <= 0.9) {
+  //     gameLiveVol += 0.1;
+  //     mainTheme.volume = gameLiveVol;
+  //     volplus.animations.play('vp-down', true)
+  //   }
+  // },
+  // plusOver: function() {
+  //   volplus.animations.play('vp-hov', true)
+  // },
+  // plusOut: function() {
+  //   volplus.animations.play('vp-rest', true)
+  // },
+  // minusPlus: function() {
+  //   if (gameLiveVol >= 0.1) {
+  //     gameLiveVol -= 0.1;
+  //     mainTheme.volume = gameLiveVol;
+  //     volminus.animations.play('vm-down', true)
+  //   }
+  // },
+  // minusOver: function() {
+  //   volminus.animations.play('vm-hov', true)
+  // },
+  // minusOut: function() {
+  //   volminus.animations.play('vm-rest', true)
+  // },
+  speakerButContol: function() {
+    if(audioLive){
+      speakerbut.animations.play('sp-off', true);
+      audioLive = false;
+      endlich.stop();
+    }else{
+      speakerbut.animations.play('sp-on', true);
+      audioLive = true;
+      endlich.loopFull(.5);
     }
-  },
-  plusOver: function() {
-    volplus.animations.play('vp-hov', true)
-  },
-  plusOut: function() {
-    volplus.animations.play('vp-rest', true)
-  },
-  minusPlus: function() {
-    if (gameLiveVol >= 0.1) {
-      gameLiveVol -= 0.1;
-      mainTheme.volume = gameLiveVol;
-      volminus.animations.play('vm-down', true)
+
     }
-  },
-  minusOver: function() {
-    volminus.animations.play('vm-hov', true)
-  },
-  minusOut: function() {
-    volminus.animations.play('vm-rest', true)
-  }
   //end audio functions
 
 
