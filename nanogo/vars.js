@@ -1,4 +1,4 @@
-var gameBuild = "build 3.5"; //
+var gameBuild = "build 3.6"; //
 var testing = false; //  a bool used to switch between testing and production mode
 var hitTheWall =  true; // if true the car will collide with the steps
 console.log("testing = " + testing);
