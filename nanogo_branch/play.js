@@ -29,9 +29,7 @@ var playState = {
     hexgrid.animations.add("hot", [4, 5, 6, 7, 8, 9, 10], 12, true);
     hexgrid.animations.play("cool");
     //
-    //     track v 3 ?
-    //
-    //
+
     lattice = game.add.group();
     lattice.enableBody = true;
 
@@ -41,7 +39,7 @@ var playState = {
     //
     atomRowsHex= (game.world.height/ hexAtomY)+3;
     atomColumnsHex = (game.world.width/ hexAtomX)+3;
-console.log("readingtrackselection == ",trackselection);
+
 
   if(trackselection==1){
 
@@ -52,11 +50,6 @@ console.log("readingtrackselection == ",trackselection);
         atomMatrix[i][j]= lattice.create(atomX * j, (atomY *i) -atomY, 'new-atoms');
         atomMatrix[i][j].animations.add("basic",[randomFrame(),randomFrame(),randomFrame(),randomFrame(),randomFrame(),randomFrame()],12,true);
         atomMatrix[i][j].animations.play("basic");
-        //
-        // let ax = atomX * j;
-        // let ay = (atomY *i) - atomY;
-        // //
-        // atomAnchors[i][j] = {x:ax, y:ay};
         atomAngles[i][j] = randomAngle();
         atomOscilationSteps[i][j] = randomSteps();
         atomOscilationBools[i][j] = randomBool();
@@ -70,8 +63,6 @@ console.log("readingtrackselection == ",trackselection);
       // then for each row we loop through each position
       let builtPosition=0
       for(let j = 0; j <= atomColumnsHex  ; j ++){
-
-        // atomMatrixHex[i][j]= lattice.create(hexAtomX * j, (hexAtomY *i) -hexAtomY, 'new-atoms');
 
         if(isOdd(i)){
           console.log("ODD");
@@ -96,39 +87,16 @@ console.log("readingtrackselection == ",trackselection);
           }
         //
         }
-
-
-
         atomMatrixHex[i][j].animations.add("basic",[randomFrame(),randomFrame(),randomFrame(),randomFrame(),randomFrame(),randomFrame()],12,true);
         atomMatrixHex[i][j].animations.play("basic");
-        //
-        // let ax = hexAtomX * j;
-        // let ay = (hexAtomY *i) - hexAtomY;
-        // atomAnchorsHex[i][j] = {x:ax, y:ay};
-        // let a
-        // atomAnglesHex[i][j] = randomAngle();
-        // atomOscilationStepsHex[i][j] = randomSteps();
-        // atomOscilationBoolsHex[i][j] = randomBool();
-        // atomOscilationStepsLiveHex[i][j] = 0;// start at teh beginning
-
         //
         atomAngles[i][j] = randomAngle();
         atomOscilationSteps[i][j] = randomSteps();
         atomOscilationBools[i][j] = randomBool();
         atomOscilationStepsLive[i][j] = 0;// start at teh beginning
-
-
-
-
       }
     }
   }
-    //lattice.body.immovable = true;
-
-console.log("atomMatrix.length = ", atomMatrix.length);
-
-
-
 
     //
     finishline = game.add.sprite(0, -100, "finishline");
@@ -594,6 +562,8 @@ console.log("atomMatrix.length = ", atomMatrix.length);
     console.log("set Hole");
     holesGroup.y = 0;
     hole = holesGroup.create(spriteXRandomiser(), spriteYRandomiser(), holeSheet);
+    let sc = randomHoleScaler();
+    hole.scale.setTo(randomHoleScaler(),randomHoleScaler());
     holeArray.push(hole);
     //
     holeFull = false;
@@ -623,6 +593,7 @@ console.log("atomMatrix.length = ", atomMatrix.length);
         holeArray[i].destroy();
         holeArray.splice(i, 1);
         this.setHole();
+        // this.setHole();
 
       }
     }
@@ -1390,9 +1361,11 @@ function createSteps() {
     rightStaircase[i] = stepGroup.create(rightStepStart, (i * stepTileH) - stepTileH, 'half-graphene');
     // rightStaircase[i] = game.add.tileSprite(750, (i*stepTileH)-stepTileH,  300, 50,'silver');
     rightStaircase[i].body.immovable = true;
+    rightStaircase[i].alpha= stepAlpha;
 
     leftStaircase[i] = leftStepGroup.create(leftStepStart, (i * stepTileH) - stepTileH, 'half-grapheneL');
     leftStaircase[i].body.immovable = true;
+    leftStaircase[i].alpha= stepAlpha;
     // rightStaircase[i].alpha =0.5;
     // stepBools[i]=true;
   }
@@ -1743,6 +1716,12 @@ function isEven(n) {
 }
 function isOdd(n) {
    return Math.abs(n % 2) == 1;
+}
+function randomHoleScaler(){
+  let min=holeMin;
+  let max=holeMax;
+  let random =Math.floor(Math.random() * (+max - +min)) + +min;
+  return random;
 }
 // function creeToggle() {
 //   console.log("creeToggle called");

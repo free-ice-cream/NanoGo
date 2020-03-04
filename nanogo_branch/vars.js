@@ -1,4 +1,4 @@
-var gameBuild = "build 3.8"; //
+var gameBuild = "build 4.0"; //
 var testing = false; //  a bool used to switch between testing and production mode
 var hitTheWall =  true; // if true the car will collide with the steps
  console.log("testing = " + testing);
@@ -795,3 +795,9 @@ var hexLineEven = [1,0,0];
 //these verbose arrays are too long, dont use their length
 var verboseHexLineOdd = [0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,];
 var verboseHexLineEven = [1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,];
+
+//
+var holeMin = 0.7;
+var holeMax = 1.8;
+//
+var stepAlpha = 0.8;
