@@ -29,15 +29,40 @@ var playState = {
     hexgrid.animations.add("hot", [4, 5, 6, 7, 8, 9, 10], 12, true);
     hexgrid.animations.play("cool");
     //
+    //     track v 3 ?
+    //
+    //
+    lattice = game.add.group();
+    lattice.enableBody = true;
+
+    //first we loop through all the rows
+    atomRows= (game.world.height/ atomY)+2;
+    atomColumns = (game.world.width/ atomX)+2;
+    for(let i = 0; i<= atomRows; i++ ){
+      // then for each row we loop through each position
+      for(let j = 0; j <= atomColumns  ; j ++){
+        //at each postion we create a sprite by adding it to our array this way we can get at it again later
+        atomMatrix[i][j]= lattice.create(atomX * j, (atomY *i) -atomY, 'new-atoms');
+        atomMatrix[i][j].animations.add("basic",[randomFrame(),randomFrame(),randomFrame(),randomFrame(),randomFrame(),randomFrame()],12,true);
+        atomMatrix[i][j].animations.play("basic");
+      }
+    }
+    //lattice.body.immovable = true;
+
+console.log("atomMatrix.length = ", atomMatrix.length);
+
+
+
+
+    //
     finishline = game.add.sprite(0, -100, "finishline");
 
     //Set teh drift (lateral speed ) based on car selection
     if (carType === 1) {
       drift /= 2;
       tempEffectX = tempEffect2; //set the lateral random movement fro heat.
-      rotationFactor = car1RotationRate;
     }
-    hexgrid.alpha = 1;
+    hexgrid.alpha = 0;
     //
     platforms = game.add.physicsGroup(); //for the hud
     platforms.enableBody = true;
@@ -181,14 +206,10 @@ var playState = {
     placeMarker.scale.setTo(0.3,0.3);
 
     //
-    scoreText = this.add.text(game.world.width- 68, game.world.height - hudOffset + 60, score, score14greenRight);
-    // scoreText = this.add.text(752, game.world.height - hudOffset + 60, score, score14greenRight);
-    // scoreText = this.add.text(100, 100, score, score14greenRight);
-    // scoreText.setTextBounds(30, 30 ,752, game.world.height - hudOffset + 60);
-
+    scoreText = this.add.text(752, game.world.height - hudOffset + 60, score, score14green);
     // distLabel = this.add.text(650, game.world.height - hudOffset , distanceLabel, screen18white);
     // distLabel2 = this.add.text(630, game.world.height - hudOffset + 25, distanceLabel2, screen18white);
-     siNm = this.add.text(game.world.width- 25, game.world.height - hudOffset + 60, si, score14green);// nM
+    // siNm = this.add.text(718, game.world.height - hudOffset + 51, si, screen18green);// nM
 
 
     // thermLabel = this.add.text(thermX + 60, game.world.height - hudOffset, thermalLabel, screen18white);//vibration from heat
@@ -331,6 +352,9 @@ var playState = {
     game.physics.arcade.overlap(leftStepGroup, car, leftDrop, secCall, this);
     // remove comments to return block
     // game.physics.arcade.collide(car, block);
+    //
+    //try out some particle collisions
+    game.physics.arcade.overlap(lattice, car, vibration1, vibration2, this);
 
 
     //SIDEWAYS
@@ -348,7 +372,7 @@ var playState = {
           this.playFx("swipe");
           //
           if (car.angle >= -80) {
-            car.angle -= (10 * rotationFactor); //lets try rotation
+            car.angle -= 10; //lets try rotation
           }
           //
           leftTog = true;
@@ -357,7 +381,6 @@ var playState = {
         leftTog = false;
       }
       if (cursors.right.isDown) {
-
         if (!rightTog) {
           //    car.body.x += drift; //clicky
           // car.body.velocity.x += drift;//smooth
@@ -368,9 +391,7 @@ var playState = {
           this.playFx("swipe");
           //
           if (car.angle <= 80) {
-
-            car.angle += (10 * rotationFactor); //lets try rotation
-
+            car.angle += 10; //lets try rotation
           }
           //
           rightTog = true;
@@ -463,6 +484,7 @@ var playState = {
     staircaseCheck();
     // this.zombieCheck();
     this.checkHole();
+    wobble();
 
   },
   // ---------------------------------------------------------------------------------------------------------------
@@ -580,7 +602,7 @@ var playState = {
   // },
   moveTiles: function(d) {
     // if(score < raceLimit){
-      score += d;
+    score += d;
     // }
     // var adjustedRate = tileRate * d * friction;
     adjustedRate = (tileRate * d) * trackRate;
@@ -592,12 +614,20 @@ var playState = {
     stepGroup.y += adjustedRate;
     leftStepGroup.y += adjustedRate;
     deadGroup.y += adjustedRate; //meh
+    //
+    // lattice.y += adjustedRate;
+    moveLattice(adjustedRate);
+    console.log("lattice y = ", lattice.y);
+    //
+    //loop through the individual atoms / rows here ?
+    //
     if(score > raceLimit-15){
       // console.log("win");
       finishline.y += adjustedRate;
     }
     //if()
     updateTrackBounds(d);
+    updateLattice();
   },
   moveWheels: function(d) {
     if (outFramNo < 9 && outFramNo >= 0) {
@@ -1122,6 +1152,12 @@ function leftDrop(coH, coC) {
 
 
 }
+function vibration1(){
+  // console.log("well ? something at least");
+}
+function vibration2(){
+
+}
 
 function spawnCar(start) {
   //lets make sure we dont inherit some movement
@@ -1425,6 +1461,87 @@ function updateTrackBounds(n) {
     // leftInnerBound -= n;
     leftOuterBound += n;
   }
+}
+function updateLattice(){
+
+// loop through atomicMatrix checking the y positions of each atom. if  > game.world.height set to - atomY
+// console.log(atomMatrix[0][0]);
+// let rows =
+
+  for(let i = 0; i <= atomMatrix.length -1 ; i++){
+    for(let j = 0; j <= atomMatrix[i].length -1 ; j++){
+      if(atomMatrix[i][j].y > (atomRows * atomY)){
+        // console.log("offscreen ", atomMatrix[i][j]);
+         atomMatrix[i][j].y = atomMatrix[i][j].y -( atomRows* atomY)-atomY;
+      }
+      // csonsole.log("atomMatrix[i][j].y ",atomMatrix[i][j].y);
+    }
+    // atomOffset -= atomY;
+  }
+  // atomOffset -= atomY;
+}
+function moveLattice(r){
+
+// loop through atomicMatrix checking the y positions of each atom. if  > game.world.height set to - atomY
+// console.log(atomMatrix[0][0]);
+// console.log("lattice y = ", lattice.y);
+// let b =0;
+  for(let i = 0; i <= atomMatrix.length -1 ; i++){
+    for(let j = 0; j <= atomMatrix[i].length -1 ; j++){
+      // if(atomMatrix[i][j].world.y > 600){
+        // console.log("offscreen ", atomMatrix[i][j]);
+         atomMatrix[i][j].y += r;
+         // let n = i*j;
+         console.log("atom row #", i, "atom pos#", j,  atomMatrix[i][j].y );
+      // }
+      // csonsole.log("atomMatrix[i][j].y ",atomMatrix[i][j].y);
+    }
+    // atomOffset -= atomY;
+  }
+  // atomOffset -= atomY;
+}
+function randomFrame(){
+
+  let min=0;
+    let max=19;
+    let random =Math.floor(Math.random() * (+max - +min)) + +min;
+    return random;
+}
+function randomWobble(){
+
+  let min=0;
+    let max = currentTemp/100;//2;
+    let random =Math.floor(Math.random() * (+max - +min)) + +min;
+    return random;
+}
+function randomPeriod(){
+
+  let minP=20;
+    let maxP = currentTemp/10;//100;
+    let randomP =Math.floor(Math.random() * (+maxP - +minP)) + +minP;
+    return randomP;
+}
+//
+function wobble(){
+  // fish =  this.add.image(150, fishY,'').setOrigin(0.5, 0.5);
+   let time = (new Date()).getTime();
+  // speed
+   let amplitude = 10;
+  //distance
+   let period = 1000;
+  //apply to y position
+  let nextX = amplitude * Math.sin(time * 2 * Math.PI / period);
+  //
+  for(let i = 0; i <= atomMatrix.length -1 ; i++){
+    for(let j = 0; j <= atomMatrix[i].length -1 ; j++){
+         atomMatrix[i][j].x = atomMatrix[i][j].x+ (randomWobble() * Math.sin(time * 2 * Math.PI / randomPeriod()));
+         atomMatrix[i][j].y = atomMatrix[i][j].y+ (randomWobble() * Math.sin(time * 2 * Math.PI / randomPeriod()));
+    }
+  }
+
+
+
+
 }
 
 // function creeToggle() {

@@ -1,7 +1,8 @@
-var gameBuild = "build 3.6"; //
+var gameBuild = "build 3.8"; //
 var testing = false; //  a bool used to switch between testing and production mode
 var hitTheWall =  true; // if true the car will collide with the steps
-console.log("testing = " + testing);
+ console.log("testing = " + testing);
+var cheat = false;
 ///var hexgrid;
 var hole; //this will be the baddie
 var holeArray = []; // a place to keep holes
@@ -88,7 +89,7 @@ var oTo35;
 var oto31 = "Step 3: Click to select a race track.";
 var oto32 = "Track 1";
 var oto33 = "Track 2";
-var oto35 = "This track is made from Graphene. Graphene is just one super thin crystal of carbon. With a melting point of 4800 ºk you will have a lots of time to get the end of this track";
+var oto35 = "This track is made from Graphene. Graphene is just one super thin crystal of carbon. With a melting point of 4800 ºk you will have a tough time getting to the end of this track";
 var oto34 = "This track is made from Silver. There will not be much time, silver melts at just 1234.93 ºK";
 //option page 4 text objects and STRINGS
 var oTo41;
@@ -235,10 +236,6 @@ var carBounce = 0.1; // the bounce factor when teh car lands at teh start
 var tileRate = 24; //the rate at which the background moves
 var carAccelRate = 80; // base 50
 var carDragRate = 50; //
-var car1RotationRate = 0.5;// a differentiator between the cars handling
-var car2RotationRate = 1;
-var rotationFactor = car2RotationRate; // in play we check if we are using car 1 and set rotation there
-
 //
 var trackRate = 1;
 //
@@ -405,14 +402,6 @@ var score14green = {
   wordWrap: true,
   wordWrapWidth: 600
 };
-var score14greenRight = {
-  font: ' 14pt ChintzyCPUBRK',
-  fill: '#3BFC34',
-  // fill: '#123456',
-  boundsAlignH: 'right',
-  wordWrap: true,
-  wordWrapWidth: 600
-};
 var screen18white = {
   font: ' 21pt ChintzyCPUBRK',
   fill: '#fff',
@@ -538,6 +527,8 @@ var safeSpawnTime = 3000;
 var platforms;
 var howToScreen;
 var howToStartBut;
+//
+var lattice;// a var for the atom group
 //
 var carType = 1;
 var carLoopLength = 8;
@@ -744,3 +735,63 @@ var cars = ["blah","tubecar", "buckycar"];
 var raceLimit = 1000; // how long is the race
 //
 var trackScaleIncrement = 560 / raceLimit; // about the length of the race scale
+//
+var atomX = 75;
+var atomY = 75;
+var hexAtomX = 60;
+var hexAtomY = 60;
+var hexAtomX2 = 40;
+var hexAtomY2 = 60;
+
+// var atomX = 25;
+// var atomY = 25;
+//
+//an array containing 40 empty arrays
+// each child arrar will be a row of atoms
+var atomMatrix =[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+var atomOffset = 0;// a var to set the new y pos of the atoms
+var atomRows;
+var atomColumns;
+// a place toregister the start positions
+var atomAnchors = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+//a place to register teh start angles
+var atomAngles = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+// a bool to track  which part of their oscilatio they ar ein
+var atomOscilationBools = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+// anchor valsu just to diferentiate the atoms in their oscilation amplitudes
+var atomOscilationSteps = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+//
+var atomOscilationStepsLive = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+//
+//
+//
+//
+var atomMatrixHex =[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+var atomOffsetHex = 0;// a var to set the new y pos of the atoms
+var atomRowsHex;
+var atomColumnsHex;
+// a place toregister the start positions
+var atomAnchorsHex = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+//a place to register teh start angles
+var atomAnglesHex = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+// a bool to track  which part of their oscilatio they ar ein
+var atomOscilationBoolsHex = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+// anchor valsu just to diferentiate the atoms in their oscilation amplitudes
+var atomOscilationStepsHex = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+//
+var atomOscilationStepsLiveHex = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];//
+
+
+//
+//
+
+var minAmplitude = 4;// the min and max mumber of steps the atoms can take
+var maxAmplitude = 10;
+var frequecyScaleFactor = 150;// scale down the impact of heat on the oscilations
+var frequecyScaleFactorHex = 230;
+var hexLineOdd = [0,1,1,];
+var hexLineEven = [1,0,0];
+//
+//these verbose arrays are too long, dont use their length
+var verboseHexLineOdd = [0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,];
+var verboseHexLineEven = [1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,];

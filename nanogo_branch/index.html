@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+<link href="main.css" rel="stylesheet">
+<link href="lib/add-to-calendar-buttons/main.css" rel="stylesheet">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Nano Go</title>
+  <!-- changed to  p2 path -->
+  <script src="../build/phaser.js"></script>
+  <script src="vars.js"></script>
+  <script src="page.js"></script>
+  <script src="boot.js"></script>
+  <script src="load.js"></script>
+  <script src="menu.js"></script>
+  <script src="tutorial.js"></script>
+  <script src="options1.js"></script>
+  <script src="options2.js"></script>
+  <script src="options3.js"></script>
+  <script src="options4.js"></script>
+  <script src="options5.js"></script>
+  <script src="play.js"></script>
+  <script src="lose.js"></script>
+  <script src="win.js"></script>
+  <script src="gameover.js"></script>
+  <script src="game.js"></script>
+  <script src="lib/add-to-calendar-buttons/ouical.js"></script>
+
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="navbar">
+      <div class="title">
+        <script > document.write("<a href= "+ficurl+">"+pageTitle+"</a>");</script>
+
+
+      </div>
+      <div class="nav-items">
+        <ul>
+          <li>
+            <a href ="javascript:void(0);" onclick="aboutPop()">About the game</a>
+
+          </li>
+          <li>
+            <a href ="javascript:void(0);" onclick="projectPop()">About the project</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="cont">
+    <div class="sidebar">
+
+    </div>
+
+    <div id='gameDiv' class="gamewrapper">
+    </div>
+    <div class="sidebar">
+
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footwrap">
+    <!-- <ul>
+      <li>
+        contact
+      </li>
+      <li>
+        stuff
+      </li>
+    </ul> -->
+    </div>
+  </div>
+
+
+
+</body>
+<!-- ABOUT PAGE  -->
+<div class ="pop-page" id="aboutOverlay" onclick="aboutOff()">
+
+  <div id="text">
+    <div class="text-stubs" id="a1">
+    </div>
+    <div class="text-stubs" id="a2">
+    </div>
+    <div class="text-stubs" id="a3">
+    </div>
+
+  </div>
+
+  <div id="closelink" onclick="aboutOff()">
+    <div id="exitText">Exit to main screen</div>
+  </div>
+
+</div>
+<!-- PROJECT PAGE -->
+<div class ="pop-page" id="projectOverlay" onclick="projectOff()">
+
+  <div  id="text">
+    <p>
+      Nano go is a game by <a href="http://freeicecream.co.uk" target="_blank">Free Ice Cream </a>commissioned by <a href="https://www.nottingham.ac.uk/~ppzstm/" target="_blank">Nottingham University Nanoscience Group</a>.
+    </p>
+
+  </div>
+  <div id="closelink" onclick="aboutOff()">
+    <div id="exitText" >Exit to main screen</div>
+  </div>
+</div>
+<!-- Calendar Pop -->
+<div class ="pop-page" id="calendarOverlay" >
+
+  <div  class= "new-cal" id="cal-link"></div>
+  <div id="exitText" onclick="calPopOff()">Exit to main screen</div>
+</div>
+<!-- onclick="calPopOff()" -->
+
+
+</div>
+<script>
+    // var myCalendar1 = createCalendar({
+    //   options: {
+    //     class: 'my-class',
+    //     id: 'my-id'                               // You need to pass an ID. If you don't, one will be generated for you.
+    //   },
+    //   data: {
+    //     title: 'Get on the front page of HN',     // Event title
+    //     start: new Date('June 15, 2013 19:00'),   // Event start date
+    //     duration: 120,                            // Event duration (IN MINUTES)
+    //     end: new Date('June 15, 2013 23:00'),     // You can also choose to set an end time.
+    //                                               // If an end time is set, this will take precedence over duration
+    //     address: 'The internet',
+    //     description: 'Get on the front page of HN, then prepare for world domination.'
+    //   }
+    // }),
+
+
+    // document.querySelector('.new-cal').appendChild(myCalendar);
+
+</script>
+
+
+
+</html>
