@@ -19,6 +19,7 @@ var playState = {
     // } else {
     //   console.log("CRASH - no track");
     // }
+    cheatdeath = false;
     hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, trackArr[trackselection]);
     friction = cold;
     drift *= friction;
@@ -47,13 +48,15 @@ var playState = {
       // then for each row we loop through each position
       for(let j = 0; j <= atomColumns  ; j ++){
         //at each postion we create a sprite by adding it to our array this way we can get at it again later
-        atomMatrix[i][j]= lattice.create(atomX * j, (atomY *i) -atomY, 'new-atoms');
+        atomMatrix[i][j]= lattice.create(atomX * j, (atomY *i) -atomY, 'silver-atoms');
         atomMatrix[i][j].animations.add("basic",[randomFrame(),randomFrame(),randomFrame(),randomFrame(),randomFrame(),randomFrame()],12,true);
         atomMatrix[i][j].animations.play("basic");
         atomAngles[i][j] = randomAngle();
         atomOscilationSteps[i][j] = randomSteps();
         atomOscilationBools[i][j] = randomBool();
         atomOscilationStepsLive[i][j] = 0;// start at teh beginning
+        atomMatrix[i][j].body.drag.y=worldDragRate;
+
 
       }
     }
@@ -94,6 +97,10 @@ var playState = {
         atomOscilationSteps[i][j] = randomSteps();
         atomOscilationBools[i][j] = randomBool();
         atomOscilationStepsLive[i][j] = 0;// start at teh beginning
+        atomMatrixHex[i][j].body.drag.y=worldDragRate;
+        //
+
+
       }
     }
   }
@@ -103,28 +110,21 @@ var playState = {
 
     //Set teh drift (lateral speed ) based on car selection
     if (carType === 1) {
-      drift /= 2;
+      drift /= 2;// hello hello ??
       tempEffectX = tempEffect2; //set the lateral random movement fro heat.
     }
     hexgrid.alpha = 0;
     //
     platforms = game.add.physicsGroup(); //for the hud
     platforms.enableBody = true;
-    var barr = platforms.create(0, game.world.height - 159, 'bar');
+    var barr = platforms.create(0, game.world.height - barrOffset, 'bar');
     barr.body.immovable = true;
     barr.alpha = 0;
     //
     //Holes
     holesGroup = game.add.group();
     holesGroup.enableBody = true;
-    //  HOLE REMOVED
-    // if(testing){
-    //     hole = holesGroup.create(0, -50, 'hole-test');
-    // }else{
-    //     hole = holesGroup.create(0, -50, 'hole');
-    // }
 
-    // hole.body.x = holeX[currHole]; //    //  HOLE REMOVED
     this.setHole();
     //
     //Power Ups
@@ -132,6 +132,9 @@ var playState = {
     powerGroup.enableBody = true;
     bluePowerUp = powerGroup.create(-200, -200, 'blue-power-up');
     bluePowerUp.body.immovable = true;
+    game.physics.arcade.enable(bluePowerUp);
+    bluePowerUp.body.drag.y=worldDragRate;
+
     //Steps
     stepGroup = game.add.group();
     stepGroup.enableBody = true;
@@ -140,6 +143,10 @@ var playState = {
     createSteps();
     //
     deadGroup = game.add.group();
+    // deadGroup.enableBody = true;
+    // game.physics.arcade.enable(deadGroup);
+    // deadGroup.body.drag.y=worldDragRate;
+
     // powerGroup.enableBody = true;
     // deadCar= powerGroup.create(-200, -200, 'blue-power-up');
     // bluePowerUp.body.immovable = true;
@@ -179,15 +186,7 @@ var playState = {
     //
 
     emitter = game.add.emitter(game.world.centerX, 0, 400);
-    //
-    //add the new hud
-    //
-    // hudback = game.add.sprite(0, 491, 'instrument_back');
-    // scrollingText = this.add.text(0, 0, scollingTextCopy1, scrollingGreen);
-    // scrollingText.setTextBounds(12, 540, 368, 57);
-    // newHud = game.add.sprite(0, 491, 'instrument');
-    // newHud.alpha = 0.1;
-    //
+
     // NEW NEW HUD :)
     thermLevels = game.add.group();
     // var frame = thermLevels.create(thermX, thermY, 'therm-frame');
@@ -198,9 +197,13 @@ var playState = {
     this.setLives();
     game.physics.arcade.enable(car);
     car.body.bounce.y = carBounce;
-    car.body.gravity.y = carGrav; //
+    // car.body.gravity.y = carGrav; //
     car.body.collideWorldBounds = true;
     car.anchor.setTo(0.5, 0.5);
+    car.body.drag.x = carDragRate;
+    car.body.drag.y = carYDrag;
+    // car.body.immovable = true;//?? TBC
+
     // car.anchor.setTo(0.25, 0.25);
     //
     // game.physics.arcade.enable(hole);//  //  HOLE REMOVED
@@ -215,9 +218,12 @@ var playState = {
     swipe = game.add.audio('swipe');
     powerUpBlips = game.add.audio('power-up-blips');
     fallFx = game.add.audio('fall-sfx');
-    mainTheme.volume =  gameLiveVol;
-    mainTheme.loopFull(0.5);
-    mainTheme.volume =  gameLiveVol;
+    grindFx = game.add.audio('grind');
+    grindFx.allowMultiple = true;
+    grindFx.volume=sfxLevel;
+    // mainTheme.volume =  musicVol;
+    mainTheme.loopFull(musicVol);
+    // mainTheme.volume =  gameLiveVol;
     //
     // Get keyboard input
     //
@@ -251,12 +257,6 @@ var playState = {
 
     //
     scoreText = this.add.text(752, game.world.height - hudOffset + 60, score, score14green);
-    // distLabel = this.add.text(650, game.world.height - hudOffset , distanceLabel, screen18white);
-    // distLabel2 = this.add.text(630, game.world.height - hudOffset + 25, distanceLabel2, screen18white);
-    // siNm = this.add.text(718, game.world.height - hudOffset + 51, si, screen18green);// nM
-
-
-    // thermLabel = this.add.text(thermX + 60, game.world.height - hudOffset, thermalLabel, screen18white);//vibration from heat
 
     tempLabel = this.add.text(thermX, game.world.height - 75, temperatureLabel, screen18white);
     tempLabel2 = this.add.text(thermX, game.world.height - 55, temperatureLabel2, screen18white);
@@ -272,21 +272,16 @@ var playState = {
     lapLabel = this.add.text(game.world.width -50, 0, lap, lapWhite);
     //
     var frame = thermLevels.create(thermX, thermY -425, 'therm-frame');
-
     //
     platforms.alpha = 1;
 
-    // hole.animations.add('fizz', [0, 1, 2, 3, 4], 20, true);  //  HOLE REMOVED
-    // hole.animations.play('fizz', true);   //  HOLE REMOVED
     bluePowerUp.animations.play('freeze', true);
     //
-    // scaleToggle = game.add.sprite(699, 512, 'tiny-toggle');
-    // //
-    // scaleToggle.inputEnabled = true;
-    // scaleToggle.events.onInputDown.add(this.toggle, this);
+
 
     this.mainTick();
     this.secondTick();
+
     try {
       bassLoop.stop();
     } catch (e) {
@@ -311,47 +306,16 @@ var playState = {
     carCentreX = car.width / 2;
     carCentreY = car.height / 2;
     //
-    // pole = d.getTime();
 
-    // pole2 = d2.getTime();
-
-    //
-    //all audio butt stuff
-    // audioControl = game.add.sprite(100,100, 'soundcontrol');
-    // volback = game.add.sprite(vbx, vby+playOffset, 'volback');
-    // volplus = game.add.sprite(pbx, pby+playOffset, 'volplus');
-    // volminus = game.add.sprite(mbx, mby+playOffset, 'volminus');
     speakerbut = game.add.sprite(game.world.width - 200, 15, 'speakerbut');
 
-    //
-    // var audplus0 = volplus.animations.add('vp-rest', [0], 1, false);
-    // var audplus1 = volplus.animations.add('vp-hov', [1], 1, false);
-    // var audplus2 = volplus.animations.add('vp-down', [2], 1, false);
-    // var audplus3 = volplus.animations.add('vp-max', [3], 1, false);
-    // //
-    // var audmin = volminus.animations.add('vm-rest', [0], 1, false);
-    // var audmin1 = volminus.animations.add('vm-hov', [1], 1, false);
-    // var audmin2 = volminus.animations.add('vm-down', [2], 1, false);
-    // var audmin3 = volminus.animations.add('vm-min', [3], 1, false);
-    //
-    var speakerOn = speakerbut.animations.add('sp-on', [0], 1, false);
-    var speakerOff= speakerbut.animations.add('sp-off', [1], 1, false);
 
     //
-    // var audioon = audioControl.animations.add('audioOn', [ 0], 1, false);
-    // var audiooff = audioControl.animations.add('audioOff', [ 1], 1, false);
-    // volplus.inputEnabled = true;
-    // volminus.inputEnabled = true;
+    var speakerOn = speakerbut.animations.add('sp-on', [0], 1, false);
+    var speakerOff = speakerbut.animations.add('sp-off', [1], 1, false);
+
     speakerbut.inputEnabled = true;
-    //
-    // volplus.events.onInputDown.add(this.plusPlus, this);
-    // volplus.events.onInputOver.add(this.plusOver, this);
-    // volplus.events.onInputOut.add(this.plusOut, this);
-    // //
-    // volminus.events.onInputDown.add(this.minusPlus, this);
-    // volminus.events.onInputOver.add(this.minusOver, this);
-    // volminus.events.onInputOut.add(this.minusOut, this);
-    //
+
     speakerbut.events.onInputDown.add(this.speakerButContol, this);
     //
     if(audioLive){
@@ -359,10 +323,7 @@ var playState = {
     }else{
       speakerbut.animations.play('sp-off');
     }
-    //
-    // racegauge= game.add.sprite(game.world.width - 50, 0, 'racegauge');
-    // placeMarker= game.add.sprite(game.world.width - 48, game.world.height-70, cars[carType]);
-    // placeMarker.scale.setTo(0.3,0.3);
+
 
   },
   // ---------------------------------------------------------------------------------------------------------------
@@ -381,24 +342,94 @@ var playState = {
     // game.physics.arcade.collide(car, powerGroup);
     //
     if (hitTheWall) {
-      game.physics.arcade.collide(car, stepGroup); //TODO :: to collide or not to collide ???
-      game.physics.arcade.collide(car, leftStepGroup);
+      for(i=0; i< leftStaircase.length; i++){
+        game.physics.arcade.collide(car, leftStaircase[i])
+      }
+      for(i=0; i< rightStaircase.length; i++){
+        game.physics.arcade.collide(car, rightStaircase[i])
+      }
+
+
     }
 
     //detect hole collision
 
 
-    game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this); //  HOLE REMOVED
+    // game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this); //  HOLE REMOVED
     game.physics.arcade.overlap(bluePowerUp, car, this.sheildUp, this.movePowerUp, this);
-    //try this first
-    // game.physics.arcade.overlap(stepGroup, car, crash, secCall, this);
-    game.physics.arcade.overlap(stepGroup, car, drop, secCall, this);
-    game.physics.arcade.overlap(leftStepGroup, car, leftDrop, secCall, this);
-    // remove comments to return block
-    // game.physics.arcade.collide(car, block);
-    //
-    //try out some particle collisions
-    game.physics.arcade.overlap(lattice, car, vibration1, vibration2, this);
+
+
+
+
+    // isHCrashing = game.physics.arcade.overlap(hole, car, crash, checkRespawnTime, this);
+    isHCrashing = game.physics.arcade.overlap(hole, car, holeExposure, checkRespawnTime, this);
+    if (!isHCrashing ){
+       hCrashTime  = 0;
+
+
+     }else{
+        playState.playFx("grind");
+        grind(true,hCrashCount);
+     }
+
+
+    if (hCrashTime  > HLIMIT) {
+      crash(hole, car);
+      // playState.playFx("grind");
+
+      // …
+
+    }
+
+
+//
+    lCrashCount = 0
+    for(i=0; i< leftStaircase.length; i++){
+        isLCrashing[i]  = game.physics.arcade.overlap(leftStaircase[i], car, leftWallExposure, null, this);
+        if (isLCrashing[i]){
+          lCrashCount += 1;
+          lcoH = leftStaircase[i];
+          grind(true,lCrashCount);
+      }else{
+        grind(false,lCrashCount);
+      }
+    }
+    if(lCrashCount === 0 ){
+      lCrashTime = 0;
+    }
+    if(lCrashTime > LIMIT){
+      lCrashTime = 0;
+      leftDrop(lcoH, car);
+    }
+//
+  rCrashCount = 0
+
+    for(i=0; i< rightStaircase.length; i++){
+        // game.physics.arcade.overlap(rightStaircase[i], car, rightDrop, secCall, this);
+        isRCrashing[i]  = game.physics.arcade.overlap(rightStaircase[i], car, rightWallExposure, null, this);
+        if (isRCrashing[i]){
+          rCrashCount += 1;
+          rcoH = rightStaircase[i];
+          grind(true);
+          //
+
+      }else{
+        grind(false);
+      }
+    }
+
+    if(rCrashCount === 0 ){
+      // console.log("lCrashTime  ",lCrashTime );
+      rCrashTime = 0;
+      // console.log("lCrashTime  ",lCrashTime );
+    }
+    if(rCrashTime > LIMIT){
+      //
+      rCrashTime = 0;
+      rightDrop(rcoH, car);
+
+    }
+
 
 
     //SIDEWAYS
@@ -409,7 +440,15 @@ var playState = {
         if (!leftTog) {
           //    car.body.x -= drift; //clicky
           // car.body.velocity.x -= drift;// smooth
-          car.body.velocity.x -= miniNudge; // have some inpact on velocity too
+          if(car.body.velocity.x > (carMaxYV * -1) ){
+
+
+          // car.body.velocity.x -= miniNudge; // have some inpact on velocity too
+
+          if( car.angle <= 0){
+          car.body.velocity.x -= miniNudge; //
+        }
+        }
           // car.body.drag.x=800;
           // carXpos -= drift;
 
@@ -428,9 +467,11 @@ var playState = {
         if (!rightTog) {
           //    car.body.x += drift; //clicky
           // car.body.velocity.x += drift;//smooth
+          if(car.body.velocity.x < carMaxYV  && car.angle >= 0){
           car.body.velocity.x += miniNudge; //
+        }
 
-          car.body.drag.x = carDragRate; //TODO is this fun? ??
+          // car.body.drag.x = carDragRate; //TODO is this fun? ??
           // carXpos+= drift;
           this.playFx("swipe");
           //
@@ -453,21 +494,39 @@ var playState = {
           this.moveWheels(1);
           this.moveLittleScale();
           this.playFx("rev");
-          if (car.body.y > 250) {
+          if (car.body.y > carMaxYpos) {
             // car.body.velocity.y -= carAccelRate ;//drift;//TODO Remove me
             if (car.angle >= 0) {
               let adj = Math.cos(car.angle * (Math.PI / 180)) * carAccelRate;
+              if(carMovesVertically){
               car.body.velocity.y -= adj;
+            }
               let opp = Math.sin(car.angle * (Math.PI / 180)) * adj;
               car.body.velocity.x += opp;
               trackRate = adj / carAccelRate; // we'll use this to mod the tracks rate of movement too.
             } else {
 
               let adj = Math.cos(car.angle * (Math.PI / 180)) * carAccelRate;
+              if(carMovesVertically){
               car.body.velocity.y -= adj;
+            }
               let opp = (Math.sin(car.angle * (Math.PI / 180)) * adj);
               car.body.velocity.x += opp;
             }
+          }else {
+
+            let adj = Math.cos(car.angle * (Math.PI / 180)) * carAccelRate;
+            let opp = Math.sin(car.angle * (Math.PI / 180)) * adj;
+            if (car.angle >= 0) {
+
+
+              // let opp = Math.sin(car.angle * (Math.PI / 180)) * adj;
+              car.body.velocity.x += opp;
+            }else{
+              // let opp = (Math.sin(car.angle * (Math.PI / 180)) * adj);
+              car.body.velocity.x += opp;
+            }
+
           }
 
           if (frameNo <= carLoopLength - 1) {
@@ -521,7 +580,7 @@ var playState = {
     //
     // }  //  HOLE REMOVED
 
-    if (bluePowerUp.body.y >= game.world.height + 150) {
+    if (bluePowerUp.body.y >= game.world.height + bluePowerUpFreq) {
       bluePowerUp.body.y = sheildRespawnBase;
       bluePowerUp.body.x = spriteXRandomiser();
     }
@@ -529,7 +588,9 @@ var playState = {
     staircaseCheck();
     // this.zombieCheck();
     this.checkHole();
-    occilate()
+    oscilate();
+    //
+    updateLattice();
     // wobble();
 
   },
@@ -558,12 +619,15 @@ var playState = {
     heart3 = game.add.sprite(game.world.width - 150, 20, 'heart');
   },
 
-  setHole: function() {
+  setHole: function(v) {
     console.log("set Hole");
     holesGroup.y = 0;
     hole = holesGroup.create(spriteXRandomiser(), spriteYRandomiser(), holeSheet);
     let sc = randomHoleScaler();
-    hole.scale.setTo(randomHoleScaler(),randomHoleScaler());
+    // hole.scale.setTo(randomHoleScaler(),randomHoleScaler());
+    hole.scale.setTo(sc,sc);
+    hole.body.drag.y = worldDragRate;
+    hole.body.velocity.y=v;
     holeArray.push(hole);
     //
     holeFull = false;
@@ -585,21 +649,20 @@ var playState = {
 
   },
   checkHole: function() {
-
+// console.log("HOLE HOLE");
     // console.log("holeArray.length", holeArray.length);
     for (let i = 0; i < holeArray.length; i++) {
       // console.log("once through? i = ", i);
-      if (holesGroup.y > bottomOtheWorld + (holeYoff * -1)) {
-        holeArray[i].destroy();
-        holeArray.splice(i, 1);
-        this.setHole();
+      // if (holesGroup.y > bottomOtheWorld + (holeYoff * -1)) {
+        if (holeArray[i].y > bottomOtheWorld + (holeYoff * -1)) {
+          this.setHole(holeArray[i].body.velocity.y);
+          holeArray[i].destroy();
+          holeArray.splice(i, 1);
+          // this.setHole();
         // this.setHole();
 
       }
     }
-    // console.log("holeArray[i]", holeArray[i]);
-    // console.log("holesGroup.y= ",holesGroup.y);
-    // console.log("holesGroup.height= ",holesGroup.height);
 
   },
 
@@ -608,7 +671,7 @@ var playState = {
       rev.volume= gameLiveVol;
       swipe.volume= gameLiveVol;
       gameOverChime.volume= gameLiveVol;
-      holeDeath.volume= gameLiveVol;
+      // holeDeath.volume= gameLiveVol;
       fallFx.volume= gameLiveVol;
       powerUpBlips.volume= gameLiveVol;
 
@@ -624,7 +687,14 @@ var playState = {
           gameOverChime.play();
           break;
         case "holeDeath":
+        // holeDeath.play();
+        if(gameLive){
           holeDeath.play();
+          // holeDeath.onStop.add(function (){holeDeath.volume = 0}, this);
+        }else {
+          // holeDeath.play();
+          holeDeath.onStop.add(killHoleDeath, this);
+        }
           break;
         case "fallFx ":
           fallFx.play();
@@ -635,6 +705,9 @@ var playState = {
           break;
         case "powerUpBlips":
           powerUpBlips.play();
+          break;
+        case "grind":
+            grindFx.play();
           break;
 
       }
@@ -657,13 +730,51 @@ var playState = {
     adjustedRate = (tileRate * d) * trackRate;
     // scoreText.setText(displayText + score + si);
     scoreText.setText(score);
-    hexgrid.tilePosition.y += adjustedRate;
-    holesGroup.y += adjustedRate;
-    powerGroup.y += adjustedRate;
-    stepGroup.y += adjustedRate;
-    leftStepGroup.y += adjustedRate;
-    deadGroup.y += adjustedRate; //meh
-    //
+    // hexgrid.tilePosition.y += adjustedRate;
+
+    // Move the left and right step edges
+    for(i =0; i <leftStaircase.length; i++){
+      if(leftStaircase[i].body.velocity.y<=maxVelocity){
+      leftStaircase[i].body.velocity.y += adjustedRate;
+    }
+    }
+    for(i =0; i <rightStaircase.length; i++){
+      if(rightStaircase[i].body.velocity.y<=maxVelocity){
+        rightStaircase[i].body.velocity.y += adjustedRate;
+      }
+    }
+
+
+    // move the holes
+    for(i =0; i <holeArray.length; i++){
+      if(holeArray[i].body.velocity.y <= maxVelocity){
+        holeArray[i].body.velocity.y += adjustedRate;
+      }
+    }
+
+    //move the power ups
+    if(bluePowerUp.body.velocity.y <= maxVelocity){
+      bluePowerUp.body.velocity.y += adjustedRate;
+    }
+
+    //move crashed cars
+    for(i =0; i < zombies.length; i++){
+      // console.log("zombies.length",zombies.length);
+      // console.log("zombies[i] ",zombies[i]);
+      if(zombies[i].body.velocity.y <= maxVelocity){
+        zombies[i].body.velocity.y += adjustedRate;
+      }
+    }
+
+
+
+    // stepGroup.y += adjustedRate;
+    // leftStepGroup.y += adjustedRate;
+    //deadGroup.y += adjustedRate; //meh
+
+
+
+
     // lattice.y += adjustedRate;
     moveLattice(adjustedRate);
     console.log("lattice y = ", lattice.y);
@@ -676,7 +787,8 @@ var playState = {
     }
     //if()
     updateTrackBounds(d);
-    updateLattice();
+    //velocity mod
+    // updateLattice();// moved this to teh update loop
   },
   moveWheels: function(d) {
     if (outFramNo < 9 && outFramNo >= 0) {
@@ -958,16 +1070,7 @@ var playState = {
   zombieCheck: function() {
     for (let i = 0; i < zombies.length; i++) {
       if (zombies.length != 0) {
-        console.log("xombies.lenght = ", zombies.length);
-        console.log("deadGroup.y   = ", deadGroup.y);
-        // console.log("zombies[i].height  = ", zombies[i].height );
 
-        // if (deadGroup.y > bottomOtheWorld) {
-        //   console.log("BRAAIINNSS!!!");
-        //   zombies[i].destroy();
-        //   zombies.splice(0, 1)
-        //   // console.log("zombies.length ", zombies.length);
-        // }
         if (zombies[0].worldPosition.y > bottomOtheWorld) {
           console.log("BRAAIINNSS!!!");
           zombies[0].destroy();
@@ -997,34 +1100,7 @@ var playState = {
     //
 
   },
-  //audio functions
-  // plusPlus: function() {
-  //   console.log("bassLoop.volume ", bassLoop.volume);
-  //   if (gameLiveVol <= 0.9) {
-  //     gameLiveVol += 0.1;
-  //     mainTheme.volume = gameLiveVol;
-  //     volplus.animations.play('vp-down', true)
-  //   }
-  // },
-  // plusOver: function() {
-  //   volplus.animations.play('vp-hov', true)
-  // },
-  // plusOut: function() {
-  //   volplus.animations.play('vp-rest', true)
-  // },
-  // minusPlus: function() {
-  //   if (gameLiveVol >= 0.1) {
-  //     gameLiveVol -= 0.1;
-  //     mainTheme.volume = gameLiveVol;
-  //     volminus.animations.play('vm-down', true)
-  //   }
-  // },
-  // minusOver: function() {
-  //   volminus.animations.play('vm-hov', true)
-  // },
-  // minusOut: function() {
-  //   volminus.animations.play('vm-rest', true)
-  // },
+  //
   speakerButContol: function() {
     if(audioLive){
       speakerbut.animations.play('sp-off', true);
@@ -1033,7 +1109,7 @@ var playState = {
     }else{
       speakerbut.animations.play('sp-on', true);
       audioLive = true;
-      mainTheme.loopFull(.5);
+      mainTheme.loopFull(musicVol);
     }
 
     },
@@ -1080,45 +1156,40 @@ var playState = {
 // ---------------------------------------------------------------------------------------------------------------
 
 function crash(coH, coC) {
+  // console.log("coH", coH);
+  // console.log("coC", coC);
   // console.log("crash(): cree= " + cree);
-  this.zombieCheck();
+  // console.log("coH.body.velocity.y", coH.body.velocity.y);
+  playState.zombieCheck();
   if (!cree) {
     if (holeFull === false) {
       holeFull = true;
 
       deadGroup.y = 0;
 
-      // console.log("hole.x, hole.y = ", hole.x, hole.y);
-      // console.log("hole.body.x  = ", hole.body.x);
-      // console.log("holesGroup.x  = ", holesGroup.x);
-      // console.log("holesGroup.body.x  = ", holesGroup.body.x);
-      let cx = hole.body.x;
-      let cy = (holesGroup.y - (holeYoff * -1));
-      // console.log("cx = ", cx);
-      // console.log("cy = ", cy);
+      // let cx = hole.body.x;
+      // let cy = (holesGroup.y - (holeYoff * -1));
 
-      // var crash = deadGroup.create(cx, cy, cars[carType]);
+      let zx = coC.body.position.x;
+      let zy = coC.body.position.y;
 
-      // var crash = deadGroup.create(car.x - (car.width/2), car.y - (car.height/2), cars[carType]);
-      // var crash = deadGroup.create(car.x - (car.width/2), car.y - (car.height/2), 'tubecar');
       let zl = zombies.length;
-      // if(zl===0){
-      //   deadGroup.y = 0;
-      // }
 
-      // zombies[zl] = crash;
       if (gameLive) {
-        zombies[zl] = deadGroup.create(cx, cy, cars[carType]);
+        zombies[zl] = deadGroup.create(zx, zy, cars[carType]);
+        game.physics.arcade.enable(zombies[zl]);
+
+
         // zombies[zl] = deadGroup.create(car.worldPosition.x, car.worldPosition.y, cars[carType]); // TODo Why is thi snot righ ??
         zombies[zl].angle = car.angle;
         zombies[zl].animations.add('crash', [8, 9], 6, true);
         zombies[zl].animations.play('crash', true);
 
+        zombies[zl].body.drag.y = worldDragRate;
+        zombies[zl].body.velocity.y = coH.body.velocity.y;
+
       }
 
-
-      // crash.animations.add('crash', [8, 9], 6, true);
-      // crash.animations.play('crash', true);
       //reset the car in spawn mode
       loseLife("hole");
       if (gameLive) {
@@ -1133,28 +1204,46 @@ function crash(coH, coC) {
   }
 }
 //
+
+function firstCall(){
+  console.log("fistcall called");
+}
 function secCall() {
   //
+  console.log("secCall called ");
 }
 
-function drop(coH, coC) {
-  this.zombieCheck();
+
+function rightDrop(coH, coC) {
+  console.log("rightDrop");
+  playState.zombieCheck();
+
+  let zx = coC.body.position.x;
+  let zy = coC.body.position.y;
+
   if (!cree) {
-    let cx = hole.body.x;
-    let cy = (holesGroup.y - (holeYoff * -1));
+    // let cx = hole.body.x;
+    // let cy = (holesGroup.y - (holeYoff * -1));
     deadGroup.y = 0;
     let zl = zombies.length;
     // let leftOrRight = (car.x)? ent2 * -1 : ent2;
 
     if (gameLive) {
       // zombies[zl] = deadGroup.create(cx, cy, cars[carType]);
-      zombies[zl] = deadGroup.create(coC.worldPosition.x - (car.width / 2), car.y - (car.height / 2), cars[carType]);
+      // zombies[zl] = deadGroup.create(coC.worldPosition.x - (car.width / 2), car.y - (car.height / 2), cars[carType]);
+      zombies[zl] = deadGroup.create(zx, zy, cars[carType]);
+      game.physics.arcade.enable(zombies[zl]);
       zombies[zl].angle = car.angle;
+      zombies[zl].enableBody = true;
+
+      zombies[zl].body.drag.y = worldDragRate;
+      zombies[zl].body.velocity.y = coH.body.velocity.y;
+
       zombies[zl].animations.add('crash', [8, 9], 6, true);
       zombies[zl].animations.play('crash', true);
 
     }
-    loseLife("hole");
+    loseLife("drop");
     if (gameLive) {
       console.log("spawncar ");
       spawnCar(false);
@@ -1170,18 +1259,33 @@ function drop(coH, coC) {
 
 }
 //
+function ld(coH, coC){
+  console.log("POW!! ");
+}
 function leftDrop(coH, coC) {
-  this.zombieCheck();
+  // console.log("coH", coH);
+  // console.log("coC", coC);
+  playState.zombieCheck();
+
+  let zx = coC.body.position.x;
+  let zy = coC.body.position.y;
+
   if (!cree) {
-    let cx = hole.body.x;
-    let cy = (holesGroup.y - (holeYoff * -1));
+    // let cx = hole.body.x;
+    // let cy = (holesGroup.y - (holeYoff * -1));
     deadGroup.y = 0;
     let zl = zombies.length;
     // let leftOrRight = (car.x)? ent2 * -1 : ent2;
     if (gameLive) {
       // zombies[zl] = deadGroup.create(cx, cy, cars[carType]);
-      zombies[zl] = deadGroup.create(coC.worldPosition.x + coC.width - (car.width / 2), car.y - (car.height / 2), cars[carType]);
+      // zombies[zl] = deadGroup.create(coC.worldPosition.x + coC.width - (car.width / 2), car.y - (car.height / 2), cars[carType]);
+      zombies[zl] = deadGroup.create(zx, zy, cars[carType]);
+      game.physics.arcade.enable(zombies[zl]);
       zombies[zl].angle = car.angle;
+
+      zombies[zl].body.drag.y = worldDragRate;
+      zombies[zl].body.velocity.y = coH.body.velocity.y;
+
       zombies[zl].animations.add('crash', [8, 9], 6, true);
       zombies[zl].animations.play('crash', true);
 
@@ -1201,6 +1305,33 @@ function leftDrop(coH, coC) {
 
 
 }
+
+
+function leftWallExposure(coW, coC){
+
+  lCrashTime  += this.time.physicsElapsedMS;
+
+
+}
+function rightWallExposure(coW, coC){
+
+  rCrashTime  += this.time.physicsElapsedMS;
+}
+function  holeExposure() {
+
+  hCrashTime += this.time.physicsElapsedMS;
+
+}
+// function checklLeftActive(coW, coC){
+//   lChecking = false;
+//   if(coC.body.touching.none === false){
+//     console.log("coC ",coC);
+//     console.log("coC touching");
+//   }else {
+//     console.log("no coC touching");
+//   }
+// }
+
 function vibration1(){
   // console.log("well ? something at least");
 }
@@ -1233,8 +1364,10 @@ function spawnCar(start) {
 function loseLife(cause) {
   if (lives === 3) {
     heart3.alpha = 0;
-    lives = 2;
-    // textScroller(0);
+    
+    if(!cheatdeath){// THIS SHOULD DISABLE DEATH
+      lives = 2;
+    }
   } else if (lives === 2) {
     heart2.alpha = 0;
     lives = 1;
@@ -1360,19 +1493,33 @@ function createSteps() {
     // step = stepGroup.create(-290 +i , i*5, 'step');
     rightStaircase[i] = stepGroup.create(rightStepStart, (i * stepTileH) - stepTileH, 'half-graphene');
     // rightStaircase[i] = game.add.tileSprite(750, (i*stepTileH)-stepTileH,  300, 50,'silver');
-    rightStaircase[i].body.immovable = true;
-    rightStaircase[i].alpha= stepAlpha;
-
     leftStaircase[i] = leftStepGroup.create(leftStepStart, (i * stepTileH) - stepTileH, 'half-grapheneL');
+
+    game.physics.arcade.enable(rightStaircase[i]);
+    game.physics.arcade.enable(leftStaircase[i]);
+
+    rightStaircase[i].enableBody = true;
+    leftStaircase[i].enableBody = true;
+
+
+    rightStaircase[i].body.immovable = true;
     leftStaircase[i].body.immovable = true;
+
+    rightStaircase[i].body.drag.y = worldDragRate;
+    leftStaircase[i].body.drag.y = worldDragRate;
+
+    rightStaircase[i].alpha= stepAlpha;
     leftStaircase[i].alpha= stepAlpha;
+
     // rightStaircase[i].alpha =0.5;
     // stepBools[i]=true;
+    // physics.arcade.enable
+
   }
 }
 
 function staircaseCheck() {
-  if (score > distCheck) {
+  // if (score > distCheck) {
     // console.log("score = "+score+" : dist= "+distCheck);
     distCheck++;
     for (i = 0; i < stepLimit; i++) {
@@ -1389,7 +1536,7 @@ function staircaseCheck() {
         // console.log("bottom o the world");
       }
     }
-  }
+  // }
 }
 
 function rightStepPath(n) {
@@ -1569,7 +1716,15 @@ function moveLattice(r){
     for(let j = 0; j <= am[i].length -1 ; j++){
       // if(atomMatrix[i][j].world.y > 600){
         // console.log("offscreen ", atomMatrix[i][j]);
-         am[i][j].y += r;
+
+        //velocity mod
+        if(am[i][j].body.velocity.y<=maxVelocity){
+          am[i][j].body.velocity.y += r;
+        }
+
+         // am[i][j].y += r;//
+
+
          // let n = i*j;
          // console.log("atom row #", i, "atom pos#", j,  atomMatrix[i][j].y );
       // }
@@ -1602,7 +1757,9 @@ function randomPeriod(){
 }
 //
 function wobble(){
-
+//
+// Now using oscilate() instead of this.
+//
   // fish =  this.add.image(150, fishY,'').setOrigin(0.5, 0.5);
    let time = (new Date()).getTime();
   // speed
@@ -1616,8 +1773,16 @@ function wobble(){
 
   for(let i = 0; i <= atomMatrix.length -1 ; i++){
     for(let j = 0; j <= atomMatrix[i].length -1 ; j++){
-         atomMatrix[i][j].x = atomMatrix[i][j].x+ (randomWobble() * Math.sin(time * 2 * Math.PI / randomPeriod()));
-         atomMatrix[i][j].y = atomMatrix[i][j].y+ (randomWobble() * Math.sin(time * 2 * Math.PI / randomPeriod()));
+      //
+      //velocity mod
+      // if(){
+
+      atomMatrix[i][j].anchor.x = atomMatrix[i][j].x+ (randomWobble() * Math.sin(time * 2 * Math.PI / randomPeriod()));
+      atomMatrix[i][j].anchor.y = atomMatrix[i][j].y+ (randomWobble() * Math.sin(time * 2 * Math.PI / randomPeriod()));
+// }
+    //
+         // atomMatrix[i][j].x = atomMatrix[i][j].x+ (randomWobble() * Math.sin(time * 2 * Math.PI / randomPeriod()));
+         // atomMatrix[i][j].y = atomMatrix[i][j].y+ (randomWobble() * Math.sin(time * 2 * Math.PI / randomPeriod()));
     }
   }
 
@@ -1625,7 +1790,7 @@ function wobble(){
 
 
 }
-function occilate(){
+function oscilate(){
   let am;//aton Matrinz / hexgrid
   let ar;//atom rows
   let aty;
@@ -1664,7 +1829,7 @@ function occilate(){
             atomOscilationBools[i][j] = !atomOscilationBools[i][j];
             atomOscilationStepsLive[i][j]=0;
             // atomAngles[i][j]= randomAngle();
-            console.log(" flip to false");
+            // console.log(" flip to false");
           }
 
         }else if(!atomOscilationBools[i][j]) {
@@ -1679,7 +1844,7 @@ function occilate(){
             atomOscilationBools[i][j] = !atomOscilationBools[i][j];
             atomOscilationStepsLive[i][j]=0;
             atomAngles[i][j]= randomAngle();
-            console.log(" flip to true");
+            // console.log(" flip to true");
           }
         }
       }
@@ -1723,13 +1888,69 @@ function randomHoleScaler(){
   let random =Math.floor(Math.random() * (+max - +min)) + +min;
   return random;
 }
-// function creeToggle() {
-//   console.log("creeToggle called");
-//   cree = true;
-//   playState.game.time.events.add(Phaser.Timer.SECOND * creeTime, ct, this);
-//     // game.time.events.add(Phaser.Timer.SECOND * creeTime, noCree => {cree = false, console.log("creeToggle Set to ", cree);}, this);
-// }
-// function ct(){
-//   cree = false;
-//   console.log("ct : cree : ", cree);
-// }
+function grind(offPiste, loops){
+  if(offPiste){
+    car.body.drag.x = offCourseDragRate;
+    car.body.drag.y = offCourseDragRate;
+//
+      // slow the steps
+      for(i =0; i <leftStaircase.length; i++){
+        leftStaircase[i].body.velocity.y = leftStaircase[i].body.velocity.y/ grindRate ;
+      }
+      for(i =0; i <rightStaircase.length; i++){
+          rightStaircase[i].body.velocity.y =rightStaircase[i].body.velocity.y/ grindRate ;
+      }
+
+      // slow th track
+      if(trackselection==1){
+
+
+      //move teh sliver track
+        for(let i = 0; i<= atomRows; i++ ){
+          // then for each row we loop through each position
+          for(let j = 0; j <= atomColumns  ; j ++){
+
+            atomMatrix[i][j].body.velocity.y =atomMatrix[i][j].body.velocity.y /grindRate;
+
+          }
+        }
+      }
+      //move the graphene track
+      else if(trackselection==2){
+        for(let i = 0; i<= atomRowsHex; i++ ){
+          // then for each row we loop through each position
+          for(let j = 0; j <= atomColumnsHex  ; j ++){
+
+            atomMatrixHex[i][j].body.velocity.y = atomMatrixHex[i][j].body.velocity.y /grindRate;
+
+          }
+        }
+
+      }
+      // play the sfx
+      if(gameLive){
+        playState.playFx("grind");
+      }
+      // slow the holes
+      for(let i =0; i <holeArray.length; i++){
+          holeArray[i].body.velocity.y = holeArray[i].body.velocity.y/ grindRate ;
+      }
+      //slow the power ups
+
+        bluePowerUp.body.velocity.y =bluePowerUp.body.velocity.y / grindRate ;
+        //slow crashed cars
+        for(let i =0; i < zombies.length; i++){
+            zombies[i].body.velocity.y =zombies[i].body.velocity.y/ grindRate ;
+        }
+
+
+        }else{
+          car.body.drag.x = carDragRate;
+          car.body.drag.y = carYDrag;
+        }
+}
+
+
+function killHoleDeath(){
+  holeDeath.volume = 0;
+}

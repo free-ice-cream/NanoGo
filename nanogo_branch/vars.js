@@ -1,6 +1,6 @@
-var gameBuild = "build 4.0"; //
+var gameBuild = "build 4.6 "; //
 var testing = false; //  a bool used to switch between testing and production mode
-var hitTheWall =  true; // if true the car will collide with the steps
+var hitTheWall =  false; // if true the car will collide with the steps
  console.log("testing = " + testing);
 var cheat = false;
 ///var hexgrid;
@@ -89,7 +89,7 @@ var oTo35;
 var oto31 = "Step 3: Click to select a race track.";
 var oto32 = "Track 1";
 var oto33 = "Track 2";
-var oto35 = "This track is made from Graphene. Graphene is just one super thin crystal of carbon. With a melting point of 4800 ºk you will have a tough time getting to the end of this track";
+var oto35 = "This track is made from Graphene. Graphene is just one super thin crystal of carbon. With a melting point of 4800 ºk you will have lots of time to complete a lap before the track melts!";
 var oto34 = "This track is made from Silver. There will not be much time, silver melts at just 1234.93 ºK";
 //option page 4 text objects and STRINGS
 var oTo41;
@@ -161,6 +161,29 @@ var meltLabel1 = "Melting";
 var meltLabel2 = "point";
 var lap = "Lap";
 //
+//New onboarding text objects
+// area lables
+var onTextLabel1;
+var onTextLabel2;
+var onTextLabel3;
+var onTextLabel4;
+var onTextLabel5;
+//
+//New onboarding text strings
+//
+var ontextlabel1= "This racer is made ";
+var ontextlabel2 = "Use the arrow keys to move";
+var ontextlabel3 = "";
+var ontextlabel4;
+var ontextlabel5;
+
+
+
+
+
+
+
+
 // SCROLLING TEXT BOX VARS AND STRINGS
 //
 // 20 deg
@@ -236,18 +259,21 @@ var carBounce = 0.1; // the bounce factor when teh car lands at teh start
 var tileRate = 24; //the rate at which the background moves
 var carAccelRate = 80; // base 50
 var carDragRate = 50; //
+var offCourseDragRate = 500;
 //
 var trackRate = 1;
 //
 var rev;
 var mainTheme;
+var grindFx;
 //
 var starTrack;
 var trackLX = 200;
 var trackRX = 550;
 var trackYD = 100;
 //
-var carStartY = 50; //a start pos for a new car
+var carStartY = 400; //a start pos for a new car
+var carMaxYpos = 400;
 var frameNo = 1; //animation frame position
 //
 var timeText;
@@ -552,7 +578,12 @@ var tempBoox = true; //a toggle to get pos and ned vals in the temp changes for 
 var tempBooy = true; //a toggle to get pos and ned vals in the temp changes for y
 var tempBooR = true; // the same but for rotaion
 var tempIncrement = 6.7;//9; // was 10 : how much he temp goes up per secon
-var miniNudge = 10; // was 5  how much the player can effect velocity.
+var tempIncrement1 = 0 ;// tempIncrement0  is the original. thi sis just to set uo the onbairding
+var tempIncrement2 = 0.5; // give us lots of time to finish the onboarding
+//
+var miniNudge = 90; // was 5  how much the player can effect velocity.
+var carYDrag = 300;
+var carMaxYV =250; // maximum lateral speed
 //
 var carXpos;
 var carYpos; // vars to hold teh position so we dont manupulate it directly with the functions
@@ -725,6 +756,8 @@ var mby = 60 + basey ;
 var playOffset = 0;
 //
 var gameLiveVol = 0.5;
+var musicVol = 0.3;
+var sfxLevel = 0.05;
 //
 var backx = 60;
 var backy = 446;
@@ -801,3 +834,67 @@ var holeMin = 0.7;
 var holeMax = 1.8;
 //
 var stepAlpha = 0.8;
+var maxVelocity = 500;
+var worldDragRate = 100;
+//
+//New Tutorial Bools
+var t0 = true;// tutorial start
+var t1 = false;//ARROWS USED
+var t2 = false;// RACER SELECTED
+var t3 = false;// TRACK SELECTED
+var t4 = false;// WALLS INTRODUCED
+var t5 = false;// HOLES INTRODUCED
+var t6 = false;// HEAT INTRODUCED
+var t7 = false;// powerups introduced
+//
+var bluePowerUpFreq = 1000;// how frequently do we spawn power ups. more is more
+var barrOffset = 100;// how far from tbe botom of the game do we want the car to be
+//
+// var leftWallLimit = false; //a toggel bool to give us a little exposure time tot he walls before they kill us
+// var rightWallLimit = false;
+// var leftWallTimer = 0;// a counter to see how long we have been exposed
+// var rightWallTimer = 0
+// var wallExposure = 5000;// the limit at which the wall effect kicks in
+// var lChecking = false;// a toggle var to only check once per colision event for e durational event
+// var rChecking = false;
+// var lCrash = false;// a var reset in the loop to chek cor a live crash event.
+// var rCrash = false;
+//
+var lCrashTime = 0;// how long have we been crashong for
+var lCrashTime2 = 0;// how long have we been crashong for in to the extra hole in the onboaeding
+var rCrashTime = 0;// how long have we been crashong for
+var hCrashTime = 0;
+var LIMIT = 3000;// the trhechold This is not ms ??
+var HLIMIT = 250;// the trhechold This is not ms ??
+// an  array to store a number flag to check if any of the wall sections are crashing - if the whole does not eval to 0 then we are crashing
+var isLCrashing =[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+var isRCrashing =[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+// var isHCrashing =[[],[],[],[],[],[],[]];//holes
+var isHCrashing;
+var lCrashCount = 0;
+var rCrashCount = 0;
+var hCrashCount = 0;
+var hCrashCount2 = 0;
+
+var isHCrashing2;
+
+var lcoH ;// a var to hold the wall section crashings
+var rcoH;
+var carMovesVertically = false;
+var grindRate = 1.2;// the deceleration rate once the car hits something 1= no decel >1 = deceleration
+//
+
+var onboardArray = [];
+var onboardX = 50;
+var onboardY = -200;
+var goarrow;
+var buff = -120; // how much space between assets on the onboarding screen
+var obFirstPosition = 650;
+var addtoRunningHeight = [];// an array of bools to control  if the y pos is added to running height
+var carPopper = undefined;// a debounce to only spawn a car once
+var trackPopper = undefined;// a debounce to only set a track once
+var silverOff = true;// set these both to true as we are already moving the tracks off at the begining
+var grapheneOff = true;// these then at as togges to control the movement of the tracks on and off screen
+//
+var cheatdeath= true;
+//

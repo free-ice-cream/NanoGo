@@ -20,6 +20,7 @@ track2.events.onInputDown.add(this.track2sel, this);
 track2.events.onInputOver.add(this.t2hover,this);
 track2.events.onInputOut.add(this.t2out,this);
 //
+
 nextbut = game.add.sprite(660,473, 'tracknext');
 // howBut = game.add.sprite(360,288, 'tutbut');
 nextbut.inputEnabled=true;
@@ -36,6 +37,7 @@ backbut.events.onInputOver.add(this.backhover,this);
 backbut.events.onInputOut.add(this.backout,this);
 //
 //TEXT
+
 //
   oTo31 = this.add.text(5, 8, oto31, main28white);
   oTo32 = this.add.text(190, 83, oto32, main28green);

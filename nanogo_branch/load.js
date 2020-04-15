@@ -5,33 +5,52 @@ var loadState = {
     // images
     game.load.image('hex', ficurl+'assets/hexgrid-cross2.png');
     game.load.image('icehex', ficurl+'assets/icy-hexgrid-v1.png');
-    // game.load.image('glob1', ficurl+'assets/glob1.png');
-    // game.load.image('glob2', ficurl+'assets/glob2.png');
-    // game.load.image('glob3', ficurl+'assets/glob3.png');
     game.load.image('bar', ficurl+'assets/bar.png');
-    // game.load.image('block', ficurl+'assets/block1.png');
     game.load.image('logo', ficurl+'assets/Nano Go Logo v1.png');
-    // game.load.image('startbut2', ficurl+'assets/Start pt2.png');
-    // game.load.image('resultsScreen', ficurl+'assets/results-screen.png');
     game.load.image('endscreen', ficurl+'assets/new-end.png');
     // options
-    // game.load.image('tutorialScreen', ficurl+'assets/tutorial_screen_v1.jpg');
-    // game.load.image('ministart1', ficurl+'assets/miniStart-pt1.png');
-    // game.load.image('ministart2', ficurl+'assets/miniStart-pt2.png');
     game.load.image('greenheadbg', ficurl+'assets/greenheadbg.png');
-    // game.load.image('miniscreen', ficurl+'assets/mini-screen.png');
-    // play screen
-    // game.load.image('heatsheild', ficurl+'assets/heatsheild_v2.png');
     game.load.image('blue-power-up', ficurl+'assets/blue-power-up.png');
     game.load.image('heart', ficurl+'assets/heart2.png');
-    // game.load.image('instrument', ficurl+'assets/instrument_v3.png');
-    // game.load.image('instrument_back', ficurl+'assets/instrument_back.png');
     game.load.image('heatsheildmeter', ficurl+'assets/heatsheildmeter_v1.png');
-    //
     game.load.image('racegauge', ficurl+'assets/racegauge-v5.png');
     game.load.image('finishline', ficurl+'assets/finishline.png');
-    // game.load.image('heatsheild', ficurl+'assets/heatsheild_v2.png');
-    // game.load.image('step', ficurl+'assets/step_v1.png');
+    // onboarding images
+    game.load.image('racerselect', ficurl+'assets/thisisyourracer.png');
+    game.load.image('parkingplatz', ficurl+'assets/parkingplace.png');
+    game.load.image('arrowkeys', ficurl+'assets/usethearrowkeys.png');
+    game.load.image('pixilarrow', ficurl+'assets/pixilarrow.png');
+    game.load.image('eachtime', ficurl+'assets/eachtimeyouhitforward.png');
+    game.load.image('actuallytherearetwo', ficurl+'assets/actuallytherearetwo.png');
+    game.load.image('selectyourracernow', ficurl+'assets/selectyourracernow.png');
+    game.load.image('chooseracer1', ficurl+'assets/chooseracer1.png');
+    game.load.image('chooseracer2', ficurl+'assets/chooseracer2.png');
+    game.load.image('OKnice', ficurl+'assets/OKnice.png');
+    game.load.image('chooosesilver', ficurl+'assets/choosesilver.png');
+    game.load.image('choosegraphene', ficurl+'assets/choosegraphene.png');
+    game.load.image('nowweareonsolid', ficurl+'assets/nowweareonsolidground.png');
+    game.load.image('atthisscale', ficurl+'assets/atthisscale.png');
+    game.load.image('astheyheatup', ficurl+'assets/astheyheatup.png');
+    game.load.image('thisisessentially', ficurl+'assets/thisisessentially.png');
+    game.load.image('thismovementwill', ficurl+'assets/thismovementwill.png');
+    game.load.image('hereisameter', ficurl+'assets/hereisameter.png');
+    game.load.image('thetrackis', ficurl+'assets/thetrackis.png');
+    game.load.image('ontheright', ficurl+'assets/ontheright.png');
+    game.load.image('youraimisto', ficurl+'assets/youraimisto.png');
+    game.load.image('thetrackofcourse', ficurl+'assets/thetrackofcourse.png');
+    game.load.image('stepfractures', ficurl+'assets/stepfractures.png');
+    game.load.image('ifyouhitthem', ficurl+'assets/ifyouhitthem.png');
+    game.load.image('yourracerwill', ficurl+'assets/yourracerwill.png');
+    game.load.image('therearealsoholes', ficurl+'assets/therearealsoholes.png');
+    game.load.image('youwilllosealife', ficurl+'assets/youwilllosealife.png');
+    game.load.image('lookoutforblue', ficurl+'assets/lookoutforblue.png');
+    game.load.image('thesehelptoreduce', ficurl+'assets/thesehelptoreduce.png');
+    game.load.image('ok', ficurl+'assets/ok.png');
+    game.load.image('crosstheline', ficurl+'assets/crosstheline.png');
+
+    //onboarding SPRITESHEETS
+    game.load.spritesheet('goarrow','assets/goarrow.png', 70,75);
+
     //
     //
     // THERMOMETER PARTS
@@ -133,6 +152,7 @@ var loadState = {
     game.load.spritesheet('drop-loop', 'assets/drop-loop_v1.png', 229, 118);
     //
     game.load.spritesheet('new-atoms', 'assets/atom-spritesheet.png', 30, 30);
+    game.load.spritesheet('silver-atoms', 'assets/silver-atom-spritesheet.png', 30, 30);
     //
   //and some AUDIO
   game.load.audio('rev', 'assets/car-2.mp3');
@@ -144,6 +164,7 @@ var loadState = {
   game.load.audio('swipe', 'assets/car-3.mp3');
   game.load.audio('power-up-blips', 'assets/power-up-blips.mp3');
   game.load.audio('fall-sfx', 'assets/fall_v1.mp3');
+  game.load.audio('grind', 'assets/grind_v2.mp3');
   //
 
   },

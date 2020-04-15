@@ -29,7 +29,9 @@ var optionsState1 = {
     // }
     if (!options1Audio) {
       bassLoop = game.add.audio('bass-loop');
+      if(audioLive){
       bassLoop.loopFull(0.8);
+    }
       options1Audio = true;
     }
     //
@@ -77,6 +79,7 @@ var optionsState1 = {
     // volminus.events.onInputOut.add(this.minusOut, this);
     //
     // console.log("bassLoop", bassLoop);
+    console.log("options1 audioLive = ", audioLive);
   },
   update: function() {
 
@@ -145,10 +148,12 @@ var optionsState1 = {
   //
   speakerButContol: function() {
     if(audioLive){
+      console.log("flipp");
       speakerbut.animations.play('sp-off', true);
       audioLive = false;
       bassLoop.stop();
     }else{
+      console.log("flopp");
       speakerbut.animations.play('sp-on', true);
       audioLive = true;
       bassLoop.loopFull(.5);

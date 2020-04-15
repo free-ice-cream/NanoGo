@@ -4,6 +4,12 @@ var menuState = {
     logo = game.add.sprite(173,57, 'logo');
     startSeq = game.add.sprite(102,208, 'startSeq');
     howBut = game.add.sprite(360,288, 'tutbut');
+    //
+    properStart = game.add.sprite(360,288, 'outRigger');
+    properStart.inputEnabled=true;
+    properStart.events.onInputDown.add(this.pStartDown, this);
+    properStart.events.onInputOver.add(this.pStartOver,this);
+    properStart.events.onInputOut.add(this.pStartOut,this);
     // audioControl = game.add.sprite(100,100, 'soundcontrol');
 
     startSeq.inputEnabled=true;
@@ -46,6 +52,7 @@ var speakerOn = speakerbut.animations.add('sp-on', [0], 1, false);
 var speakerOff= speakerbut.animations.add('sp-off', [1], 1, false);
 speakerbut.inputEnabled = true;
 speakerbut.events.onInputDown.add(this.speakerButContol, this);
+console.log("menu audioLive = ", audioLive);
 if(audioLive){
   speakerbut.animations.play('sp-on');
 }else{
@@ -85,8 +92,8 @@ if(audioLive){
   howButDown: function(){
       // console.log('pop- tutorial ');
       // game.state.start('tutorial');
-      game.state.start('options1');
-
+      // game.state.start('options1');
+      game.state.start('pstart1');
   },
   howButOver: function(){
       howBut.animations.play('tut-hover',true)
@@ -100,18 +107,35 @@ if(audioLive){
 
     audioLive = !audioLive;
 
-  },speakerButContol: function() {
+  },
+  speakerButContol: function() {
     if(audioLive){
       speakerbut.animations.play('sp-off', true);
       audioLive = false;
       mainTheme.stop();
+      console.log("flip");
     }else{
       speakerbut.animations.play('sp-on', true);
       audioLive = true;
       mainTheme.loopFull(.5);
+      console.log("flop");
     }
 
-    }
+  },
+  pStartDown: function(){
+      // console.log('pop- tutorial ');
+      // game.state.start('tutorial');
+      game.state.start('pstart1');
+
+  },
+  pStartOver: function(){
+      // howBut.animations.play('tut-hover',true)
+
+  },
+  pStartOut: function(){
+        // howBut.animations.play('tut-no-hover',true)
+
+  },
 
 };
 function quickSet(){
