@@ -447,7 +447,12 @@ var playState = {
 
           if( car.angle <= 0){
           car.body.velocity.x -= miniNudge; //
+        }else{
+          console.log("brake left");
+          car.body.velocity.x = car.body.velocity.x/2;
         }
+
+
         }
           // car.body.drag.x=800;
           // carXpos -= drift;
@@ -469,6 +474,9 @@ var playState = {
           // car.body.velocity.x += drift;//smooth
           if(car.body.velocity.x < carMaxYV  && car.angle >= 0){
           car.body.velocity.x += miniNudge; //
+        }else{
+          console.log("brake right");
+          car.body.velocity.x = car.body.velocity.x/2;
         }
 
           // car.body.drag.x = carDragRate; //TODO is this fun? ??
@@ -1364,7 +1372,7 @@ function spawnCar(start) {
 function loseLife(cause) {
   if (lives === 3) {
     heart3.alpha = 0;
-    
+
     if(!cheatdeath){// THIS SHOULD DISABLE DEATH
       lives = 2;
     }

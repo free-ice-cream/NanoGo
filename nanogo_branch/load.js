@@ -16,21 +16,25 @@ var loadState = {
     game.load.image('racegauge', ficurl+'assets/racegauge-v5.png');
     game.load.image('finishline', ficurl+'assets/finishline.png');
     // onboarding images
-    game.load.image('racerselect', ficurl+'assets/thisisyourracer.png');
-    game.load.image('parkingplatz', ficurl+'assets/parkingplace.png');
+    // game.load.image('racerselect', ficurl+'assets/thisisyourracer.png');
+    game.load.image('racerselect', ficurl+'assets/welcometoracingatthenanoscale.png');
+    game.load.image('parkingplatz', ficurl+'assets/parkingplatz.png');
     game.load.image('arrowkeys', ficurl+'assets/usethearrowkeys.png');
     game.load.image('pixilarrow', ficurl+'assets/pixilarrow.png');
     game.load.image('eachtime', ficurl+'assets/eachtimeyouhitforward.png');
     game.load.image('actuallytherearetwo', ficurl+'assets/actuallytherearetwo.png');
-    game.load.image('selectyourracernow', ficurl+'assets/selectyourracernow.png');
+    game.load.image('selectyourracernow', ficurl+'assets/crashintotheracer.png');
     game.load.image('chooseracer1', ficurl+'assets/chooseracer1.png');
     game.load.image('chooseracer2', ficurl+'assets/chooseracer2.png');
-    game.load.image('OKnice', ficurl+'assets/OKnice.png');
+    game.load.image('OKnice', ficurl+'assets/nowuseyourracertoselectatrack.png');
     game.load.image('chooosesilver', ficurl+'assets/choosesilver.png');
     game.load.image('choosegraphene', ficurl+'assets/choosegraphene.png');
+    game.load.image('silvercrystal', ficurl+'assets/silvercrystal.png');
+    game.load.image('graphenecrystal', ficurl+'assets/graphenecrystal.png');
     game.load.image('nowweareonsolid', ficurl+'assets/nowweareonsolidground.png');
     game.load.image('atthisscale', ficurl+'assets/atthisscale.png');
     game.load.image('astheyheatup', ficurl+'assets/astheyheatup.png');
+    game.load.image('heatis', ficurl+'assets/heatis.png');
     game.load.image('thisisessentially', ficurl+'assets/thisisessentially.png');
     game.load.image('thismovementwill', ficurl+'assets/thismovementwill.png');
     game.load.image('hereisameter', ficurl+'assets/hereisameter.png');
@@ -47,6 +51,8 @@ var loadState = {
     game.load.image('thesehelptoreduce', ficurl+'assets/thesehelptoreduce.png');
     game.load.image('ok', ficurl+'assets/ok.png');
     game.load.image('crosstheline', ficurl+'assets/crosstheline.png');
+    game.load.image('321', ficurl+'assets/321go.png');
+    game.load.image('onepx', ficurl+'assets/1px.png');
 
     //onboarding SPRITESHEETS
     game.load.spritesheet('goarrow','assets/goarrow.png', 70,75);

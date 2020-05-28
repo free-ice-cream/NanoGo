@@ -5,11 +5,11 @@ var menuState = {
     startSeq = game.add.sprite(102,208, 'startSeq');
     howBut = game.add.sprite(360,288, 'tutbut');
     //
-    properStart = game.add.sprite(360,288, 'outRigger');
-    properStart.inputEnabled=true;
-    properStart.events.onInputDown.add(this.pStartDown, this);
-    properStart.events.onInputOver.add(this.pStartOver,this);
-    properStart.events.onInputOut.add(this.pStartOut,this);
+    // properStart = game.add.sprite(360,288, 'outRigger');
+    // properStart.inputEnabled=true;
+    // properStart.events.onInputDown.add(this.pStartDown, this);
+    // properStart.events.onInputOver.add(this.pStartOver,this);
+    // properStart.events.onInputOut.add(this.pStartOut,this);
     // audioControl = game.add.sprite(100,100, 'soundcontrol');
 
     startSeq.inputEnabled=true;
@@ -143,5 +143,5 @@ function quickSet(){
   // gameTime=gameDuration;
   // homeTime=false;
   carType=1;
-  trackselection=1;
+  trackselection=2;
 }

@@ -1,4 +1,4 @@
-var gameBuild = "build 4.6 "; //
+var gameBuild = "build 4.8 "; //
 var testing = false; //  a bool used to switch between testing and production mode
 var hitTheWall =  false; // if true the car will collide with the steps
  console.log("testing = " + testing);
@@ -132,7 +132,7 @@ var goto1b = "nm in ";
 var goto1c = " seconds. That means you were hitting the forward arrow an average of ";
 var goto1d = " times a second.";
 //
-var goto2a = "If you continued to tap at that rate,to complete the track you will have to keep tapping until next ";
+var goto2a = "If you continued to tap at that rate,to complete the race and travel 1mm, you will have to keep tapping until next ";
 var goto2b = " at around ";
 var goto2c = "  Thats a lot of counting!";
 //
@@ -258,7 +258,9 @@ var carGrav = 400; //300;// teh "amount" of gravity // SWITCHED OFF!!
 var carBounce = 0.1; // the bounce factor when teh car lands at teh start
 var tileRate = 24; //the rate at which the background moves
 var carAccelRate = 80; // base 50
+var carAccelRate_o = 120;// speed in the onboarding
 var carDragRate = 50; //
+var carDragRate_o = 10; //
 var offCourseDragRate = 500;
 //
 var trackRate = 1;
@@ -836,6 +838,8 @@ var holeMax = 1.8;
 var stepAlpha = 0.8;
 var maxVelocity = 500;
 var worldDragRate = 100;
+
+var onBoardDrag = 50;
 //
 //New Tutorial Bools
 var t0 = true;// tutorial start
@@ -888,13 +892,16 @@ var onboardArray = [];
 var onboardX = 50;
 var onboardY = -200;
 var goarrow;
-var buff = -120; // how much space between assets on the onboarding screen
-var obFirstPosition = 650;
+var buff =  20; // how much space between assets on the onboarding screen
+var obFirstPosition = 680;
 var addtoRunningHeight = [];// an array of bools to control  if the y pos is added to running height
 var carPopper = undefined;// a debounce to only spawn a car once
 var trackPopper = undefined;// a debounce to only set a track once
 var silverOff = true;// set these both to true as we are already moving the tracks off at the begining
 var grapheneOff = true;// these then at as togges to control the movement of the tracks on and off screen
+var trackSelected = false;
 //
 var cheatdeath= true;
+var sheildUp2Set = false;
+
 //

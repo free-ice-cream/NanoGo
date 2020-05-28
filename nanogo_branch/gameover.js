@@ -292,6 +292,7 @@ function gameReset() {
   outBool4 = false;
   sheildScale = 0; // reset the heatsheild to 0
   barCounter = [];
+  gameTime = 0;
 
   // get rid of the unwanted sprites
   for (let i = 0; i < holeArray.length; i++) {

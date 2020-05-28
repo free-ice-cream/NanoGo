@@ -3,6 +3,8 @@ var pStart1 = {
 
     create: function() {
 
+
+
       hexgrid = game.add.tileSprite(0, 0, game.world.width, game.world.height, trackArr[trackselection]);
       friction = cold;
       drift *= friction;
@@ -26,7 +28,8 @@ var pStart1 = {
 
 
 
-
+      carAccelRate = carAccelRate_o;
+      worldDragRate = onBoardDrag;
     // if(trackselection==1){
 
       for(let i = 0; i<= atomRows; i++ ){
@@ -103,7 +106,7 @@ var pStart1 = {
       //
       platforms = game.add.physicsGroup(); //for the hud
       platforms.enableBody = true;
-      var barr = platforms.create(0, game.world.height - barrOffset, 'bar');
+      var barr = platforms.create(0, game.world.height - barrOffset , 'bar');
       barr.body.immovable = true;
       barr.alpha = 0;
       //
@@ -157,6 +160,7 @@ var pStart1 = {
       //
       onboardArray[0] = onboarding.create(onboardX, game.world.height - (game.world.height/6), 'racerselect');
       addtoRunningHeight[0] = true;
+
       onboardArray[1] = onboarding.create(game.world.width - (game.world.width/4), game.world.height - (game.world.height/3), 'parkingplatz');
       onboardArray[1].alpha=0;
       addtoRunningHeight[1] = true;
@@ -212,144 +216,175 @@ var pStart1 = {
 
       onboardArray[17] = onboarding.create(0, 0,  'chooosesilver');
       addtoRunningHeight[17] = true;
-
-      onboardArray[18] = onboarding.create( (game.world.width /2 ), 0, 'choosegraphene');
+      //Working here
+      onboardArray[18] = onboarding.create(130, 0,  'silvercrystal');
       addtoRunningHeight[18] = false;
+      onboardArray[18].anchor.y= -2.5;
+      //
+      onboardArray[19] = onboarding.create( (game.world.width /2 ), 0, 'choosegraphene');
+      addtoRunningHeight[19] = false;
 
-      onboardArray[19] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[19] = true;
-
-      onboardArray[20] = onboarding.create( onboardX, 0, 'nowweareonsolid');
-      addtoRunningHeight[20] = true;
-
+      onboardArray[20] = onboarding.create( 520, 0, 'graphenecrystal');
+      addtoRunningHeight[20] = false;
+      onboardArray[20].anchor.y= -2.5;
+      //
       onboardArray[21] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[21] = true;
 
-      onboardArray[22] = onboarding.create( onboardX, 0, 'atthisscale');
-      addtoRunningHeight[22] = true;
+      // onboardArray[22] = onboarding.create( onboardX, 0, 'nowweareonsolid');
+      // addtoRunningHeight[22] = true;
+      onboardArray[22] = onboarding.create( onboardX, 0, 'onepx');
+      addtoRunningHeight[22] = false;
 
-      onboardArray[23] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[23] = true;
+      // onboardArray[23] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
+      // addtoRunningHeight[23] = true;
+      onboardArray[23] = onboarding.create( (game.world.width /2 )-35, 0, 'onepx');
+      addtoRunningHeight[23] = false;
 
-      onboardArray[24] = onboarding.create( onboardX, 0, 'astheyheatup');
+      onboardArray[24] = onboarding.create( onboardX, 0, 'atthisscale');
       addtoRunningHeight[24] = true;
 
       onboardArray[25] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[25] = true;
 
-      onboardArray[26] = onboarding.create( onboardX, 0, 'thisisessentially');
+      onboardArray[26] = onboarding.create( onboardX, 0, 'heatis');
       addtoRunningHeight[26] = true;
 
       onboardArray[27] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[27] = true;
 
-      onboardArray[28] = onboarding.create( onboardX, 0, 'thismovementwill');
-      addtoRunningHeight[28] = true;
+      // onboardArray[28] = onboarding.create( onboardX, 0, 'thisisessentially');
+      // addtoRunningHeight[28] = true;
+      onboardArray[28] = onboarding.create( onboardX, 0, 'onepx');
+      addtoRunningHeight[28] = false;
 
-      onboardArray[29] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[29] = true;
+      // onboardArray[29] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
+      // addtoRunningHeight[29] = true;
+      onboardArray[29] = onboarding.create( (game.world.width /2 )-35, 0, 'onepx');
+      addtoRunningHeight[29] = false;
 
-      onboardArray[30] = onboarding.create( onboardX, 0, 'hereisameter');
+      onboardArray[30] = onboarding.create( onboardX, 0, 'thismovementwill');
       addtoRunningHeight[30] = true;
 
       onboardArray[31] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[31] = true;
 
-      onboardArray[32] = onboarding.create( onboardX, 0, 'thetrackis');
+      onboardArray[32] = onboarding.create( onboardX, 0, 'hereisameter');
       addtoRunningHeight[32] = true;
 
       onboardArray[33] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[33] = true;
 
-      onboardArray[34] = onboarding.create( onboardX, 0, 'ontheright');
+      onboardArray[34] = onboarding.create( onboardX, 0, 'thetrackis');
       addtoRunningHeight[34] = true;
 
       onboardArray[35] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[35] = true;
 
-      onboardArray[36] = onboarding.create( onboardX, 0, 'youraimisto');
+      onboardArray[36] = onboarding.create( onboardX, 0, 'ontheright');
       addtoRunningHeight[36] = true;
 
       onboardArray[37] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[37] = true;
 
-      onboardArray[38] = onboarding.create( onboardX, 0, 'thetrackofcourse');
+      onboardArray[38] = onboarding.create( onboardX, 0, 'youraimisto');
       addtoRunningHeight[38] = true;
 
       onboardArray[39] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[39] = true;
 
-      onboardArray[40] = onboarding.create( onboardX, 0, 'stepfractures');
+      onboardArray[40] = onboarding.create( onboardX, 0, 'thetrackofcourse');
       addtoRunningHeight[40] = true;
 
       onboardArray[41] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[41] = true;
 
-      onboardArray[42] = onboarding.create( onboardX, 0, 'ifyouhitthem');
+      onboardArray[42] = onboarding.create( onboardX, 0, 'stepfractures');
       addtoRunningHeight[42] = true;
 
       onboardArray[43] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[43] = true;
 
-      onboardArray[44] = onboarding.create( onboardX, 0, 'yourracerwill');
+      onboardArray[44] = onboarding.create( onboardX, 0, 'ifyouhitthem');
       addtoRunningHeight[44] = true;
 
       onboardArray[45] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[45] = true;
 
-      onboardArray[46] = onboarding.create( onboardX, 0, 'therearealsoholes');
+      onboardArray[46] = onboarding.create( onboardX, 0, 'yourracerwill');
       addtoRunningHeight[46] = true;
 
       onboardArray[47] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[47] = true;
 
-      onboardArray[48] = onboarding.create( onboardX, 0, 'youwilllosealife');
+      onboardArray[48] = onboarding.create( onboardX, 0, 'therearealsoholes');
       addtoRunningHeight[48] = true;
 
       onboardArray[49] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[49] = true;
 
-      onboardArray[50] = onboarding.create( (game.world.width /2 )-35 , 0, holeSheet);
+      onboardArray[50] = onboarding.create( onboardX, 0, 'youwilllosealife');
       addtoRunningHeight[50] = true;
-      onboardArray[50].animations.add('fizz', [0, 1, 2, 3, 4], 20, true);
-      onboardArray[50].animations.play('fizz', true); //
 
       onboardArray[51] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[51] = true;
 
-
-      onboardArray[52] = onboarding.create( onboardX, 0, 'lookoutforblue');
+      onboardArray[52] = onboarding.create( (game.world.width /2 )-35 , 0, holeSheet);
       addtoRunningHeight[52] = true;
+      onboardArray[52].animations.add('fizz', [0, 1, 2, 3, 4], 20, true);
+      onboardArray[52].animations.play('fizz', true); //
 
       onboardArray[53] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[53] = true;
 
-      onboardArray[54] = onboarding.create( onboardX, 0, 'thesehelptoreduce');
+
+      onboardArray[54] = onboarding.create( onboardX, 0, 'lookoutforblue');
       addtoRunningHeight[54] = true;
 
       onboardArray[55] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[55] = true;
 
-      onboardArray[56] = onboarding.create( (game.world.width /2 )-20, 0, 'blue-power-up');
+      onboardArray[56] = onboarding.create( onboardX, 0, 'thesehelptoreduce');
       addtoRunningHeight[56] = true;
 
       onboardArray[57] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[57] = true;
 
-      onboardArray[58] = onboarding.create( (game.world.width /2 )-20, 0, 'ok');
+      onboardArray[58] = onboarding.create( (game.world.width /2 )-20, 0, 'blue-power-up');
       addtoRunningHeight[58] = true;
+      onboardArray[58].animations.add('freeze', [0, 1, 2, 3, 4, 5], 20, true);
+      onboardArray[58].animations.play('freeze', true);
+      //add animation her for bluePowerUp
 
       onboardArray[59] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[59] = true;
 
-      onboardArray[60] = onboarding.create( (game.world.width /2 )-20, 0, 'crosstheline');
+      onboardArray[60] = onboarding.create( (game.world.width /2 )-130, 0, 'ok');
       addtoRunningHeight[60] = true;
 
       onboardArray[61] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[61] = true;
 
-      onboardArray[62] = onboarding.create( 0, 0, 'finishline');
+      onboardArray[62] = onboarding.create( onboardX, 0, 'crosstheline');
       addtoRunningHeight[62] = true;
+
+      onboardArray[63] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
+      addtoRunningHeight[63] = true;
+
+      onboardArray[64] = onboarding.create( (game.world.width /2 )-200, 0, '321');
+      addtoRunningHeight[64] = true;
+
+      onboardArray[65] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
+      addtoRunningHeight[65] = true;
+
+      onboardArray[66] = onboarding.create(game.world.width - (game.world.width/4), game.world.height - (game.world.height/3), 'parkingplatz');
+      onboardArray[66].alpha=0;
+      addtoRunningHeight[66] = true;
+
+
+
+      onboardArray[67] = onboarding.create( 0, 0, 'finishline');
+      addtoRunningHeight[67] = true;
 
 
 
@@ -362,20 +397,21 @@ var pStart1 = {
       game.physics.arcade.enable(onboardArray[12]);// the new cars to collide - select
       game.physics.arcade.enable(onboardArray[13]);
       //
-      game.physics.arcade.enable(onboardArray[17]);// to enable collision wiht the track selectors
-      game.physics.arcade.enable(onboardArray[18]);
-      game.physics.arcade.enable(onboardArray[30]);// add meters
-      game.physics.arcade.enable(onboardArray[40]);// add walls
-      game.physics.arcade.enable(onboardArray[48]);// add walls
-      game.physics.arcade.enable(onboardArray[50]);// add holes
-      game.physics.arcade.enable(onboardArray[52]);// add powerups
-      game.physics.arcade.enable(onboardArray[56]);// hit powerups example
-      game.physics.arcade.enable(onboardArray[62]);// finish
+      game.physics.arcade.enable(onboardArray[18]);// to enable collision wiht the track selectors
+      game.physics.arcade.enable(onboardArray[20]);
+        game.physics.arcade.enable(onboardArray[24]); // back up track selector
+      game.physics.arcade.enable(onboardArray[32]);// add meters
+      game.physics.arcade.enable(onboardArray[42]);// add walls
+      // game.physics.arcade.enable(onboardArray[50]);// add walls
+      game.physics.arcade.enable(onboardArray[52]);// add holes
+      game.physics.arcade.enable(onboardArray[54]);// add powerups
+      game.physics.arcade.enable(onboardArray[58]);// hit powerups example
+      game.physics.arcade.enable(onboardArray[67]);// finish
 
 
 
-      var startPoint = 4;// we want to skip a few elements
-      var runningHeight = 0;
+      // var startPoint = 4;// we want to skip a few elements
+      var runningHeight = 80;
       // var obexclusion0 = 10;
       var obexclusion1 = 11;
 
@@ -383,6 +419,7 @@ var pStart1 = {
 
           if(addtoRunningHeight[i]){
             runningHeight += onboardArray[i].body.height;
+            runningHeight += buff;
             onboardArray[i].y = obFirstPosition+ ((runningHeight * -1) + buff);
 
           }else{
@@ -586,7 +623,7 @@ var pStart1 = {
       spawnCar_ob(true); // calls a car in to being. true if this is game start false otherwise this sets the cree function
       //
       carCentreX = car.width / 2;
-      carCentreY = car.height / 2;
+      carCentreY = car.height / 2 ;
       //
 
       speakerbut = game.add.sprite(game.world.width - 200, 15, 'speakerbut');
@@ -642,20 +679,22 @@ var pStart1 = {
       game.physics.arcade.overlap(bluePowerUp, car, this.sheildUp, this.movePowerUp, this);
 
 
-      game.physics.arcade.overlap(onboardArray[12], car, spawnCar1, null, this);
+      game.physics.arcade.overlap(onboardArray[12], car, spawnCar1, null, this);// car selectors
       game.physics.arcade.overlap(onboardArray[13], car, spawnCar2, null, this);
 
-      game.physics.arcade.overlap(onboardArray[17], car, trackSet1, null, this);
-      game.physics.arcade.overlap(onboardArray[18], car, trackSet2, null, this);
+      game.physics.arcade.overlap(onboardArray[18], car, trackSet1, null, this);// track selectors
+      game.physics.arcade.overlap(onboardArray[20], car, trackSet2, null, this);
 
-      game.physics.arcade.overlap(onboardArray[30], car, heatUp, null, this);// heat is go
+      game.physics.arcade.overlap(onboardArray[24], car, trackSet3, null, this);
+
+      game.physics.arcade.overlap(onboardArray[32], car, heatUp, null, this);// heat is go
       game.physics.arcade.overlap(onboardArray[40], car, wallUp, null, this);// walls return
-      game.physics.arcade.overlap(onboardArray[48], car, holeUp, null, this);// holes return
-      game.physics.arcade.overlap(onboardArray[56], car, this.sheildUp2, null, this);// holes return
+      // game.physics.arcade.overlap(onboardArray[52], car, holeUp, null, this);// holes return
+      game.physics.arcade.overlap(onboardArray[58], car, this.sheildUp2, null, this);// holes return
 
-      game.physics.arcade.overlap(onboardArray[62], car, gogogo, null, this);// holes return
+      game.physics.arcade.overlap(onboardArray[67], car, gogogo, null, this);// finishline
 
-      isHCrashing2 = game.physics.arcade.overlap(onboardArray[50], car,  holeExposure_ob2, null, this);
+      isHCrashing2 = game.physics.arcade.overlap(onboardArray[52], car,  holeExposure_ob2, null, this);
 
 
       if (!isHCrashing2 ){
@@ -787,6 +826,9 @@ var pStart1 = {
 
             if( car.angle <= 0){
             car.body.velocity.x -= miniNudge; //
+          }else{
+            console.log("brake left");
+            car.body.velocity.x = 0;
           }
           }
             // car.body.drag.x=800;
@@ -810,6 +852,9 @@ var pStart1 = {
             // car.body.velocity.x += drift;//smooth
             if(car.body.velocity.x < carMaxYV  && car.angle >= 0){
             car.body.velocity.x += miniNudge; //
+          }else{
+            // console.log("brake");
+            car.body.velocity.x = 0;
           }
 
             // car.body.drag.x = carDragRate; //TODO is this fun? ??
@@ -1342,6 +1387,8 @@ var pStart1 = {
 
     },
     sheildUp2: function() {
+      if(!sheildUp2Set){
+      sheildUp2Set  = true;
       sheildScale = 1;
       freezeMeter.alpha = 0.8;
       car.body.velocity.x = 0;
@@ -1364,7 +1411,7 @@ var pStart1 = {
       outRig4.body.velocity.y = 0;
 
       onboardArray[56].body.x += game.world.width;
-
+}
 
     },
     movePowerUp: function() {
@@ -1755,7 +1802,7 @@ var pStart1 = {
     pStart1.sheildUpdate();
     //
     car.body.x = game.world.width / 2 - 125;
-    car.body.y = carStartY;
+    car.body.y = carStartY ;
     //car.animations.play('spawn', true);
     car.scale.setTo(2, 2);
     game.add.tween(this.car.scale).to({
@@ -1780,7 +1827,7 @@ console.log("carType =",carType );
       car.body.velocity.y = 0;
       car.angle = 0;
       // car.body.x = game.world.width / 2 - 125;
-      car.body.y = carStartY;
+      car.body.y = carStartY + 100;
       car.scale.setTo(2, 2);
       // game.add.tween(this.car.scale).to({
         game.add.tween(car.scale).to({
@@ -1810,7 +1857,7 @@ console.log("carType =",carType );
       car.body.velocity.y = 0;
       car.angle = 0;
       // car.body.x = game.world.width / 2 - 125;
-      car.body.y = carStartY;
+      car.body.y = carStartY+ 100;
       car.scale.setTo(2, 2);
       // game.add.tween(this.car.scale).to({
         game.add.tween(car.scale).to({
@@ -2489,6 +2536,7 @@ console.log("carType =",carType );
     // trackselection = 1;
 
     if(trackPopper === undefined || trackselection ===2){
+      this.playFx("powerUpBlips");
       trackselection = 1;
       trackPopper = " here are last";
       t3=true;
@@ -2513,6 +2561,7 @@ console.log("carType =",carType );
       }
 
     }
+      trackSelected = true;
   }
   //
   function trackSet2(){
@@ -2521,6 +2570,7 @@ console.log("carType =",carType );
     // trackselection =2;
 
     if(trackPopper === undefined || trackselection ===1){
+      playState.playFx("powerUpBlips");
       trackselection = 2;
       trackPopper = " here are last";
       t3=true;
@@ -2543,6 +2593,12 @@ console.log("carType =",carType );
         grapheneOff = false;
       }
 
+    }
+    trackSelected = true;
+  }
+  function trackSet3(){
+    if(!trackSelected){
+      trackSet2();
     }
   }
 function heatUp(){
@@ -2588,6 +2644,19 @@ function gameIsGo() {
   sheildScale = 0; // reset the heatsheild to 0
   barCounter = [];
   cheatdeath= false;
+  worldDragRate = 100;
+  carAccelRate = 80;
+  gameTime = 0;
+  t1 = false;//ARROWS USED
+  t2 = false;// RACER SELECTED
+   t3 = false;// TRACK SELECTED
+   t4 = false;// WALLS INTRODUCED
+   t5 = false;// HOLES INTRODUCED
+   t6 = false;// HEAT INTRODUCED
+   t7 = false;// powerups introduced
+   cree = false; // this is a bit of a stab in the dark to solve this intermettent bug woth invulnerability with car 2
+
+
 
   // get rid of the unwanted sprites
   for (let i = 0; i < holeArray.length; i++) {

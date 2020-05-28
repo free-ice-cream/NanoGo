@@ -38,7 +38,7 @@ calPop = function(s){
      // end: new Date('June 15, 2019 23:00'),     // You can also choose to set an end time.
                                                // If an end time is set, this will take precedence over duration
      address: 'The internet',
-     description: 'thats how long it took you to coun to one million'
+     description: 'thats how long it took you to count to one million'
    }
    }),
 
@@ -59,10 +59,10 @@ var p2 = 0;
 var p3 = 0;
 var p4 = 0;
 
-var projectTxt1 = " Nano Go is a game about how small things are on the nanoscale. You probably have a sense of how small a millimeter is but you there are 1,000,000 nanometers (nm) in a millimeter.";
-var projectTxt2 =  "We lack a frame of reference for things on such a tiny scale. So this game is about trying to let us create that missing frame of reference.";
-var projectTxt3 = "Essentially we are going to find out how long it would take you to move 1mm by moving just 1nm at a time. That’s right, how long would it take you to hit a key on your keyboard a million times.";
-// var projectTxt4 =
+var projectTxt1 = "Nano Go is a game about how small things are on the nanoscale.  Which is VERY small: there are one million nanometers (nm) in a millimeter.";
+var projectTxt2 = "You probably have a sense of how small a millimeter is- but try to wrap your mind around something that is one millionth of that.";
+var projectTxt3 = "This game helps you do just that by transporting you to the nanoscale and asking you to race - moving just one nanometer at a time.";
+ var projectTxt4 = "We’re asking the ultimate question.   How long would it take you - you with the fast fingers- to hit a key on your keyboard a million times and travel 1 millimeter?";
 var hats="beret";
 
 var speed = 20; /* The speed/duration of the effect in milliseconds */
@@ -81,6 +81,10 @@ typeWriter = function () {
   }else if(a3 < projectTxt3.length){
     document.getElementById("a3").innerHTML += projectTxt3.charAt(a3);
     a3++;
+    setTimeout(typeWriter, speed);
+  }else if(a4 < projectTxt4.length){
+    document.getElementById("a4").innerHTML += projectTxt4.charAt(a4);
+    a4++;
     setTimeout(typeWriter, speed);
   }
 }
