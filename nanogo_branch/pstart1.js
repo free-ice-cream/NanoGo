@@ -269,61 +269,69 @@ var pStart1 = {
       onboardArray[31] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[31] = true;
 
-      onboardArray[32] = onboarding.create( onboardX, 0, 'hereisameter');
-      addtoRunningHeight[32] = true;
+      // onboardArray[32] = onboarding.create( onboardX, 0, 'hereisameter');
+      onboardArray[32] = onboarding.create( onboardX, 0, 'onepx');
+      addtoRunningHeight[32] = false;
 
-      onboardArray[33] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[33] = true;
+      onboardArray[33] = onboarding.create( (game.world.width /2 )-35, 0, 'onepx');
+      addtoRunningHeight[33] = false;
 
-      onboardArray[34] = onboarding.create( onboardX, 0, 'thetrackis');
-      addtoRunningHeight[34] = true;
+// onboardArray[34] = onboarding.create( onboardX, 0, 'thetrackis');
+      onboardArray[34] = onboarding.create( onboardX, 0, 'onepx');
+      addtoRunningHeight[34] = false;
 
-      onboardArray[35] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[35] = true;
+      onboardArray[35] = onboarding.create( (game.world.width /2 )-35, 0, 'onepx');
+      addtoRunningHeight[35] = false;
 
-      onboardArray[36] = onboarding.create( onboardX, 0, 'ontheright');
-      addtoRunningHeight[36] = true;
+      // onboardArray[36] = onboarding.create( onboardX, 0, 'ontheright');
+      onboardArray[36] = onboarding.create( onboardX, 0, 'onepx');
+      addtoRunningHeight[36] = false;
 
-      onboardArray[37] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[37] = true;
+      onboardArray[37] = onboarding.create( (game.world.width /2 )-35, 0, 'onepx');
+      addtoRunningHeight[37] = false;
 
-      onboardArray[38] = onboarding.create( onboardX, 0, 'youraimisto');
-      addtoRunningHeight[38] = true;
+      // onboardArray[38] = onboarding.create( onboardX, 0, 'youraimisto');
+      onboardArray[38] = onboarding.create( onboardX, 0, 'onepx');
+      addtoRunningHeight[38] = false;
 
-      onboardArray[39] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[39] = true;
+      onboardArray[39] = onboarding.create( (game.world.width /2 )-35, 0, 'onepx');
+      addtoRunningHeight[39] = false;
 
-      onboardArray[40] = onboarding.create( onboardX, 0, 'thetrackofcourse');
-      addtoRunningHeight[40] = true;
+      // onboardArray[40] = onboarding.create( onboardX, 0, 'thetrackofcourse');
+      onboardArray[40] = onboarding.create( onboardX, 0, 'onepx');
+      addtoRunningHeight[40] = false;
 
-      onboardArray[41] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[41] = true;
+      onboardArray[41] = onboarding.create( (game.world.width /2 )-35, 0, 'onepx');
+      addtoRunningHeight[41] = false;
 
-      onboardArray[42] = onboarding.create( onboardX, 0, 'stepfractures');
-      addtoRunningHeight[42] = true;
+      // onboardArray[42] = onboarding.create( onboardX, 0, 'stepfractures');
+      onboardArray[42] = onboarding.create( onboardX, 0, 'onepx');
+      addtoRunningHeight[42] = false;
 
-      onboardArray[43] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[43] = true;
+      onboardArray[43] = onboarding.create( (game.world.width /2 )-35, 0, 'onepx');
+      addtoRunningHeight[43] = false;
 
-      onboardArray[44] = onboarding.create( onboardX, 0, 'ifyouhitthem');
-      addtoRunningHeight[44] = true;
+      // onboardArray[44] = onboarding.create( onboardX, 0, 'ifyouhitthem');
+      onboardArray[44] = onboarding.create( onboardX, 0, 'onepx');
+      addtoRunningHeight[44] = false;
 
-      onboardArray[45] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[45] = true;
+      onboardArray[45] = onboarding.create( (game.world.width /2 )-35, 0, 'onepx');
+      addtoRunningHeight[45] = false;
 
-      onboardArray[46] = onboarding.create( onboardX, 0, 'yourracerwill');
-      addtoRunningHeight[46] = true;
+      // onboardArray[46] = onboarding.create( onboardX, 0, 'yourracerwill');
+      onboardArray[46] = onboarding.create( onboardX, 0, 'onepx');
+      addtoRunningHeight[46] = false;
 
-      onboardArray[47] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
-      addtoRunningHeight[47] = true;
+      onboardArray[47] = onboarding.create( (game.world.width /2 )-35, 0, 'onepx');
+      addtoRunningHeight[47] = false;
 
-      onboardArray[48] = onboarding.create( onboardX, 0, 'therearealsoholes');
+      onboardArray[48] = onboarding.create( onboardX, 0, 'avoidholesandedges');
       addtoRunningHeight[48] = true;
 
       onboardArray[49] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[49] = true;
 
-      onboardArray[50] = onboarding.create( onboardX, 0, 'youwilllosealife');
+      onboardArray[50] = onboarding.create( onboardX, 0, 'ifyouhitthemyourracer'); /// // //
       addtoRunningHeight[50] = true;
 
       onboardArray[51] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
@@ -338,7 +346,7 @@ var pStart1 = {
       addtoRunningHeight[53] = true;
 
 
-      onboardArray[54] = onboarding.create( onboardX, 0, 'lookoutforblue');
+      onboardArray[54] = onboarding.create( onboardX, 0, 'lookoutforblueoutriggermolecules');
       addtoRunningHeight[54] = true;
 
       onboardArray[55] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
@@ -356,35 +364,52 @@ var pStart1 = {
       onboardArray[58].animations.play('freeze', true);
       //add animation her for bluePowerUp
 
+
       onboardArray[59] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[59] = true;
 
-      onboardArray[60] = onboarding.create( (game.world.width /2 )-130, 0, 'ok');
+
+      onboardArray[60] = onboarding.create( onboardX, 0, 'thetrackis');
       addtoRunningHeight[60] = true;
 
       onboardArray[61] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[61] = true;
 
-      onboardArray[62] = onboarding.create( onboardX, 0, 'crosstheline');
+
+      onboardArray[62] = onboarding.create( onboardX, 0, 'youraimistofinishalapof1000nmbeforethetrackmelts');
       addtoRunningHeight[62] = true;
+
+
 
       onboardArray[63] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[63] = true;
 
-      onboardArray[64] = onboarding.create( (game.world.width /2 )-200, 0, '321');
+      onboardArray[64] = onboarding.create( (game.world.width /2 )-130, 0, 'ok');
       addtoRunningHeight[64] = true;
 
       onboardArray[65] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[65] = true;
 
-      onboardArray[66] = onboarding.create(game.world.width - (game.world.width/4), game.world.height - (game.world.height/3), 'parkingplatz');
-      onboardArray[66].alpha=0;
+      onboardArray[66] = onboarding.create( onboardX, 0, 'crosstheline');
       addtoRunningHeight[66] = true;
 
-
-
-      onboardArray[67] = onboarding.create( 0, 0, 'finishline');
+      onboardArray[67] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
       addtoRunningHeight[67] = true;
+
+      onboardArray[68] = onboarding.create( (game.world.width /2 )-200, 0, '321');
+      addtoRunningHeight[68] = true;
+
+      onboardArray[69] = onboarding.create( (game.world.width /2 )-35, 0, 'goarrow');
+      addtoRunningHeight[69] = true;
+
+      onboardArray[70] = onboarding.create(game.world.width - (game.world.width/4), game.world.height - (game.world.height/3), 'parkingplatz');
+      onboardArray[70].alpha=0;
+      addtoRunningHeight[70] = true;
+
+
+
+      onboardArray[71] = onboarding.create( 0, 0, 'finishline');
+      addtoRunningHeight[71] = true;
 
 
 
@@ -400,13 +425,14 @@ var pStart1 = {
       game.physics.arcade.enable(onboardArray[18]);// to enable collision wiht the track selectors
       game.physics.arcade.enable(onboardArray[20]);
         game.physics.arcade.enable(onboardArray[24]); // back up track selector
-      game.physics.arcade.enable(onboardArray[32]);// add meters
+      // game.physics.arcade.enable(onboardArray[32]);// add meters
+      game.physics.arcade.enable(onboardArray[30]);// add meters and walls
       game.physics.arcade.enable(onboardArray[42]);// add walls
       // game.physics.arcade.enable(onboardArray[50]);// add walls
       game.physics.arcade.enable(onboardArray[52]);// add holes
       game.physics.arcade.enable(onboardArray[54]);// add powerups
       game.physics.arcade.enable(onboardArray[58]);// hit powerups example
-      game.physics.arcade.enable(onboardArray[67]);// finish
+      game.physics.arcade.enable(onboardArray[71]);// finish
 
 
 
@@ -687,12 +713,14 @@ var pStart1 = {
 
       game.physics.arcade.overlap(onboardArray[24], car, trackSet3, null, this);
 
-      game.physics.arcade.overlap(onboardArray[32], car, heatUp, null, this);// heat is go
-      game.physics.arcade.overlap(onboardArray[40], car, wallUp, null, this);// walls return
+      // game.physics.arcade.overlap(onboardArray[32], car, heatUp, null, this);// heat is go
+      game.physics.arcade.overlap(onboardArray[30], car, heatUp, null, this);// heat is go
+      // game.physics.arcade.overlap(onboardArray[40], car, wallUp, null, this);// walls return
+      game.physics.arcade.overlap(onboardArray[30], car, wallUp, null, this);// walls return
       // game.physics.arcade.overlap(onboardArray[52], car, holeUp, null, this);// holes return
       game.physics.arcade.overlap(onboardArray[58], car, this.sheildUp2, null, this);// holes return
 
-      game.physics.arcade.overlap(onboardArray[67], car, gogogo, null, this);// finishline
+      game.physics.arcade.overlap(onboardArray[71], car, gogogo, null, this);// finishline
 
       isHCrashing2 = game.physics.arcade.overlap(onboardArray[52], car,  holeExposure_ob2, null, this);
 

@@ -47,8 +47,13 @@ var loadState = {
     game.load.image('yourracerwill', ficurl+'assets/yourracerwill.png');
     game.load.image('therearealsoholes', ficurl+'assets/therearealsoholes.png');
     game.load.image('youwilllosealife', ficurl+'assets/youwilllosealife.png');
-    game.load.image('lookoutforblue', ficurl+'assets/lookoutforblue.png');
+    game.load.image('youwilllosealife', ficurl+'assets/youwilllosealife.png');
+    game.load.image('avoidholesandedges', ficurl+'assets/avoidholesandtrackedges.png');
+    game.load.image('ifyouhitthemyourracer', ficurl+'assets/ifyouhitthemyourracer.png');
+    game.load.image('lookoutforblueoutriggermolecules', ficurl+'assets/lookoutforblueoutriggermolecules.png');
     game.load.image('thesehelptoreduce', ficurl+'assets/thesehelptoreduce.png');
+    game.load.image('youraimistofinishalapof1000nmbeforethetrackmelts', ficurl+'assets/youraimistofinishalapof1000nmbeforethetrackmelts.png');
+
     game.load.image('ok', ficurl+'assets/ok.png');
     game.load.image('crosstheline', ficurl+'assets/crosstheline.png');
     game.load.image('321', ficurl+'assets/321go.png');
